@@ -56,13 +56,6 @@ data = data %>%
 
 data_analysis = data
 
-#data_analysis$OffsetTime[data_analysis$Item==221] = 2.93 #error in the recording of the offset time
-
-#data_analysis = data_analysis %>%
-  #mutate(frequency_per_million = Frequency / 2050000000 * 1000000) # need to fix frequency values
-  
-#exclude participants who didn't complete the experiment
-
 ```
 
 Let's inspect the different languages spoken by our participants to make sure they're all native English speakers:
@@ -97,11 +90,9 @@ data_analysis = data_analysis %>%
 
 rows_of_data = data_analysis %>% group_by(nrows) %>% summarize(length(unique(participant)))
 
-data_analysis = data_analysis %>%
+data_analysis = data_analysis %>% #filter out participants who only partially completed the experiment, or took the experiment multiple times.
   filter(nrows > 300 & nrows < 400)
 
-#data_analysis = data_analysis %>% #should we filter out incorrect responses?
-  #filter(response.corr == 1)
 
 #write_csv(data_analysis, 'data_analysis.csv')
 
@@ -144,23 +135,12 @@ data_analysis = data_analysis %>%
 Before we proceed, we do need to add a final variable which will be our outcome variable. This will be the difference between participants' response time, and the onset time of the segment. We will go ahead and also exclude any rows with negative values, since this will represent occasions where participants responded *before* hearing the segment. We're also going to convert seconds to milliseconds here.
 
 ```{r}
-#data_analysis_offset = data_analysis %>%
-  #mutate(response_time = response.rt - OffsetTime) 
-
-#data_analysis_offset_neg_rts = data_analysis_offset %>%
-  #filter(response_time < 0)
-
-#data_analysis_offset = data_analysis_offset %>%
-  #filter(response_time > 0)
-
 data_analysis = data_analysis %>%
   mutate(response_time = response.rt - OnsetTime) 
 
 data_analysis = data_analysis %>%
   filter(response_time > 0 & response_time < 10) #get rid of any responses before the onset and after 10 seconds
 
-#data_analysis_neg_rts = data_analysis %>%
-  #filter(response_time < 0)
 ```
 
 And let's confirm the number of participants we have:
@@ -172,21 +152,14 @@ length(unique(data_analysis$participant))
 Finally, let's log reaction time, frequency, and predictability:
 
 ```{r}
-corpus_size_words = 2111554623
-corpus_size_phrase = 1.06491E+12
+corpus_size_words = 2111554623 #length of google books 1-gram corpus.
+corpus_size_phrase = 1.06491E+12 #length of google books 2-gram corpus.
 data_analysis = data_analysis %>%
   mutate(corpus_size = corpus_size_phrase) %>%
-  mutate(frequency_per_million = Frequency * 1000000 / corpus_size) %>%
-  mutate(log_freq = log(frequency_per_million)) %>% #log frequency per million
+  mutate(frequency_per_million = Frequency * 1000000 / corpus_size) %>% #frequency per million of each verb phrase.
+  mutate(log_freq = log(frequency_per_million)) %>% #log frequency per million.
   mutate(log_predic = log(Predictability)) %>%
   mutate(log_rt = log(response_time))
-
-#data_analysis_offset = data_analysis_offset %>%
-  #mutate(log_freq = log(Frequency)) %>%
-  #mutate(log_predic = log(Predictability)) %>%
-  #mutate(log_rt = log(response_time))
-
-
 
 write_csv(data_analysis, 'data_analysis_cleaned.csv')
 ```
@@ -208,11 +181,6 @@ cloze_probs = read_csv('cloze_probs.csv')
 data_analysis = data_analysis %>%
   mutate(sentences_for_cloze = gsub(' up .*', '', Sentences)) %>%
   left_join(cloze_probs)
-#data_analysis$trial = as.factor(data_analysis$trial)
-#data_analysis_offset$participant = as.factor(data_analysis_offset$participant)
-#data_analysis_offset$Item = as.factor(data_analysis_offset$Item)
-#data_analysis_offset$h_heavily_reduced = as.factor(data_analysis_offset$h_heavily_reduced)
-
 
 data_analysis %>%
   filter(PhrasalVerb == 'phrasal') %>%
