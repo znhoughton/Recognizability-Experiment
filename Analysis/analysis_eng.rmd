@@ -35,7 +35,11 @@ The purpose of this script is to analyze the data collected from the recognizabi
 
 First we'll read in our data and organize the data in a tidy format.
 
-```{r}
+For transparency sake we are including the preprocessing steps in this script, however note that they will not run since the size of the raw data is too big to put on github (and thus the raw data is not included in the github rep).
+
+The raw data is available on request by email.
+
+```{r eval = F}
 data = read.csv('Database_AllParticipants_Recognizability_Experiment2_330703_2023-11-10_18h36.32_faa93908-1176-4bbf-ba5e-5e6fab9181f2.csv', quote = "\"")
 
 data = data %>%
@@ -60,13 +64,13 @@ data_analysis = data
 
 Let's inspect the different languages spoken by our participants to make sure they're all native English speakers:
 
-```{r}
+```{r eval = F}
 unique(data_analysis$native_lang)
 ```
 
 Let's exclude participants whose native language is not English (there are a few participants who wrote a non-english language as their native, but said in their demographic questions that they grew up speaking English, I've included those people's data as well).
 
-```{r}
+```{r eval = F}
 data_analysis = data_analysis %>%
   group_by(participant) %>%
   filter(any(native_lang %in% c('english', 'English', 'ENGLISH', 'engilsh', 'English ', 'english ', 'Enlish', 'EENNGGLLIISSHH', 'Englsih', 'enlgish', 'ENglish', 'American English', 'English\n')))
@@ -75,7 +79,7 @@ data_analysis = data_analysis %>%
 
 Next let's exclude participants with an accuracy less than 70%:
 
-```{r}
+```{r eval = F}
 data_analysis = data_analysis %>%
   group_by(participant) %>%
   mutate(accuracy = mean(response.corr, na.rm = T))
@@ -108,7 +112,7 @@ data_analysis$PhrasalVerb = as.factor(data_analysis$PhrasalVerb)
 
 Let's keep track of how many participants we're excluding this way too:
 
-```{r}
+```{r eval = F}
 num_participants_excluded = length(unique(participants_excluded$participant))
 
 num_participants_excluded
@@ -118,14 +122,14 @@ Awesome, only `r num_participants_excluded` participants had below 70% accuracy.
 
 Lastly, let's filter out the filler items and get our data ready for the analysis:
 
-```{r}
+```{r eval = F}
 data_analysis = data_analysis %>%
   filter(Condition == 'Experimental')
 ```
 
 Two of our items were inadvertantly not verb phrases (*press up* and *cluttering up*) so we need to exclude them:
 
-```{r}
+```{r eval = F}
 data_analysis = data_analysis %>%
   filter(Item != '81' | Item != '159')
 
@@ -134,7 +138,7 @@ data_analysis = data_analysis %>%
 
 Before we proceed, we do need to add a final variable which will be our outcome variable. This will be the difference between participants' response time, and the onset time of the segment. We will go ahead and also exclude any rows with negative values, since this will represent occasions where participants responded *before* hearing the segment. We're also going to convert seconds to milliseconds here.
 
-```{r}
+```{r eval = F}
 data_analysis = data_analysis %>%
   mutate(response_time = response.rt - OnsetTime) 
 
@@ -145,13 +149,13 @@ data_analysis = data_analysis %>%
 
 And let's confirm the number of participants we have:
 
-```{r}
+```{r eval = F}
 length(unique(data_analysis$participant))
 ```
 
 Finally, let's log reaction time, frequency, and predictability:
 
-```{r}
+```{r eval = F}
 corpus_size_words = 2111554623 #length of google books 1-gram corpus.
 corpus_size_phrase = 1.06491E+12 #length of google books 2-gram corpus.
 data_analysis = data_analysis %>%
@@ -166,8 +170,8 @@ write_csv(data_analysis, 'data_analysis_cleaned.csv')
 
 ### GAM model
 
-```{r}
-data_analysis = read_csv('data_analysis_cleaned.csv')
+```{r eval = F}
+data_analysis = read_csv('../Data/data_analysis_cleaned.csv')
 data_analysis$PhrasalVerb[data_analysis$Item == '64'] = 1
 data_analysis = data_analysis %>%
   mutate(PhrasalVerb = ifelse(PhrasalVerb == 1, 'phrasal', 'nonphrasal'))
@@ -176,7 +180,7 @@ data_analysis$Item = as.factor(data_analysis$Item)
 data_analysis$Type = as.factor(data_analysis$Type)
 data_analysis$PhrasalVerb = as.factor(data_analysis$PhrasalVerb)
 
-cloze_probs = read_csv('cloze_probs.csv')
+cloze_probs = read_csv('cloze_probs.csv') #should add this to the github repo
 
 data_analysis = data_analysis %>%
   mutate(sentences_for_cloze = gsub(' up .*', '', Sentences)) %>%
@@ -224,7 +228,15 @@ write_csv(gam_data, 'gam_data.csv')
 
 Let's run our analysis:
 
-```{r}
+```{r message = F}
+gam_data = read_csv("../Data/gam_data.csv")
+
+#we need to re-convert everything to factors when we read from csv
+gam_data$participant = as.factor(gam_data$participant)
+gam_data$Item = as.factor(gam_data$Item)
+gam_data$Type = as.factor(gam_data$Type)
+gam_data$PhrasalVerb = as.factor(gam_data$PhrasalVerb)
+
 
 mod_gam1 = bam(log_rt ~  #note that RT is in seconds 
                  te(log_predic, log_freq) + Duration +
@@ -238,7 +250,7 @@ mod_gam1 = bam(log_rt ~  #note that RT is in seconds
 
 summary(mod_gam1)
 
-saveRDS(mod_gam1, 'mod_gam1.rds')
+saveRDS(mod_gam1, '../Models/mod_gam1.rds')
 
 mod_gam_phrasal_nonphrasal = bam(log_rt ~  #note that RT is in log seconds
                  PhrasalVerb +
@@ -251,7 +263,7 @@ mod_gam_phrasal_nonphrasal = bam(log_rt ~  #note that RT is in log seconds
                #optimizer = 'perf',
               data = gam_data)
 
-saveRDS(mod_gam_phrasal_nonphrasal, 'mod_gam_phrasal_nonphrasal.rds')
+saveRDS(mod_gam_phrasal_nonphrasal, '../Models/mod_gam_phrasal_nonphrasal.rds')
 summary(mod_gam_phrasal_nonphrasal)
 
 mod_gam_phrasal_nonphrasal2 = bam(log_rt ~  #note that RT is in log seconds
@@ -276,7 +288,7 @@ mod_bam_inter = bam(log_rt ~ s(log_freq) + s(log_predic) + s(log_freqxpred) +
               method = 'REML',   
               data = gam_data)
 
-saveRDS(mod_bam_inter, 'mod_bam_inter.rds')
+saveRDS(mod_bam_inter, '../Models/mod_bam_inter.rds')
 summary(mod_bam_inter)
 
 
@@ -375,7 +387,7 @@ mod_gam_phrasal = bam(log_rt ~  #note that RT is log seconds
 
 summary(mod_gam_phrasal)
 
-saveRDS(mod_gam_phrasal, 'mod_gam_phrasal.rds')
+saveRDS(mod_gam_phrasal, '../Models/mod_gam_phrasal.rds')
 
 gam_data_nonphrasal = gam_data %>%
   filter(PhrasalVerb == 'nonphrasal')
@@ -391,12 +403,12 @@ mod_gam_nonphrasal = bam(log_rt ~  #note that RT is log seconds
 
 summary(mod_gam_nonphrasal)
 
-saveRDS(mod_gam_nonphrasal, 'mod_gam_nonphrasal.rds')
+saveRDS(mod_gam_nonphrasal, '../Models/mod_gam_nonphrasal.rds')
 ```
 
 ### Word Internal Analysis
 
-```{r}
+```{r eval = F}
 word_internal_analysis = data_analysis %>%
   filter(Type == 'Word-Internal')
 
@@ -435,7 +447,7 @@ brms_quadratic_no_interaction = brm(log_rt ~ log_freq + log_predic + Duration + 
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'brms_quadratic_english_no_interaction') 
+                     file = 'Models/brms_quadratic_english_no_interaction') 
   
 
 fixef(brms_quadratic_no_interaction)
@@ -489,7 +501,7 @@ brms_freq_quadratic_no_interaction = brm(log_rt ~ log_freq + Duration + #fixed-e
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'brms_freq_quadratic_english_no_interaction') 
+                     file = 'Models/brms_freq_quadratic_english_no_interaction') 
 
 fixef(brms_freq_quadratic_no_interaction)
 
@@ -526,7 +538,7 @@ brms_predic_quadratic_no_interaction = brm(log_rt ~  log_predic + Duration + #fi
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'brms_predic_quadratic_english_no_interaction') 
+                     file = 'Models/brms_predic_quadratic_english_no_interaction') 
 
 fixef(brms_predic_quadratic_no_interaction)
 
@@ -552,7 +564,7 @@ brms_quadratic = brm(log_rt ~ log_freq * log_predic * PhrasalVerb * Duration + #
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'brms_quadratic_english') 
+                     file = 'Models/brms_quadratic_english') 
 
 
 fixef(brms_quadratic)
@@ -569,7 +581,7 @@ brms_quadratic_no_phrasal = brm(log_rt ~ log_freq * log_predic * Duration + #fix
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'brms_quadratic_no_phrasal') 
+                     file = 'Models/brms_quadratic_no_phrasal') 
 
 
 fixef(brms_quadratic_no_phrasal)
@@ -590,7 +602,7 @@ bayesian_full_quadratic_english = brm(log_rt ~ log_freq * log_predic * PhrasalVe
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'brms_full_quadratic_english') 
+                     file = 'Models/brms_full_quadratic_english') 
 
 
 
@@ -610,7 +622,7 @@ bayesian_full_quadratic_english_no_phrasalverb = brm(log_rt ~ log_freq * log_pre
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'brms_full_quadratic_english_no_phrasalverb') 
+                     file = 'Models/brms_full_quadratic_english_no_phrasalverb') 
 ```
 
 Percentage of samples greater than zero for the quadratic predictors
@@ -653,7 +665,7 @@ brms_cloze_quadratic_no_interaction = brm(log_rt ~ log_freq + log_predic + Durat
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'brms_quadratic_cloze_english_no_interaction')  
+                     file = 'Models/brms_quadratic_cloze_english_no_interaction')  
 ```
 
 ### Plots of the beta distributions for our predictors for each brms model:
@@ -865,7 +877,7 @@ dev.off()
 
 2d plots that show our data as well:
 
-```{r }
+```{r}
 
 #main effect plot
 png(file = 'main_effect_plot_2d.png', width = 800)
@@ -897,65 +909,4 @@ dev.off()
 #plot2 = plot(sm(getViz(mod_gam_phrasal_nonphrasal), 2)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
 
 #gridPrint(plot1, plot2, ncol = 1)
-```
-
-```{r}
-#gridPrint(pl, pl2)
-```
-
-```{r include = F, cache = FALSE, eval = F}
-plot_3d = plot_gam_3d(
-  model = mod_gam1,
-  main_var = log_predic,
-  second_var = log_freq,
-  palette = 'bilbao',
-  direction = 1
-)
-
-plot_3d
-
-#plot_3d_phrasal = plot_gam_3d(
-  #model = mod_gam_phrasal,
-  #main_var = log_predic,
-  #second_var = log_freq,
-  #palette = 'bilbao',
-  #direction = 1
-#)
-#
-#plot_3d_phrasal
-
-#plot_3d_nonphrasal = plot_gam_3d(
-  #model = mod_gam_nonphrasal,
- # main_var = log_predic,
- # second_var = log_freq,
- # palette = 'bilbao',
-  #direction = 1
-#)
-
-#plot_3d_nonphrasal
-
-#plot_3d_phrasal_nonphrasal_1 = plot_gam_3d(
-  #model = mod_gam_phrasal_nonphrasal,
-  #main_var = log_predic,
-  #second_var = log_freq,
-  #palette = 'bilbao',
-  ##)
-```
-
-```{r mod_gam_3dplot, include = F, cache = FALSE, eval = F}
-plot_3d_2 = plot_gam_3d(
-  model = mod_gam2,
-  main_var = log_predic,
-  second_var = log_freq,
-  palette = 'bilbao',
-  direction = 1
-)
-
-plot_3d_2
-```
-
-#### Saving the plots and models for the write-up
-
-```{r eval = F}
-saveRDS(object = plot_3d, file = 'plot_3d.rds')
 ```
