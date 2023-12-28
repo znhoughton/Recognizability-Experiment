@@ -447,7 +447,7 @@ brms_quadratic_no_interaction = brm(log_rt ~ log_freq + log_predic + Duration + 
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'Models/brms_quadratic_english_no_interaction') 
+                     file = '../Models/brms_quadratic_english_no_interaction') 
   
 
 fixef(brms_quadratic_no_interaction)
@@ -457,6 +457,7 @@ fixef(brms_quadratic_no_interaction)
 
 ```{r}
 brms_plot = conditional_effects(brms_quadratic_no_interaction)
+saveRDS(brms_plot, "../Write-up/Figures/brms_plot.rds")
 
 freq_plot = plot(brms_plot, plot = F)[[1]] +
   theme_bw()
@@ -501,11 +502,12 @@ brms_freq_quadratic_no_interaction = brm(log_rt ~ log_freq + Duration + #fixed-e
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'Models/brms_freq_quadratic_english_no_interaction') 
+                     file = '../Models/brms_freq_quadratic_english_no_interaction') 
 
 fixef(brms_freq_quadratic_no_interaction)
 
 brms_freq_plot = conditional_effects(brms_freq_quadratic_no_interaction)
+saveRDS(brms_freq_plot, '../Write-up/Figures/brms_freq_plot.rds')
 
 freq_plot = plot(brms_freq_plot, plot = F)[[1]] +
   ylab('Log Reaction Time') +
@@ -538,11 +540,13 @@ brms_predic_quadratic_no_interaction = brm(log_rt ~  log_predic + Duration + #fi
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'Models/brms_predic_quadratic_english_no_interaction') 
+                     file = '../Models/brms_predic_quadratic_english_no_interaction') 
 
 fixef(brms_predic_quadratic_no_interaction)
 
 brms_predic_plot = conditional_effects(brms_predic_quadratic_no_interaction)
+saveRDS(brms_predic_plot, '../Write-up/Figures/brms_predic_plot.rds')
+
 predic_plot = plot(brms_predic_plot, plot = F)[[1]] +
   ylab('Log Reaction Time') +
   xlab('Log Predictability') +
@@ -564,7 +568,7 @@ brms_quadratic = brm(log_rt ~ log_freq * log_predic * PhrasalVerb * Duration + #
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'Models/brms_quadratic_english') 
+                     file = '../Models/brms_quadratic_english') 
 
 
 fixef(brms_quadratic)
@@ -581,7 +585,7 @@ brms_quadratic_no_phrasal = brm(log_rt ~ log_freq * log_predic * Duration + #fix
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'Models/brms_quadratic_no_phrasal') 
+                     file = '../Models/brms_quadratic_no_phrasal') 
 
 
 fixef(brms_quadratic_no_phrasal)
@@ -602,7 +606,7 @@ bayesian_full_quadratic_english = brm(log_rt ~ log_freq * log_predic * PhrasalVe
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'Models/brms_full_quadratic_english') 
+                     file = '../Models/brms_full_quadratic_english') 
 
 
 
@@ -622,7 +626,7 @@ bayesian_full_quadratic_english_no_phrasalverb = brm(log_rt ~ log_freq * log_pre
                      chains = 8,
                      init = 0,
                      prior = priors,
-                     file = 'Models/brms_full_quadratic_english_no_phrasalverb') 
+                     file = '../Models/brms_full_quadratic_english_no_phrasalverb') 
 ```
 
 Percentage of samples greater than zero for the quadratic predictors
@@ -665,7 +669,7 @@ brms_cloze_quadratic_no_interaction = brm(log_rt ~ log_freq + log_predic + Durat
                      init = 0,
                      control = list(adapt_delta = 0.99),
                      prior = priors,
-                     file = 'Models/brms_quadratic_cloze_english_no_interaction')  
+                     file = '../Models/brms_quadratic_cloze_english_no_interaction')  
 ```
 
 ### Plots of the beta distributions for our predictors for each brms model:
@@ -878,7 +882,6 @@ dev.off()
 2d plots that show our data as well:
 
 ```{r}
-
 #main effect plot
 png(file = 'main_effect_plot_2d.png', width = 800)
 plot(sm(getViz(mod_gam1), 1)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
