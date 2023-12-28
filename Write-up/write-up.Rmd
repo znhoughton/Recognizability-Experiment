@@ -429,7 +429,7 @@ log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^
 \end{aligned}
 \end{equation}
 ```
-The results of this model are presented below in Table \ref{tab:brmsQuadraticNoInter}. Following @houghtonPerceptualConsequencesPauses, in cases where the confidence interval crosses zero, we also report the percentage of posterior samples greater than or less than zero. For the current model, although the confidence intervals for both quadratic terms crossed zero, nearly 97% of the posterior samples for $predictability^2$ were greater than zero, and nearly 93% of the posterior samples for $frequency^2$ were greater than zero. A plot of the posterior distribution for each coefficient is presented in Figure \@ref(fig:posteriorplotFullQuadratic).
+The results of this model are presented below in Table \ref{tab:brmsQuadraticNoInter}. Following @houghtonTaskdependentConsequencesDisfluency2023, in cases where the confidence interval crosses zero, we also report the percentage of posterior samples greater than or less than zero. For the current model, although the confidence intervals for both quadratic terms crossed zero, nearly 97% of the posterior samples for $predictability^2$ were greater than zero, and nearly 93% of the posterior samples for $frequency^2$ were greater than zero. A plot of the posterior distribution for each coefficient is presented in Figure \@ref(fig:posteriorplotFullQuadratic).
 
 ```{r brmsQuadraticNoInter, echo = F, message = F, results='asis'}
 #table 1: full interaction model
