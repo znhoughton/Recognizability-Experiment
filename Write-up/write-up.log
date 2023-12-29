@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.28)  28 DEC 2023 07:34
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.28)  28 DEC 2023 23:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -989,6 +989,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [5]
+Underfull \vbox (badness 4752) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -997,10 +999,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [6]
-File: Figures/kapatsinskiradicke_graph.png Graphic file (type bmp)
-<Figures/kapatsinskiradicke_graph.png>
-File: Figures/syntax_tree.png Graphic file (type bmp)
-<Figures/syntax_tree.png>
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1009,6 +1007,10 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [7]
+File: Figures/kapatsinskiradicke_graph.png Graphic file (type bmp)
+<Figures/kapatsinskiradicke_graph.png>
+File: Figures/syntax_tree.png Graphic file (type bmp)
+<Figures/syntax_tree.png>
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1061,6 +1063,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [11]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1074,7 +1078,36 @@ Overfull \hbox (57.81783pt too wide) detected at line 326
  []
 
 
+Package fancyhdr Warning: \headheight is too small (15.2pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
+
+[13]
 Overfull \hbox (68.55693pt too wide) detected at line 336
+[][][][][]
+ []
+
+
+Overfull \hbox (2.18959pt too wide) detected at line 346
+[][][][][]
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (15.2pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
+
+[14]
+Overfull \hbox (1.65733pt too wide) detected at line 359
+[][][][][]
+ []
+
+
+Overfull \hbox (36.6493pt too wide) detected at line 366
 [][][][][]
  []
 
@@ -1088,39 +1121,9 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
-[13]
-Overfull \hbox (2.18959pt too wide) detected at line 346
-[][][][][]
- []
-
-
-Overfull \hbox (1.65733pt too wide) detected at line 359
-[][][][][]
- []
-
-
-Package fancyhdr Warning: \headheight is too small (15.2pt): 
-(fancyhdr)                Make it at least 27.41803pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.41803pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
-
-[14]
-Overfull \hbox (36.6493pt too wide) detected at line 366
-[][][][][]
- []
-
-
-Underfull \vbox (badness 3375) has occurred while \output is active []
-
-
-Package fancyhdr Warning: \headheight is too small (15.2pt): 
-(fancyhdr)                Make it at least 27.41803pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.41803pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
-
 [15]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1133,10 +1136,6 @@ Overfull \hbox (73.94641pt too wide) detected at line 457
 [][][][][]
  []
 
-File: write-up_files/figure-latex/posteriorplotFullQuadratic-1.pdf Graphic file (type pdf)
-<use write-up_files/figure-latex/posteriorplotFullQuadratic-1.pdf>
-File: write-up_files/figure-latex/FullQuadraticPlot-1.pdf Graphic file (type pdf)
-<use write-up_files/figure-latex/FullQuadraticPlot-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1145,6 +1144,13 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [17]
+File: write-up_files/figure-latex/posteriorplotFullQuadratic-1.pdf Graphic file (type pdf)
+<use write-up_files/figure-latex/posteriorplotFullQuadratic-1.pdf>
+File: write-up_files/figure-latex/FullQuadraticPlot-1.pdf Graphic file (type pdf)
+<use write-up_files/figure-latex/FullQuadraticPlot-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1153,6 +1159,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [18]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1161,14 +1169,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [19]
-File: write-up_files/figure-latex/FreqOnlyBetaPlot-1.pdf Graphic file (type pdf)
-<use write-up_files/figure-latex/FreqOnlyBetaPlot-1.pdf>
-File: write-up_files/figure-latex/PredicOnlyBetaPlot-1.pdf Graphic file (type pdf)
-<use write-up_files/figure-latex/PredicOnlyBetaPlot-1.pdf>
-File: write-up_files/figure-latex/FreqOnlyPlot-1.pdf Graphic file (type pdf)
-<use write-up_files/figure-latex/FreqOnlyPlot-1.pdf>
-File: write-up_files/figure-latex/PredicOnlyPlot-1.pdf Graphic file (type pdf)
-<use write-up_files/figure-latex/PredicOnlyPlot-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1177,6 +1177,14 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [20]
+File: write-up_files/figure-latex/FreqOnlyBetaPlot-1.pdf Graphic file (type pdf)
+<use write-up_files/figure-latex/FreqOnlyBetaPlot-1.pdf>
+File: write-up_files/figure-latex/PredicOnlyBetaPlot-1.pdf Graphic file (type pdf)
+<use write-up_files/figure-latex/PredicOnlyBetaPlot-1.pdf>
+File: write-up_files/figure-latex/FreqOnlyPlot-1.pdf Graphic file (type pdf)
+<use write-up_files/figure-latex/FreqOnlyPlot-1.pdf>
+File: write-up_files/figure-latex/PredicOnlyPlot-1.pdf Graphic file (type pdf)
+<use write-up_files/figure-latex/PredicOnlyPlot-1.pdf>
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1201,8 +1209,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [23]
-Underfull \vbox (badness 4752) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1211,6 +1217,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [24]
+Underfull \vbox (badness 4752) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1227,8 +1235,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [26]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1256,7 +1262,9 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
-[29] AED endfloat: Processing end Figures and Tables
+[29]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1264,7 +1272,15 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
-[30] (./write-up.aux)
+[30] AED endfloat: Processing end Figures and Tables
+
+Package fancyhdr Warning: \headheight is too small (15.2pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
+
+[31] (./write-up.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2020/03/25>
@@ -1273,10 +1289,10 @@ L3 programming layer <2020/03/25>
 Here is how much of TeX's memory you used:
  23660 strings out of 474831
  439667 string characters out of 5750343
- 1937109 words of memory out of 5000000
+ 1938109 words of memory out of 5000000
  45363 multiletter control sequences out of 15000+600000
  590784 words of font info for 111 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  90i,12n,120p,2247b,598s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on write-up.pdf (30 pages).
+Output written on write-up.pdf (31 pages).
