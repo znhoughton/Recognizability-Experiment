@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.28)  28 DEC 2023 23:26
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.28)  2 JAN 2024 14:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -973,6 +973,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [3]
+Underfull \vbox (badness 2443) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -981,6 +983,27 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [4]
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 10.0pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 7.0pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.0pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 10.00092pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 7.00064pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.00046pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 9.99893pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 6.99925pt on input line 220.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 4.99947pt on input line 220.
+
+Underfull \vbox (badness 2846) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -989,8 +1012,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [5]
-Underfull \vbox (badness 4752) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1027,24 +1048,14 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [9]
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 287.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 287.
+
+Package fancyhdr Warning: \headheight is too small (15.2pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
+
+[10]
 File: write-up_files/figure-latex/stimplot2-1.pdf Graphic file (type pdf)
 <use write-up_files/figure-latex/stimplot2-1.pdf>
 
@@ -1054,17 +1065,7 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
-[10]
-
-Package fancyhdr Warning: \headheight is too small (15.2pt): 
-(fancyhdr)                Make it at least 27.41803pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.41803pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
-
 [11]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1073,10 +1074,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [12]
-Overfull \hbox (57.81783pt too wide) detected at line 326
-[][][][][]
- []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1085,6 +1082,11 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [13]
+Overfull \hbox (57.81783pt too wide) detected at line 326
+[][][][][]
+ []
+
+
 Overfull \hbox (68.55693pt too wide) detected at line 336
 [][][][][]
  []
@@ -1110,9 +1112,6 @@ Overfull \hbox (1.65733pt too wide) detected at line 359
 Overfull \hbox (36.6493pt too wide) detected at line 366
 [][][][][]
  []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 

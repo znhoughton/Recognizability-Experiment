@@ -49,7 +49,6 @@ output            :
 
 header-includes:
 - \usepackage[section]{placeins}
-bibliography: references.bib
 ---
 
 ```{r setup, include = FALSE}
