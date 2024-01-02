@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.28)  2 JAN 2024 14:12
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.28)  2 JAN 2024 15:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -973,8 +973,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [3]
-Underfull \vbox (badness 2443) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1200,6 +1198,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [22]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1288,7 +1288,7 @@ L3 programming layer <2020/03/25>
 Here is how much of TeX's memory you used:
  23660 strings out of 474831
  439667 string characters out of 5750343
- 1938109 words of memory out of 5000000
+ 1939109 words of memory out of 5000000
  45363 multiletter control sequences out of 15000+600000
  590784 words of font info for 111 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
