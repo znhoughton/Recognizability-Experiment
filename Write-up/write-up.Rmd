@@ -357,7 +357,9 @@ log(RT) & \sim  log(Predictability) + Duration + log(Predictability^2) \\ & + (1
 ```
 # Results
 
-The effect of the interaction between frequency and predictability was not significant in any of our models (see Tables \ref{tab:gamModelTab} through \ref{tab:gamModelInterTab} for the output of each model). Our third Generalized Additive Model suggested that there was a significant main-effect of predictability.
+The effect of the interaction between frequency and predictability was not significant in any of our models (see Tables \ref{tab:gamModelTab} through \ref{tab:gamModelInterTab} for the output of each model). Further, there was no significant effect of whether the verb phrase was a phrasal verb (e.g., *pick up*) or not (e.g., *walk up*)[^5]. Additionally, our third Generalized Additive Model suggested that there was a significant main-effect of predictability.
+
+[^5]: A BIC analysis confirmed that the model that included whether the verb phrase was a phrasal verb or not (analysis in Table \ref{tab:gamModelPhrasalNonPhrasalTab}) was not a better fit than the identical model without it (the analysis in Table \ref{tab:gamModelTab}).
 
 ```{r gamModelTab, echo = F, results='asis'}
 #table 1: full interaction model
