@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.24)  9 JAN 2024 23:46
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.1.11)  12 JAN 2024 15:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **write-up.tex
 (./write-up.tex
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-12-11>
+L3 programming layer <2024-01-04>
 (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/apa6/apa6.cls
 Document Class: apa6 2023/08/07 v2.35 APA formatting (6th edition)
 (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
@@ -278,9 +278,9 @@ LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-12-11 L3 programming layer (loader) 
+Package: expl3 2024-01-04 L3 programming layer (loader) 
 (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2023-11-09 L3 backend support: XeTeX
+File: l3backend-xetex.def 2024-01-04 L3 backend support: XeTeX
 \g__graphics_track_int=\count286
 \l__pdf_internal_box=\box57
 \g__pdf_backend_object_int=\count287
@@ -381,7 +381,7 @@ LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count308
 \calc@Cskip=\skip79
 ) (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2023/12/10 v3.99 The Babel package
+Package: babel 2024/01/07 v24.1 The Babel package
 \babel@savecnt=\count309
 \U@D=\dimen187
 \l@unhyphenated=\language5
@@ -389,9 +389,9 @@ Package: babel 2023/12/10 v3.99 The Babel package
 \bbl@readstream=\read2
 \bbl@dirlevel=\count310
 Package babel Info: You haven't specified a language as a class or package
-(babel)             option. I'll load 'nil'. Reported on input line 4334.
+(babel)             option. I'll load 'nil'. Reported on input line 4342.
 (c:/Users/zacha/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/nil.ldf
-Language: nil 2023/12/10 v3.99 Nil language
+Language: nil 2024/01/07 v24.1 Nil language
 \l@nil=\language6
 ))
 \everypar=\toks28
@@ -997,7 +997,7 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 4.99947pt on input line 228.
 
-Underfull \vbox (badness 2846) has occurred while \output is active []
+Underfull \vbox (badness 1122) has occurred while \output is active []
 
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
@@ -1007,6 +1007,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [5]
+Underfull \vbox (badness 4254) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1092,6 +1094,9 @@ Overfull \hbox (2.18959pt too wide) detected at line 346
  []
 
 
+Underfull \vbox (badness 7273) has occurred while \output is active []
+
+
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
 (fancyhdr)                \setlength{\headheight}{27.41803pt}.
@@ -1107,6 +1112,9 @@ Overfull \hbox (1.65733pt too wide) detected at line 359
 Overfull \hbox (36.6493pt too wide) detected at line 366
 [][][][][]
  []
+
+
+Underfull \vbox (badness 1038) has occurred while \output is active []
 
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
@@ -1126,10 +1134,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [16]
-Overfull \hbox (73.94641pt too wide) detected at line 456
-[][][][][]
- []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1138,13 +1142,14 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [17]
+Overfull \hbox (73.94641pt too wide) detected at line 456
+[][][][][]
+ []
+
 File: write-up_files/figure-latex/posteriorplotFullQuadratic-1.pdf Graphic file (type pdf)
 <use write-up_files/figure-latex/posteriorplotFullQuadratic-1.pdf>
 File: write-up_files/figure-latex/FullQuadraticPlot-1.pdf Graphic file (type pdf)
 <use write-up_files/figure-latex/FullQuadraticPlot-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1153,8 +1158,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1283,10 +1286,10 @@ L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 23689 strings out of 476830
- 440050 string characters out of 5802458
- 1938109 words of memory out of 5000000
- 45263 multiletter control sequences out of 15000+600000
+ 23687 strings out of 476821
+ 439819 string characters out of 5802789
+ 1937177 words of memory out of 5000000
+ 45274 multiletter control sequences out of 15000+600000
  590784 words of font info for 111 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  90i,12n,120p,2247b,598s stack positions out of 10000i,1000n,20000p,200000b,200000s
