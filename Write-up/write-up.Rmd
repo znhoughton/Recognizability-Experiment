@@ -49,6 +49,7 @@ output            :
 
 header-includes:
 - \usepackage[section]{placeins}
+bibliography: references.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -255,7 +256,7 @@ Participants were recruited through the University of California, Davis Linguist
 
 ## Materials
 
-We searched the Google n-grams corpus for the most predictable and the highest frequency phrases that matched our criteria of containing a verb immediately followed by the word *up*. We operationalized predictability as the ratio of the probability of *up* occurring immediately after the verb to the probability of any other word occurring (Equation \@ref(eq:logOdds)):
+We searched the Google *n*-grams corpus [@linSyntacticAnnotationsGoogle2012] for the most predictable and the highest frequency phrases that matched our criteria of containing a verb immediately followed by the word *up*. We operationalized predictability as the ratio of the probability of *up* occurring immediately after the verb to the probability of any other word occurring (Equation \@ref(eq:logOdds)):
 
 ```{=tex}
 \begin{equation}
