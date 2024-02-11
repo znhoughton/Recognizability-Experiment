@@ -1,5 +1,5 @@
 ---
-title             : "The effects of frequency and predictability on the recognition of *up* in English multi-word phrases."
+title             : "The effects of frequency and predictability on the recognition of *up* in English verb+*up* collocations."
 shorttitle        : "Effects of frequency and predictability on the recognition of *up*."
 
 author: 
@@ -25,11 +25,11 @@ affiliation:
 
 
 abstract: |
-  The question of what is stored is one that has drawn a lot of attention in the last few decades, and while the general consensus is that a lot more is stored than we previously realized, it is still largely unclear what factors drive storage. For example, some have argued that frequency drives storage, while others have posited that predictability drives storage. Further, it is what the processing consequences of storage are. For example, it is possible that stored items fuse together, losing some amount of their internal structure. The present paper examines both of these questions by looking at the recognizability of the segment *up* in English V+*up* phrases. We find that recognition follows a u-shaped pattern for both frequency and predictability suggesting that stored items may lose some amount of their internal representation.
+  The question of what items are stored in the lexicon is one that has drawn a lot of attention in the last few decades, and while the general consensus is that a lot more is stored than we previously realized, it is still largely unclear what factors drive storage. For example, some have argued that frequency drives storage, while others have posited that predictability drives storage. Further, it is unclear what the relationship between stored multi-word items and the representation of each individual word is. For example, it is possible that stored items fuse together, losing some amount of their internal structure. The present paper examines both of these questions by looking at the recognizability of the segment *up* in English V+*up* phrases. We find that the time it takes to recognize *up* decreases as frequency or predictability increases, but increases once again for the highest frequency or highest predictability items. Our results suggest that frequency and predictability both drive storage, and that stored items may lose some amount of their internal representation.
   
 keywords          : "Psycholinguistics, holistic storage, language processing, lexical processing, phonological processing"
 
-bibliography      : ["r-references.bib",  "references.bib"]
+bibliography: ["r-references.bib",  "references.bib"]
 
 floatsintext      : yes
 linenumbers       : no
@@ -49,7 +49,7 @@ output            :
 
 header-includes:
 - \usepackage[section]{placeins}
-bibliography: references.bib
+- \usepackage{pdfcomment}
 ---
 
 ```{r setup, include = FALSE}
@@ -75,6 +75,7 @@ library(flextable)
 library(officer)
 library(gtsummary)
 library(xtable)
+
 #r_refs("r-references.bib")
 #my_citations = cite_r(file = "r-references.bib")
 ```
@@ -190,13 +191,17 @@ data_verbs_up = read_csv('../Data/Stimuli - Phrasal verbs.csv') %>%
 
 # Introduction
 
-The question of to what extent language processing involves processing individual pieces of the utterance versus accessing stored representations from memory is one that has gained a lot of attention in the Psycholinguistics literature in the last few decades [e.g., @bybee2002; @bybee2003; @goldberg2003; @nooteboom2002; @stemberger1986; @stemberger2004]. For example, take the classic Halloween greeting, *trick or treat*. When you hear the phrase trick or treat do you process it compositionally, processing each word in the utterance and then combining them into a single parse? Or do you access a single stored representation from memory?,
+When a listener hears the phrase *trick or treat*, do they process it compositionally, processing each word individually before combining them into a single parse? Or do they access a single holistically stored representation from memory? This question of to what extent larger-than-word constructions can be stored holistically is one that psycholinguists have been interested in for quite some time [e.g., @bybee2002; @bybee2003; @goldberg2003; @nooteboom2002; @stemberger1986; @stemberger2004].
 
-The literature has traditionally assumed the former, arguing that processing is almost completely compositional: each piece is accessed individually and then combined to form the larger meaning, reserving some exceptions for idioms and other outliers. These theories gained popularity partially because storage was thought to be a valuable resource that was taken up only by units that necessitated storage [see @nooteboom2002 for a further discussion on the traditional assumptions of storage], perhaps due to the limited storage space of sophisticated computers at the time. In recent times, however, we've learned that the brain may have dramatically more space for storage than we had previously realized, with an upper bound of 108432 bits [@wang2003]. This is magnitudes larger than any current estimate of how much storage language requires [indeed, @mollica2019 estimated that, in terms of linguistic information, humans store only somewhere between one million and ten million bits of information, meaning that even their upper estimate is well within the capacity of the brain].
+Throughout the years different theories have argued for different degrees of holistic storage. Two theories in particular have dominated the field: Chomskyan theories [e.g., @chomskyAspectsTheorySyntax1965], which propose that only the necessary items are stored, and usage-based theories [e.g., @bybee2003], which propose that multi-word items can be stored under certain conditions. We briefly review each next.
 
-On the other hand, usage-based theories posit that some complex phrases may be accessed holistically from memory, and whether it is accessed as a single chunk is driven by the distribution of the input language. For example, rather than being purely determined by the degree of compositionality of an utterance, usage-based theories suggest that other factors, such as how frequent the phrase is, determine whether the phrase is stored holistically or not. According to these theories, frequency of use may lead to compositional items, e.g., multi-word phrases, being stored as a holistic unit which can be accessed from memory [e.g., @kapatsinski2018; @kapatsinski2009; @hay2001; @lee2015; @arnon2010; @stemberger1986; @stemberger2004; @morgan2016; @tomasello2005].
+Traditional Chomskyan theories [e.g., @chomskyAspectsTheorySyntax1965] have argued that processing multi-word phrases is completely compositional: each piece is accessed individually and then combined to form the larger meaning. Some exceptions are reserved for idioms and other outliers, which can't be formed compositionally. More specifically, Chomskyan views of storage argued that whether an item was stored was determined purely by the degree of compositionality. According to these theories, if a multi-word expressions can be composed then there is no need to holistically store the expression, and thus it is not stored holistically. For example since *I don't know* can be processed compositionally, then it would be processed by combining each of the individual words, *I, don't,* and *know*. On the other hand, *kicked the bucket* would be stored holistically because there's very little relationship between the meaning of the individual words and the meaning of the expression (i.e., it's non-compositional).
 
-While it has become a dominant view in the field that at least some multi-word items are stored, it remains unclear, however, what exactly the size of the units being stored is and, more so, what the factors driving storage are. Further, if larger-than-word representations are being stored, what are the consequences of this in terms of language processing?
+Chomskyan theories of storage gained popularity partly because storage was thought to be a valuable resource that was taken up only by units that necessitated storage [see @nooteboom2002 for a further discussion on the traditional assumptions of storage], perhaps due to the limited storage space of sophisticated computers at the time. In recent times, however, we've learned that the brain may have dramatically more space for storage than we had previously realized, with an upper bound of 10^8432^ bits [@wang2003]. This is magnitudes larger than any current estimate of how much storage language requires [indeed, @mollica2019 estimated that, in terms of linguistic information, humans store only somewhere between one million and ten million bits of information, meaning that even their upper estimate is well within the capacity of the brain]. Considering this, it might not come as a surprise that there has been a rise in support for usage-based theories over the past few decades [@kapatsinski2009; @kapatsinski2018; @stemberger1986; @stemberger2004; @morgan2016; @bybee1999; @bybee2001; @bybee2002; @bybee2003; @baayenDutchInflectionRules2002; @ambridgeStoredAbstractionsRadical2020].
+
+Usage-based theories posit that some complex phrases (e.g., multi-word expressions) may be stored holistically in memory, arguing that storage is driven by usage-based factors (e.g., the distribution of the input language). For example, factors like frequency or predictability of the phrase may influence whether the phrase is stored holistically or not. According to these theories, multi-word phrases such as *I don't know* could be stored holistically if they are used frequently enough. In other words, frequency of use may lead to compositional items, e.g., multi-word phrases, being stored as a holistic unit which can be accessed from memory [e.g., @kapatsinski2018; @kapatsinski2009; @hay2001; @lee2015; @arnon2010; @stemberger1986; @stemberger2004; @morgan2016; @tomasello2005; @ambridgeStoredAbstractionsRadical2020].
+
+While it has become a dominant view in the field that at least some multi-word items are stored, however, it remains unclear what exactly the size of the units being stored is and, more so, what the factors driving storage are. Further, if multi-word representations are stored holistically, what are the consequences of this in terms of language processing?
 
 ## Evidence of Holistic Storage
 

@@ -171,6 +171,7 @@
 \keywords{Psycholinguistics, holistic storage, language processing, lexical processing, phonological processing}
 \usepackage{csquotes}
 \usepackage[section]{placeins}
+\usepackage{pdfcomment}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -178,14 +179,14 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={The effects of frequency and predictability on the recognition of up in English multi-word phrases.},
+  pdftitle={The effects of frequency and predictability on the recognition of up in English verb+up collocations.},
   pdfauthor={Zachary Houghton1, Jungah Lee2, Casey Felton1, Georgia Zellou1, \& Emily Morgan1},
   pdflang={en-EN},
   pdfkeywords={Psycholinguistics, holistic storage, language processing, lexical processing, phonological processing},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{The effects of frequency and predictability on the recognition of \emph{up} in English multi-word phrases.}
+\title{The effects of frequency and predictability on the recognition of \emph{up} in English verb+\emph{up} collocations.}
 \author{Zachary Houghton\textsuperscript{1}, Jungah Lee\textsuperscript{2}, Casey Felton\textsuperscript{1}, Georgia Zellou\textsuperscript{1}, \& Emily Morgan\textsuperscript{1}}
 \date{}
 
@@ -194,14 +195,14 @@
 
 \authornote{
 
-Correspondence concerning this article should be addressed to Zachary Houghton, . E-mail: \href{mailto:znhoughton@ucdavis.edu}{\nolinkurl{znhoughton@ucdavis.edu}}
+Correspondence concerning this article should be addressed to Zachary Houghton. E-mail: \href{mailto:znhoughton@ucdavis.edu}{\nolinkurl{znhoughton@ucdavis.edu}}
 
 }
 
 \affiliation{\vspace{0.5cm}\textsuperscript{1} University of California, Davis\\\textsuperscript{2} Chosun University}
 
 \abstract{%
-The question of what is stored is one that has drawn a lot of attention in the last few decades, and while the general consensus is that a lot more is stored than we previously realized, it is still largely unclear what factors drive storage. For example, some have argued that frequency drives storage, while others have posited that predictability drives storage. Further, it is what the processing consequences of storage are. For example, it is possible that stored items fuse together, losing some amount of their internal structure. The present paper examines both of these questions by looking at the recognizability of the segment \emph{up} in English V+\emph{up} phrases. We find that recognition follows a u-shaped pattern for both frequency and predictability suggesting that stored items may lose some amount of their internal representation.
+The question of what items are stored in the lexicon is one that has drawn a lot of attention in the last few decades, and while the general consensus is that a lot more is stored than we previously realized, it is still largely unclear what factors drive storage. For example, some have argued that frequency drives storage, while others have posited that predictability drives storage. Further, it is unclear what the relationship between stored multi-word items and the representation of each individual word is. For example, it is possible that stored items fuse together, losing some amount of their internal structure. The present paper examines both of these questions by looking at the recognizability of the segment \emph{up} in English V+\emph{up} phrases. We find that the time it takes to recognize \emph{up} decreases as frequency or predictability increases, but increases once again for the highest frequency or highest predictability items. Our results suggest that frequency and predictability both drive storage, and that stored items may lose some amount of their internal representation.
 }
 
 
@@ -211,13 +212,13 @@ The question of what is stored is one that has drawn a lot of attention in the l
 
 \section{Introduction}\label{introduction}
 
-The question of to what extent language processing involves processing individual pieces of the utterance versus accessing stored representations from memory is one that has gained a lot of attention in the Psycholinguistics literature in the last few decades (e.g., Bybee, 2002, 2003; Goldberg, 2003; Nooteboom, Nooteboom, Weerman, \& Wijnen, 2002; Stemberger \& MacWhinney, 1986, 2004). For example, take the classic Halloween greeting, \emph{trick or treat}. When you hear the phrase trick or treat do you process it compositionally, processing each word in the utterance and then combining them into a single parse? Or do you access a single stored representation from memory?,
+The question of to what extent language processing involves processing individual pieces of the utterance versus accessing larger chunks of stored representations from memory is one that has gained a lot of attention in the Psycholinguistics literature in the last few decades (e.g., Bybee, 2002, 2003; Goldberg, 2003; Nooteboom, Nooteboom, Weerman, \& Wijnen, 2002; Stemberger \& MacWhinney, 1986, 2004). For example, take the classic Halloween greeting, \emph{trick or treat}: When you hear the phrase \emph{trick or treat} do you process it compositionally, processing each word in the utterance and then combining them into a single parse? Or do you access a single stored representation from memory?
 
-The literature has traditionally assumed the former, arguing that processing is almost completely compositional: each piece is accessed individually and then combined to form the larger meaning, reserving some exceptions for idioms and other outliers. These theories gained popularity partially because storage was thought to be a valuable resource that was taken up only by units that necessitated storage (see Nooteboom et al., 2002 for a further discussion on the traditional assumptions of storage), perhaps due to the limited storage space of sophisticated computers at the time. In recent times, however, we've learned that the brain may have dramatically more space for storage than we had previously realized, with an upper bound of 108432 bits (Wang, Liu, \& Wang, 2003). This is magnitudes larger than any current estimate of how much storage language requires (indeed, Mollica \& Piantadosi, 2019 estimated that, in terms of linguistic information, humans store only somewhere between one million and ten million bits of information, meaning that even their upper estimate is well within the capacity of the brain).
+Throughout the years different theories have argued for different degrees of holistic storage. For example, traditional Chomskyan theories (e.g., Chomsky, 1965) have assumed the former, arguing that processing is almost completely compositional: each piece is accessed individually and then combined to form the larger meaning, reserving some exceptions for idioms and other outliers. In contrast, usage-based theories posit that some complex phrases (e.g., multi-word expressions) may be stored holistically in memory. Usage-based theories argue that storage is driven by usage-based factors (e.g., the distribution of the input language). For example, these theories suggest that factors such as how frequent the phrase is determine whether the phrase is stored holistically or not. According to these theories, frequency of use may lead to compositional items, e.g., multi-word phrases, being stored as a holistic unit which can be accessed from memory (Arnon \& Snider, 2010; Hay, 2001; e.g., Kapatsinski, 2018; Kapatsinski \& Radicke, 2009; Lee \& Kapatsinski, 2015; Morgan \& Levy, 2016; Stemberger \& MacWhinney, 1986, 2004; Tomasello, 2005).
 
-On the other hand, usage-based theories posit that some complex phrases may be accessed holistically from memory, and whether it is accessed as a single chunk is driven by the distribution of the input language. For example, rather than being purely determined by the degree of compositionality of an utterance, usage-based theories suggest that other factors, such as how frequent the phrase is, determine whether the phrase is stored holistically or not. According to these theories, frequency of use may lead to compositional items, e.g., multi-word phrases, being stored as a holistic unit which can be accessed from memory (Arnon \& Snider, 2010; Hay, 2001; e.g., Kapatsinski, 2018; Kapatsinski \& Radicke, 2009; Lee \& Kapatsinski, 2015; Morgan \& Levy, 2016; Stemberger \& MacWhinney, 1986, 2004; Tomasello, 2005).
+\pdfcomment{I want to keep the information about the storage of the brain, but it feels a bit weird jumping back and forth between Chomskyan and usage-based theories.}The Chomskyan view of storage argued that whether an item was stored was determined purely by the degree of compositionality (e.g., \emph{kicked the bucket} would be stored because the meaning ``to pass away'' cannot be composed from the meaning of the individual words). This view gained popularity partially because storage was thought to be a valuable resource that was taken up only by units that necessitated storage (see Nooteboom et al., 2002 for a further discussion on the traditional assumptions of storage), perhaps due to the limited storage space of sophisticated computers at the time. In recent times, however, we've learned that the brain may have dramatically more space for storage than we had previously realized, with an upper bound of 10\textsuperscript{8432} bits (Wang, Liu, \& Wang, 2003). This is magnitudes larger than any current estimate of how much storage language requires (indeed, Mollica \& Piantadosi, 2019 estimated that, in terms of linguistic information, humans store only somewhere between one million and ten million bits of information, meaning that even their upper estimate is well within the capacity of the brain). Considering this, it might not come as a surprise that there has been a substantial accumulation of evidence supporting usage-based theories in the past few decades (Baayen, Schreuder, De Jong, \& Krott, 2002; Bybee, 2002, 2003; Bybee \& Hopper, 2001; Bybee \& Scheibman, 1999; Kapatsinski, 2018; Kapatsinski \& Radicke, 2009; Morgan \& Levy, 2016; Stemberger \& MacWhinney, 1986, 2004).
 
-While it has become a dominant view in the field that at least some multi-word items are stored, it remains unclear, however, what exactly the size of the units being stored is and, more so, what the factors driving storage are. Further, if larger-than-word representations are being stored, what are the consequences of this in terms of language processing?
+While it has become a dominant view in the field that at least some multi-word items are stored, however, it remains unclear what exactly the size of the units being stored is and, more so, what the factors driving storage are. Further, if multi-word representations are being stored, what are the consequences of this in terms of language processing?
 
 \subsection{Evidence of Holistic Storage}\label{evidence-of-holistic-storage}
 
@@ -277,7 +278,7 @@ Participants were recruited through the University of California, Davis Linguist
 
 \subsection{Materials}\label{materials}
 
-We searched the Google n-grams corpus for the most predictable and the highest frequency phrases that matched our criteria of containing a verb immediately followed by the word \emph{up}. We operationalized predictability as the ratio of the probability of \emph{up} occurring immediately after the verb to the probability of any other word occurring (Equation \eqref{eq:logOdds}):
+We searched the Google \emph{n}-grams corpus (Lin et al., 2012) for the most predictable and the highest frequency phrases that matched our criteria of containing a verb immediately followed by the word \emph{up}. We operationalized predictability as the ratio of the probability of \emph{up} occurring immediately after the verb to the probability of any other word occurring (Equation \eqref{eq:logOdds}):
 
 \begin{equation}
 \label{eq:logOdds}
@@ -632,6 +633,9 @@ Arnon, I., \& Snider, N. (2010). More than words: Frequency effects for multi-wo
 \bibitem[\citeproctext]{ref-ashby2007}
 Ashby, F. G., Ennis, J. M., \& Spiering, B. J. (2007). A neurobiological theory of automaticity in perceptual categorization. \emph{Psychological Review}, \emph{114}(3), 632. Retrieved from \url{https://psycnet.apa.org/journals/rev/114/3/632/}
 
+\bibitem[\citeproctext]{ref-baayenDutchInflectionRules2002}
+Baayen, H., Schreuder, R., De Jong, N., \& Krott, A. (2002). \emph{Dutch inflection: The rules that prove the exception} (S. Nooteboom, F. Weerman, \& F. Wijnen, Eds.). Dordrecht: Springer Netherlands. Retrieved from \url{http://link.springer.com/10.1007/978-94-010-0355-1_3}
+
 \bibitem[\citeproctext]{ref-boutonLearning2007}
 Bouton, M. E. (2007). \emph{Learning and behavior: A contemporary synthesis.} Sinauer Associates. Retrieved from \url{https://psycnet.apa.org/record/2006-21409-000}
 
@@ -649,6 +653,9 @@ Bybee, J., \& Hopper, P. (2001). Introduction to frequency and the emergence of 
 
 \bibitem[\citeproctext]{ref-bybee1999}
 Bybee, J., \& Scheibman, J. (1999). The effect of usage on degrees of constituency: The reduction of don't in english. \emph{Linguistics}, \emph{37}(4). \url{https://doi.org/10.1515/ling.37.4.575}
+
+\bibitem[\citeproctext]{ref-chomskyAspectsTheorySyntax1965}
+Chomsky, N. (1965). \emph{Aspects of the theory of syntax special technical report no. 11}. Retrieved from \url{https://ntrs.nasa.gov/api/citations/19670002070/downloads/19670002070.pdf}
 
 \bibitem[\citeproctext]{ref-christiansen2017}
 Christiansen, M. H., \& Arnon, I. (2017). More than words: The role of multiword sequences in language learning and use. \emph{Topics in Cognitive Science}, \emph{9}(3), 542--551. \url{https://doi.org/10.1111/tops.12274}
@@ -691,6 +698,9 @@ Lee, O., \& Kapatsinski, V. (2015). \emph{Frequency effects in morphologisation 
 
 \bibitem[\citeproctext]{ref-levyProcessingExtraposedStructures2012}
 Levy, R., Fedorenko, E., Breen, M., \& Gibson, E. (2012). The processing of extraposed structures in english. \emph{Cognition}, \emph{122}(1), 12--36. \url{https://doi.org/10.1016/j.cognition.2011.07.012}
+
+\bibitem[\citeproctext]{ref-linSyntacticAnnotationsGoogle2012}
+Lin, Y., Michel, J.-B., Lieberman, E. A., Orwant, J., Brockman, W., \& Petrov, S. (2012). \emph{Syntactic annotations for the google books ngram corpus}. 169174. Retrieved from \url{https://aclanthology.org/P12-3029.pdf}
 
 \bibitem[\citeproctext]{ref-maye2000}
 Maye, J., \& Gerken, L. (2000). \emph{Learning phonemes without minimal pairs}. \emph{2}, 522533.
