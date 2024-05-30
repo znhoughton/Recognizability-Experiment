@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.26)  7 MAR 2024 15:18
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.26)  7 MAR 2024 15:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1201,8 +1201,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [13]
-Underfull \vbox (badness 2980) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1211,7 +1209,7 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [14]
-Overfull \hbox (57.81783pt too wide) detected at line 352
+Overfull \hbox (57.81783pt too wide) detected at line 354
 [][][][][]
  []
 
@@ -1223,12 +1221,12 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [15]
-Overfull \hbox (68.55693pt too wide) detected at line 362
+Overfull \hbox (68.55693pt too wide) detected at line 364
 [][][][][]
  []
 
 
-Overfull \hbox (2.18959pt too wide) detected at line 372
+Overfull \hbox (2.18959pt too wide) detected at line 374
 [][][][][]
  []
 
@@ -1240,12 +1238,12 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [16]
-Overfull \hbox (1.65733pt too wide) detected at line 385
+Overfull \hbox (1.65733pt too wide) detected at line 387
 [][][][][]
  []
 
 
-Overfull \hbox (36.6493pt too wide) detected at line 392
+Overfull \hbox (36.6493pt too wide) detected at line 394
 [][][][][]
  []
 
@@ -1270,7 +1268,7 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [18]
-Overfull \hbox (73.94641pt too wide) detected at line 482
+Overfull \hbox (73.94641pt too wide) detected at line 484
 [][][][][]
  []
 
