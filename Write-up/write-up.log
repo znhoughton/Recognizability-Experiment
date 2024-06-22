@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.26)  1 JUN 2024 19:49
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.26)  22 JUN 2024 00:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1137,8 +1137,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [6]
-Underfull \vbox (badness 2443) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1167,6 +1165,8 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [9]
+Underfull \vbox (badness 7796) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1193,8 +1193,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1211,13 +1209,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [14]
-Overfull \hbox (57.81783pt too wide) detected at line 356
-[][][][][]
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1226,6 +1217,11 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [15]
+Overfull \hbox (57.81783pt too wide) detected at line 356
+[][][][][]
+ []
+
+
 Overfull \hbox (68.55693pt too wide) detected at line 366
 [][][][][]
  []
@@ -1371,8 +1367,6 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [28]
-Underfull \vbox (badness 1028) has occurred while \output is active []
-
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1381,7 +1375,7 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
 [29]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1028) has occurred while \output is active []
 
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
@@ -1410,7 +1404,9 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
-[32] AED endfloat: Processing end Figures and Tables
+[32]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Package fancyhdr Warning: \headheight is too small (15.2pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1418,19 +1414,27 @@ Package fancyhdr Warning: \headheight is too small (15.2pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
 
-[33] (./write-up.aux)
+[33] AED endfloat: Processing end Figures and Tables
+
+Package fancyhdr Warning: \headheight is too small (15.2pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-12.21803pt}.
+
+[34] (./write-up.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 28487 strings out of 476792
- 549881 string characters out of 5801788
+ 28488 strings out of 476792
+ 549925 string characters out of 5801788
  1939842 words of memory out of 5000000
- 50033 multiletter control sequences out of 15000+600000
+ 50034 multiletter control sequences out of 15000+600000
  591321 words of font info for 113 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 90i,12n,121p,2247b,630s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,12n,121p,2247b,653s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on write-up.pdf (33 pages).
+Output written on write-up.pdf (34 pages).
