@@ -62,28 +62,38 @@
   \let\oldsubparagraph\subparagraph
   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
   \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
   \fi
   % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
 \usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
@@ -166,7 +176,7 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
@@ -201,8 +211,7 @@ The question of what items are stored in the lexicon is one that has drawn a lot
 \begin{document}
 \maketitle
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\section{Introduction}\label{introduction}
 
 When a listener hears the phrase \emph{trick or treat}, do they process it compositionally, processing each word individually before combining them into a single parse? Or do they access a single holistically stored representation of the phrase from memory? This question of to what extent larger-than-word constructions can be stored and accessed holistically is one that psycholinguists have been interested in for quite some time (e.g., Bybee, 2002, 2003; Goldberg, 2003; Nooteboom, Nooteboom, Weerman, \& Wijnen, 2002; Stemberger \& MacWhinney, 1986, 2004).
 
@@ -216,17 +225,15 @@ Usage-based theories posit that more than just non-compositional items (e.g., mu
 
 While it has become a dominant view in the field that at least some multi-word items are stored, it remains unclear what exactly the size of the units being stored is and, more so, what the factors driving storage are. Further, if multi-word representations are stored holistically, what are the consequences of this in terms of language processing?
 
-\hypertarget{evidence-of-holistic-storage}{%
-\subsection{Evidence of Holistic Storage}\label{evidence-of-holistic-storage}}
+\subsection{Evidence of Holistic Storage}\label{evidence-of-holistic-storage}
 
-There is no shortage of evidence for holistic multi-word storage (e.g., Bybee \& Scheibman, 1999; Christiansen \& Arnon, 2017; Hay, 2001; Stemberger \& MacWhinney, 1986, 2004; Zwitserlood, 2018), especially in the phonology literature. For example, Bybee and Scheibman (1999) demonstrated that the word \emph{don't} is reduced to a larger extent in the phrase \emph{I don't know} than in other words containing \emph{don't}. In other words, the phrase \emph{I don't know} seems to have its own mental representation. If it was the case that the representation of \emph{don't} in \emph{I don't know} was the same as the representation of \emph{don't} in other contexts, then one would expect \emph{don't} to be equally reduced in both cases (which is contrary to the finding in Bybee \& Scheibman, 1999). Similarly, in Korean, certain consonants undergo tensification when they occur after the future marker -\emph{l}. The rate of this tensification is higher in high-frequency phrases than low-frequency phrases, further suggesting that high-frequency phrases may be stored holistically (Yi, 2002).
+There is no shortage of evidence for holistic multi-word storage (e.g., Bybee \& Scheibman, 1999; Christiansen \& Arnon, 2017; Hay, 2001; Stemberger \& MacWhinney, 1986, 2004; Zwitserlood, 2018), especially in the phonology literature. For example, Bybee and Scheibman (1999) demonstrated that the word \emph{don't} is reduced to a larger extent in the phrase \emph{I don't know} than in other phrases containing \emph{don't}. In other words, the phrase \emph{I don't know} seems to have its own mental representation. If it was the case that the representation of \emph{don't} in \emph{I don't know} was the same as the representation of \emph{don't} in other contexts, then one would expect \emph{don't} to be equally reduced in both cases (which is contrary to the finding in Bybee \& Scheibman, 1999). Similarly, in Korean, certain consonants undergo tensification when they occur after the future marker -\emph{l}. The rate of this tensification is higher in high-frequency phrases than low-frequency phrases, further suggesting that high-frequency phrases may be stored holistically (Yi, 2002).
 
-In addition to the phonology literature, the Psycholinguistics literature has also provided an abundance of evidence for multi-word storage. For example, Siyanova-Chanturia, Conklin, and Heuven (2011) demonstrated that binomial phrases (e.g., \emph{cat and dog}) are read faster in their more frequent ordering than in their less frequent ordering. Further, in a follow-up study, Morgan and Levy (2016) demonstrated that these ordering preferences for frequent binomials are not due to abstract ordering preferences (e.g., a preference for short words before long words), but are rather driven by experience with the specific binomial (i.e., how frequent each binomial ordering is), providing additional evidence that frequent binomials are stored holistically.
+In addition to the phonology literature, the Psycholinguistics literature has also provided an abundance of evidence for multi-word storage. For example, Siyanova-Chanturia, Conklin, and Heuven (2011) demonstrated that binomial phrases (e.g., \emph{cat and dog}) are read faster in their more frequent ordering than in their less frequent ordering. Further, in a follow-up study, Morgan and Levy (2016) demonstrated that these ordering preferences for frequent binomials are not due to abstract ordering preferences (e.g., a preference for short words before long words), but are rather driven by experience with the specific binomial (i.e., how frequent each binomial ordering is), providing additional evidence that frequent phrases are stored holistically.
 
 Further, there is also evidence of multi-word storage from the learning literature. For example, Siegelman and Arnon (2015) demonstrated that learning is facilitated by attending to the whole utterance, as opposed to attending to each individual word. Specifically, they used an artificial language paradigm to examine adult L2 learners' ability to learn grammatical gender. They found that adults learn grammatical gender better when they are presented with unsegmented utterances rather than segmented utterances. In other words, attending to the entire utterance, rather than learning to compose the utterance word-by-word, facilitated their learning. It seems plausible that the learned segments are the segments being stored, and that storing larger-than-word chunks is possibly what is facilitating the learning of grammatical gender in their study.
 
-\hypertarget{what-drives-storage}{%
-\subsection{What Drives Storage?}\label{what-drives-storage}}
+\subsection{What Drives Storage?}\label{what-drives-storage}
 
 Despite the evidence of multi-word holistic storage, however, it is still largely unclear what factors drive storage. Humans seem to be sensitive to a variety of statistical information, including both frequency (e.g., Bybee \& Scheibman, 1999; Kapatsinski \& Radicke, 2009; Lee \& Kapatsinski, 2015; Maye \& Gerken, 2000) and predictability (e.g, Olejarczuk, Kapatsinski, \& Baayen, 2018; Ramscar, Dye, \& Klein, 2013).
 
@@ -254,8 +261,7 @@ Despite the lack of direct evidence of predictability in the role of multi-word 
 
 Thus, the current literature presents strong evidence for the role of frequency in the storage of multi-word phrases, as well as suggests the possibility of a further influence of predictability. However, it remains unclear to what extent each of these factors drives storage and whether they interact at all with each other.
 
-\hypertarget{processing-consequences-of-storage}{%
-\subsection{Processing Consequences of Storage}\label{processing-consequences-of-storage}}
+\subsection{Processing Consequences of Storage}\label{processing-consequences-of-storage}
 
 Given the evidence that a lot more may be stored than previously thought, another important question to consider is what exactly the processing consequences of storage are. Specifically, do the stored units maintain their own internal representation with respect to their component parts? For example, it is possible that the representation of high-frequency phrases, such as \emph{pick up,} retains the representations of the component parts \emph{pick} and \emph{up}. On the other hand, it is possible that the phrase lacks internal representation of the component parts, either because it was lost over time or because it was never learned -- we will revisit both of these ideas in the discussion section.
 
@@ -291,21 +297,17 @@ Additionally, there is also evidence from the word-recognition literature that s
 
 On the other hand, there is a necessary temporal linearity to speech, so listeners receive the information for some of the component parts before the entire phrase. For example, the listener necessarily hears \emph{pick} before \emph{pick up}. It seems unlikely that a listener would process \emph{pick up} without having processed \emph{pick} at all. Thus if holistically stored phrases do lose the representation of their component parts, it's unclear what exactly the relationship with processing is. One such possibility that was put forth by both Kapatsinski and Radicke (2009) and Healy (1976) is that during processing, the holistic representations compete with the representations of the individual parts for recognition. In other words: for high frequency phrases, hearing \emph{pick} may be enough to predict that the speaker intends to say \emph{pick up}. The listener may then process \emph{pick up} before actually hearing \emph{up} (thus explaining the increase in recognition times for \emph{up} in the highest frequency items). In other words, once the listener finishes processing the phrase, they move on to the rest of the utterance, even if they haven't fully processed the individual parts.\footnote{Note that competition can be implemented in other ways though, e.g., using top-down inhibition (Libben, 2005).} This is necessary to account for the results in Kapatsinski and Radicke (2009) because high-frequency phrases are still processed more quickly than lower frequency phrases. If accessing the holistic representation facilitates the accessing of the individual parts (as predicted by the IA model, James L. McClelland \& Rumelhart, 1981), then we would expect to see a decrease in recognition times for the component parts. However, an increase in recognition times suggests there is competition for recognition between the holistic representation and the representations of the individual parts.
 
-\hypertarget{present-study}{%
-\subsection{Present Study}\label{present-study}}
+\subsection{Present Study}\label{present-study}
 
 The present study examines the factors that drive storage and the processing consequences of storage by extending Kapatsinski and Radicke (2009) to look at the effects of both frequency, predictability, and their interaction on the processing of V+\emph{up} phrases. Similar to Kapatsinski and Radicke (2009), participants are tasked with pressing a button once they hear the segment \emph{up} (which in our study occurs either as a particle within verb phrases, e.g., \emph{pick up}, or part of a word, e.g., \emph{puppet}), but in our case the stimuli varied in both frequency and predictability. Since frequency effects are rather robust in the literature, we should at the very least see a negative correlation between frequency and recognition time (up to perhaps a certain point, where recognition time may increase). The effects of predictability on recognition times, however, are still relatively untested in the literature. If predictability is not a driving factor of storage, we should see only frequency effects on the recognizability of \emph{up}. On the other hand, if predictability does drive storage, we may see a loss of internal representation for high-predictability items. Further, if storage does result in a loss of internal structure, we should see similar effects to those found in Kapatsinski and Radicke (2009). Specifically, we should see a U-shaped effect, where recognition gets easier until we get to the highest frequency/predictability items, where recognizability should then become harder.
 
-\hypertarget{methods}{%
-\section{Methods}\label{methods}}
+\section{Methods}\label{methods}
 
-\hypertarget{participants}{%
-\subsection{Participants}\label{participants}}
+\subsection{Participants}\label{participants}
 
 Participants were recruited through the University of California, Davis Linguistics/Psychology Human Subjects Pool. 350 people participated in this study and were compensated in the form of SONA credit. All participants self-reported being native English speakers. Additionally, 44 participants were excluded due to an accuracy score below our threshold of 70\%, leaving a total of 306 participants for the data analysis.
 
-\hypertarget{materials}{%
-\subsection{Materials}\label{materials}}
+\subsection{Materials}\label{materials}
 
 We searched the Google \emph{n}-grams corpus (Lin et al., 2012) for the most predictable and the highest frequency phrases that matched our criteria of containing a verb immediately followed by the word \emph{up}. We operationalized predictability as the odds ratio of the probability of \emph{up} occurring immediately after the verb to the probability of any other word occurring (Equation \eqref{eq:logOdds}):
 
@@ -355,13 +357,11 @@ In summary, our stimuli were comprised of 200 Verb+\emph{up} phrases that varied
 
 After creating the sentences, a native English speaker then recorded each sentence in a random order to minimize any list effect. We subsequently equalized the amplitude such that every sentence was roughly the same loudness.
 
-\hypertarget{procedure}{%
-\subsection{Procedure}\label{procedure}}
+\subsection{Procedure}\label{procedure}
 
 Participants were presented with audio sentences via Pavlovia (\url{https://pavlovia.org/}), a website for presenting PsychoPy experiments (Peirce et al., 2019). Each participant was presented with 3 practice trials and then 350 sentences. While we had a total of 700 sentences, participants didn't see both the filler and experimental sentence for the same item, thus they only saw half of the stimuli. The order of the sentences was random and exactly half of the sentences contained the target segment (to avoid biasing the participants towards a specific response). Participants were instructed to press a key as soon as they heard the segment \emph{up}, or to press a separate key at the end of the sentence if they did not hear the target segment in the sentence. We then recorded their reaction time of the button press. The experiment took approximately 40 minutes.
 
-\hypertarget{analysis}{%
-\subsection{Analysis}\label{analysis}}
+\subsection{Analysis}\label{analysis}
 
 The data\footnote{The stimuli, data, and analyses scripts can all be found freely available here: \url{https://github.com/znhoughton/Recognizability-Experiment}} was analyzed using General Additive Mixed models, as implemented in the \emph{mgcv} package (Wood, 2011) within the R programming environment (R Core Team, 2023). General Additive Mixed Models are models that allow us to model our outcome variable as a combination of the predictors. GAMMs differ from generalized linear regression models in that they allow the predictors to be modeled as non-linear functions, similar to polynomial regression. Specifically, in a Generalized Additive Mixed Model, beta-coefficients are replaced with a smooth function, which is a combination of splines. The more splines that we include, the more wiggly our line will be. In order to avoid overfitting, GAMMs also include a penalty term, \(\lambda\), which can be modified to penalize more wiggly lines that aren't justified by the data. While the predictors are allowed to vary non-linearly, the linking function in our case was linear (i.e., response time varied linearly with the spline functions).
 
@@ -415,8 +415,7 @@ log(RT) & \sim  log(Predictability) + Duration + log(Predictability^2) \\ & + (1
 \end{aligned}
 \end{equation}
 
-\hypertarget{results}{%
-\section{Results}\label{results}}
+\section{Results}\label{results}
 
 The effect of the interaction between frequency and predictability was not significant in any of our models (see Tables \ref{tab:gamModelTab} through \ref{tab:gamModelInterTab} for the output of each model). Further, there was no significant effect of whether the verb phrase was a phrasal verb (e.g., \emph{pick up}) or not (e.g., \emph{stir up})\footnote{A BIC analysis confirmed that the model that included whether the verb phrase was a phrasal verb or not (analysis in Table \ref{tab:gamModelPhrasalNonPhrasalTab}) was not a better fit than the identical model without it (the analysis in Table \ref{tab:gamModelTab}).}. In other words, the recognition times patterned similarly regardless of whether the item was a phrasal verb or not. Additionally, our third Generalized Additive Model (eq. \ref{eq:gammFull} and Table \ref{tab:gamModelInterTab}) suggested that there was a significant main-effect of predictability.
 
@@ -493,6 +492,26 @@ s(log-pred., log-freq., log-freq.:log-pred., participant) & 0.02 & 306.00 & 0.00
 \end{center}
 
 \end{table}
+
+A visualization of \ref{tab:gamModelTab} and \ref{tab:gamModelPhrasalNonPhrasalTab} are presented in Figures \ref{fig:gam2dplot1} and \ref{fig:gam2dplot2}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{write-up_files/figure-latex/gam2dplot1-1} 
+
+}
+
+\caption{Plot of the interaction effect between predictability and frequency of our GAM model containing only the interaction between frequency and predictability. The brightness of the coloration denotes the strength of the effect at the point in the graph. Brighter colors denote longer reaction times.}\label{fig:gam2dplot1}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{write-up_files/figure-latex/gam2dplot2-1} 
+
+}
+
+\caption{Plot of the interaction effect between predictability and frequency of our GAM model containing the interaction between frequency and predictability for phrasal vs nonphrasal verbs. Brighter colors denote longer reaction times. The left graph is the predicted effect for phrasal verbs (e.g., pick up), the right graph is the predicted effect for non-phrasal verbs (e.g., walk up).}\label{fig:gam2dplot2}
+\end{figure}
 
 Given these results, we ran a follow-up Bayesian quadratic regression model to further examine the effects. Since the Generalized Additive Model suggested that there was no significant interaction between frequency and predictability, we left out the interaction term from the regression model. Similar to the above Bayesian models, we also modeled the random-effects without correlations between them. Equation \eqref{eq:BayesianFullModelSyntax} below presents the full model syntax:
 
@@ -643,8 +662,7 @@ While the confidence interval for the quadratic term in both models crosses zero
 \caption{Model predictions for the effect of predictability on reaction times for the predictability-only models.}\label{fig:PredicOnlyPlot}
 \end{figure}
 
-\hypertarget{discussion}{%
-\section{Discussion}\label{discussion}}
+\section{Discussion}\label{discussion}
 
 The present study examined the effects of frequency and predictability on the recognizability of the particle \emph{up} in English phrasal verbs. We found a U-shaped effect for both frequency and predictability on recognizability: as frequency/predictability increased, people were faster at recognizing \emph{up}, until reaching the highest frequency/most predictable items, where people were slower. These results suggest that the most predictable and/or highest frequency items have a lack of internal structure. We also found no meaningful differences between phrasal verbs (e.g., \emph{pick up}) and non-phrasal verbs (e.g., \emph{stir up}), suggesting that this effect is driven primarily by the statistical distribution of the input as opposed to syntactic properties.
 
@@ -670,160 +688,158 @@ Finally, we see the same U-shaped effect in both phrasal (e.g., \emph{pick up}) 
 
 In summary, we demonstrate that both frequency and predictability drive the holistic storage of phrasal verbs, and these holistically stored items may compete with their component parts during lexical access. Further, we demonstrate that the most frequent and most predictable items do not have a fully intact internal representation. Future work would do well to examine if stored items are learned without internal structure or if the internal structure is lost over time as a function of experience.
 
-\hypertarget{acknowledgements}{%
-\section{Acknowledgements}\label{acknowledgements}}
+\section{Acknowledgements}\label{acknowledgements}
 
 The authors would like to thank Dingyi (Penny) Pan, a graduate student in Linguistics, for reading and offering comments on a draft of this paper. The authors would also like to thank Vsevolod Kapatsinski and Zara Harmon for providing interesting discussion about the nature of competition in processing.
 
 \newpage
 
-\hypertarget{references}{%
-\section{References}\label{references}}
+\section{References}\label{references}
 
-\hypertarget{refs}{}
+\phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-ambridgeStoredAbstractionsRadical2020}{}}%
+\bibitem[\citeproctext]{ref-ambridgeStoredAbstractionsRadical2020}
 Ambridge, B. (2020). Against stored abstractions: A radical exemplar model of language acquisition. \emph{First Language}, \emph{40}(5-6), 509--559. \url{https://doi.org/10.1177/0142723719869731}
 
-\leavevmode\vadjust pre{\hypertarget{ref-arnon2010}{}}%
+\bibitem[\citeproctext]{ref-arnon2010}
 Arnon, I., \& Snider, N. (2010). More than words: Frequency effects for multi-word phrases. \emph{Journal of Memory and Language}, \emph{62}(1), 67--82. \url{https://doi.org/10.1016/j.jml.2009.09.005}
 
-\leavevmode\vadjust pre{\hypertarget{ref-ashby2007}{}}%
+\bibitem[\citeproctext]{ref-ashby2007}
 Ashby, F. G., Ennis, J. M., \& Spiering, B. J. (2007). A neurobiological theory of automaticity in perceptual categorization. \emph{Psychological Review}, \emph{114}(3), 632. Retrieved from \url{https://psycnet.apa.org/journals/rev/114/3/632/}
 
-\leavevmode\vadjust pre{\hypertarget{ref-baayenDutchInflectionRules2002}{}}%
+\bibitem[\citeproctext]{ref-baayenDutchInflectionRules2002}
 Baayen, H., Schreuder, R., De Jong, N., \& Krott, A. (2002). \emph{Dutch inflection: The rules that prove the exception} (S. Nooteboom, F. Weerman, \& F. Wijnen, Eds.). Dordrecht: Springer Netherlands. Retrieved from \url{http://link.springer.com/10.1007/978-94-010-0355-1_3}
 
-\leavevmode\vadjust pre{\hypertarget{ref-boyceMazeMadeEasy2020}{}}%
+\bibitem[\citeproctext]{ref-boyceMazeMadeEasy2020}
 Boyce, V., Futrell, R., \& Levy, R. P. (2020). Maze made easy: Better and easier measurement of incremental processing difficulty. \emph{Journal of Memory and Language}, \emph{111}(November 2019), 104082. \url{https://doi.org/10.1016/j.jml.2019.104082}
 
-\leavevmode\vadjust pre{\hypertarget{ref-brms}{}}%
+\bibitem[\citeproctext]{ref-brms}
 Bürkner, P.-C. (2017). {brms}: An {R} package for {Bayesian} multilevel models using {Stan}. \emph{Journal of Statistical Software}, \emph{80}(1), 1--28. \url{https://doi.org/10.18637/jss.v080.i01}
 
-\leavevmode\vadjust pre{\hypertarget{ref-bybee2002}{}}%
+\bibitem[\citeproctext]{ref-bybee2002}
 Bybee, J. (2002). Word frequency and context of use in the lexical diffusion of phonetically conditioned sound change. \emph{Language Variation and Change}, \emph{14}(3), 261--290. \url{https://doi.org/10.1017/S0954394502143018}
 
-\leavevmode\vadjust pre{\hypertarget{ref-bybee2003}{}}%
+\bibitem[\citeproctext]{ref-bybee2003}
 Bybee, J. (2003). \emph{Phonology and language use} (Vol. 94). Cambridge University Press.
 
-\leavevmode\vadjust pre{\hypertarget{ref-bybee2001}{}}%
+\bibitem[\citeproctext]{ref-bybee2001}
 Bybee, J., \& Hopper, P. (2001). Introduction to frequency and the emergence of linguistic structure. \emph{Typological Studies in Language}, \emph{45}, 126.
 
-\leavevmode\vadjust pre{\hypertarget{ref-bybee1999}{}}%
+\bibitem[\citeproctext]{ref-bybee1999}
 Bybee, J., \& Scheibman, J. (1999). The effect of usage on degrees of constituency: The reduction of don't in english. \emph{Linguistics}, \emph{37}(4). \url{https://doi.org/10.1515/ling.37.4.575}
 
-\leavevmode\vadjust pre{\hypertarget{ref-chomskyAspectsTheorySyntax1965}{}}%
+\bibitem[\citeproctext]{ref-chomskyAspectsTheorySyntax1965}
 Chomsky, N. (1965). \emph{Aspects of the theory of syntax special technical report no. 11}. Retrieved from \url{https://ntrs.nasa.gov/api/citations/19670002070/downloads/19670002070.pdf}
 
-\leavevmode\vadjust pre{\hypertarget{ref-christiansen2017}{}}%
+\bibitem[\citeproctext]{ref-christiansen2017}
 Christiansen, M. H., \& Arnon, I. (2017). More than words: The role of multiword sequences in language learning and use. \emph{Topics in Cognitive Science}, \emph{9}(3), 542--551. \url{https://doi.org/10.1111/tops.12274}
 
-\leavevmode\vadjust pre{\hypertarget{ref-goldberg2003}{}}%
+\bibitem[\citeproctext]{ref-goldberg2003}
 Goldberg, A. E. (2003). Constructions: A new theoretical approach to language. \emph{Trends in Cognitive Sciences}, \emph{7}(5), 219--224. \url{https://doi.org/10.1016/S1364-6613(03)00080-9}
 
-\leavevmode\vadjust pre{\hypertarget{ref-hay2001}{}}%
+\bibitem[\citeproctext]{ref-hay2001}
 Hay, J. (2001). Lexical frequency in morphology: Is everything relative? \emph{Linguistics}, \emph{39}(376), 1041--1070. \url{https://doi.org/10.1515/ling.2001.041}
 
-\leavevmode\vadjust pre{\hypertarget{ref-healy1976}{}}%
+\bibitem[\citeproctext]{ref-healy1976}
 Healy, A. F. (1976). Detection errors on the word the: Evidence for reading units larger than letters. \emph{Journal of Experimental Psychology: Human Perception and Performance}, \emph{2}(2), 235. Retrieved from \url{https://psycnet.apa.org/journals/xhp/2/2/235/}
 
-\leavevmode\vadjust pre{\hypertarget{ref-healy1994}{}}%
+\bibitem[\citeproctext]{ref-healy1994}
 Healy, A. F. (1994). Letter detection: A window to unitization and other cognitive processes in reading text. \emph{Psychonomic Bulletin \& Review}, \emph{1}(3), 333--344. \url{https://doi.org/10.3758/BF03213975}
 
-\leavevmode\vadjust pre{\hypertarget{ref-hooper1976}{}}%
+\bibitem[\citeproctext]{ref-hooper1976}
 Hooper, J. B. (1976). Word frequency in lexical diffusion and the source of morphophonological change. \emph{Current Progress in Historical Linguistics}, \emph{96}, 105.
 
-\leavevmode\vadjust pre{\hypertarget{ref-houghton2023does}{}}%
+\bibitem[\citeproctext]{ref-houghton2023does}
 Houghton, Z. N., \& Morgan, E. (2023). Does predictability drive the holistic storage of compound nouns? \emph{Proceedings of the Annual Meeting of the Cognitive Science Society}, \emph{45}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-houghtonTaskdependentConsequencesDisfluency2023}{}}%
+\bibitem[\citeproctext]{ref-houghtonTaskdependentConsequencesDisfluency2023}
 Houghton, Z., Kato, M., Baese-Berk, M., \& Vaughn, C. (2024). Task-dependent consequences of disfluency in perception of native and non-native speech. \emph{Applied Psycholinguistics}, 1--17. \url{https://doi.org/10.1017/S0142716423000486}
 
-\leavevmode\vadjust pre{\hypertarget{ref-kapatsinski2018}{}}%
+\bibitem[\citeproctext]{ref-kapatsinski2018}
 Kapatsinski, V. (2018). \emph{Changing minds changing tools: From learning theory to language acquisition to language change}. MIT Press.
 
-\leavevmode\vadjust pre{\hypertarget{ref-kapatsinskiHierarchicalInferenceSound2021}{}}%
+\bibitem[\citeproctext]{ref-kapatsinskiHierarchicalInferenceSound2021}
 Kapatsinski, V. (2021). Hierarchical inference in sound change: Words, sounds, and frequency of use. \emph{Frontiers in Psychology}, \emph{12}(August). \url{https://doi.org/10.3389/fpsyg.2021.652664}
 
-\leavevmode\vadjust pre{\hypertarget{ref-kapatsinski2009}{}}%
+\bibitem[\citeproctext]{ref-kapatsinski2009}
 Kapatsinski, V., \& Radicke, J. (2009). \emph{Frequency and the emergence of prefabs: Evidence from monitoring}. (January 2009), 499. \url{https://doi.org/10.1075/tsl.83.14kap}
 
-\leavevmode\vadjust pre{\hypertarget{ref-lee2015}{}}%
+\bibitem[\citeproctext]{ref-lee2015}
 Lee, O., \& Kapatsinski, V. (2015). \emph{Frequency effects in morphologisation of korean /n/-epenthesis}. 1--23.
 
-\leavevmode\vadjust pre{\hypertarget{ref-levyProcessingExtraposedStructures2012}{}}%
+\bibitem[\citeproctext]{ref-levyProcessingExtraposedStructures2012}
 Levy, R., Fedorenko, E., Breen, M., \& Gibson, E. (2012). The processing of extraposed structures in english. \emph{Cognition}, \emph{122}(1), 12--36. \url{https://doi.org/10.1016/j.cognition.2011.07.012}
 
-\leavevmode\vadjust pre{\hypertarget{ref-libbenEverythingPsycholinguisticsMaterial2005}{}}%
+\bibitem[\citeproctext]{ref-libbenEverythingPsycholinguisticsMaterial2005}
 Libben, G. (2005). Everything is psycholinguistics: Material and methodological considerations in the study of compound processing. \emph{Canadian Journal of Linguistics/Revue Canadienne de Linguistique}, \emph{50}(1-4), 267283. Retrieved from \url{https://www.cambridge.org/core/journals/canadian-journal-of-linguistics-revue-canadienne-de-linguistique/article/everything-is-psycholinguistics-material-and-methodological-considerations-in-the-study-of-compound-processing/BF01DE531A8F8305E2A664711A7C4DB3}
 
-\leavevmode\vadjust pre{\hypertarget{ref-linSyntacticAnnotationsGoogle2012}{}}%
+\bibitem[\citeproctext]{ref-linSyntacticAnnotationsGoogle2012}
 Lin, Y., Michel, J.-B., Lieberman, E. A., Orwant, J., Brockman, W., \& Petrov, S. (2012). \emph{Syntactic annotations for the google books ngram corpus}. 169174. Retrieved from \url{https://aclanthology.org/P12-3029.pdf}
 
-\leavevmode\vadjust pre{\hypertarget{ref-maye2000}{}}%
+\bibitem[\citeproctext]{ref-maye2000}
 Maye, J., \& Gerken, L. (2000). \emph{Learning phonemes without minimal pairs}. \emph{2}, 522533.
 
-\leavevmode\vadjust pre{\hypertarget{ref-mcclellandTRACEModelSpeech1984}{}}%
+\bibitem[\citeproctext]{ref-mcclellandTRACEModelSpeech1984}
 McClelland, J. L., Elman, J. L., \& LANGUAGE, C. U. S. D. L. J. C. F. R. I. (1984). The TRACE model of speech perception. \emph{California University San Diego, La Jolla Center for Research in Language}. Retrieved from \url{https://apps.dtic.mil/sti/citations/ADA157550}
 
-\leavevmode\vadjust pre{\hypertarget{ref-mcclellandInteractiveActivationModel1981}{}}%
+\bibitem[\citeproctext]{ref-mcclellandInteractiveActivationModel1981}
 McClelland, James L., \& Rumelhart, D. E. (1981). An interactive activation model of context effects in letter perception: I. An account of basic findings. \emph{Psychological Review}, \emph{88}(5), 375. Retrieved from \url{https://psycnet.apa.org/record/1981-31825-001}
 
-\leavevmode\vadjust pre{\hypertarget{ref-minkoff2000}{}}%
+\bibitem[\citeproctext]{ref-minkoff2000}
 Minkoff, S. R. B., \& Raney, G. E. (2000). Letter-Detection Errors in the Word The: Word Frequency Versus Syntactic Structure. \emph{Scientific Studies of Reading}, \emph{4}(1), 55--76. \url{https://doi.org/10.1207/S1532799XSSR0401_5}
 
-\leavevmode\vadjust pre{\hypertarget{ref-mollica2019}{}}%
+\bibitem[\citeproctext]{ref-mollica2019}
 Mollica, F., \& Piantadosi, S. T. (2019). Humans store about 1.5 megabytes of information during language acquisition. \emph{Royal Society Open Science}, \emph{6}(3), 181393. \url{https://doi.org/10.1098/rsos.181393}
 
-\leavevmode\vadjust pre{\hypertarget{ref-morgan2016}{}}%
+\bibitem[\citeproctext]{ref-morgan2016}
 Morgan, E., \& Levy, R. (2016). Frequency-dependent regularization in iterated learning. \emph{The Evolution of Language: Proceedings of the 11th International Conference (EVOLANGX11)}, (2015).
 
-\leavevmode\vadjust pre{\hypertarget{ref-nooteboom2002}{}}%
+\bibitem[\citeproctext]{ref-nooteboom2002}
 Nooteboom, S., Nooteboom, S., Weerman, F., \& Wijnen, F. (2002). \emph{Storage and computation in the language faculty}. Springer Science \& Business Media.
 
-\leavevmode\vadjust pre{\hypertarget{ref-olejarczuk2018}{}}%
+\bibitem[\citeproctext]{ref-olejarczuk2018}
 Olejarczuk, P., Kapatsinski, V., \& Baayen, R. H. (2018). Distributional learning is error-driven: The role of surprise in the acquisition of phonetic categories. \emph{Linguistics Vanguard}, \emph{4}(s2), 1--9. \url{https://doi.org/10.1515/lingvan-2017-0020}
 
-\leavevmode\vadjust pre{\hypertarget{ref-peircePsychoPy2ExperimentsBehavior2019}{}}%
+\bibitem[\citeproctext]{ref-peircePsychoPy2ExperimentsBehavior2019}
 Peirce, J., Gray, J. R., Simpson, S., MacAskill, M., Höchenberger, R., Sogo, H., \ldots{} Lindeløv, J. K. (2019). PsychoPy2: Experiments in behavior made easy. \emph{Behavior Research Methods}, \emph{51}(1), 195--203. \url{https://doi.org/10.3758/s13428-018-01193-y}
 
-\leavevmode\vadjust pre{\hypertarget{ref-Rpackage}{}}%
+\bibitem[\citeproctext]{ref-Rpackage}
 R Core Team. (2023). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
 
-\leavevmode\vadjust pre{\hypertarget{ref-ramscar2013}{}}%
+\bibitem[\citeproctext]{ref-ramscar2013}
 Ramscar, M., Dye, M., \& Klein, J. (2013). Children value informativity over logic in word learning. \emph{Psychological Science}, \emph{24}(6), 1017--1023. \url{https://doi.org/10.1177/0956797612460691}
 
-\leavevmode\vadjust pre{\hypertarget{ref-saffran1996}{}}%
+\bibitem[\citeproctext]{ref-saffran1996}
 Saffran, J. R., Aslin, R. N., \& Newport, E. L. (1996). Statistical Learning by 8-Month-Old Infants. \emph{Science}, \emph{274}(5294), 1926--1928. \url{https://doi.org/10.1126/science.274.5294.1926}
 
-\leavevmode\vadjust pre{\hypertarget{ref-siegelman2015}{}}%
+\bibitem[\citeproctext]{ref-siegelman2015}
 Siegelman, N., \& Arnon, I. (2015). The advantage of starting big: Learning from unsegmented input facilitates mastery of grammatical gender in an artificial language. \emph{Journal of Memory and Language}, \emph{85}, 60--75. \url{https://doi.org/10.1016/j.jml.2015.07.003}
 
-\leavevmode\vadjust pre{\hypertarget{ref-siyanova-chanturia2011}{}}%
+\bibitem[\citeproctext]{ref-siyanova-chanturia2011}
 Siyanova-Chanturia, A., Conklin, K., \& Heuven, W. J. B. van. (2011). Seeing a phrase {``}time and again{"} matters: The role of phrasal frequency in the processing of multiword sequences. \emph{Journal of Experimental Psychology: Learning Memory and Cognition}, \emph{37}(3), 776--784. \url{https://doi.org/10.1037/a0022531}
 
-\leavevmode\vadjust pre{\hypertarget{ref-stemberger1986}{}}%
+\bibitem[\citeproctext]{ref-stemberger1986}
 Stemberger, J. P., \& MacWhinney, B. (1986). Frequency and the lexical storage of regularly inflected forms. \emph{Memory \& Cognition}, \emph{14}(1), 17--26. \url{https://doi.org/10.3758/BF03209225}
 
-\leavevmode\vadjust pre{\hypertarget{ref-stemberger2004}{}}%
+\bibitem[\citeproctext]{ref-stemberger2004}
 Stemberger, J. P., \& MacWhinney, B. (2004). Are inflected forms stored in the lexicon. \emph{Morphology: Critical Concepts in Linguistics}, \emph{6}, 107122.
 
-\leavevmode\vadjust pre{\hypertarget{ref-tomasello2005}{}}%
+\bibitem[\citeproctext]{ref-tomasello2005}
 Tomasello, M. (2005). \emph{Constructing a language: A usage-based theory of language acquisition}. Harvard university press.
 
-\leavevmode\vadjust pre{\hypertarget{ref-wang2003}{}}%
+\bibitem[\citeproctext]{ref-wang2003}
 Wang, Y., Liu, D., \& Wang, Y. (2003). Discovering the Capacity of Human Memory. \emph{Brain and Mind}, \emph{4}(2), 189--198. \url{https://doi.org/10.1023/A:1025405628479}
 
-\leavevmode\vadjust pre{\hypertarget{ref-mgcv}{}}%
+\bibitem[\citeproctext]{ref-mgcv}
 Wood, S. N. (2011). \emph{Fast stable restricted maximum likelihood and marginal likelihood estimation of semiparametric generalized linear models}. \emph{73}, 3--36.
 
-\leavevmode\vadjust pre{\hypertarget{ref-yi2002}{}}%
+\bibitem[\citeproctext]{ref-yi2002}
 Yi, B.-W. (2002). Ŭmun hyŏnsanggwa pindo hyogwa {[}the effects of frequency and phonology{]}. \emph{Han'gugŏhak}, \emph{15}, 161--183.
 
-\leavevmode\vadjust pre{\hypertarget{ref-zangParafovealProcessingChinese2024}{}}%
+\bibitem[\citeproctext]{ref-zangParafovealProcessingChinese2024}
 Zang, C., Wang, S., Bai, X., Yan, G., \& Liversedge, S. P. (2024). Parafoveal processing of chinese four-character idioms and phrases in reading: Evidence for multi-constituent unit hypothesis. \emph{Journal of Memory and Language}, \emph{136}, 104508. \url{https://doi.org/10.1016/j.jml.2024.104508}
 
-\leavevmode\vadjust pre{\hypertarget{ref-zwitserlood2018}{}}%
+\bibitem[\citeproctext]{ref-zwitserlood2018}
 Zwitserlood, P. (2018). Processing and representation of morphological complexity in native language comprehension and production. \emph{The Construction of Words: Advances in Construction Morphology}, 583--602. \url{https://doi.org/10.1007/978-3-319-74394-3_20}
 
 \end{CSLReferences}
