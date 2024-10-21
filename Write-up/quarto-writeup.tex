@@ -1,0 +1,1442 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  authoryear,
+  preprint,
+  1p,
+  onecolumn]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage[section]{placeins}
+\usepackage{pdfcomment}
+\usepackage{gb4e} \noautomath
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\journal{Test Journal}
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{elsarticle-harv}
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={The effects of frequency and predictability on the recognition of up in English verb+up collocations.},
+  pdfauthor={Zachary Houghton; Jungah Lee; Casey Felton; Georgia Zellou; Emily Morgan},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\setlength{\parindent}{6pt}
+\begin{document}
+
+\begin{frontmatter}
+\title{The effects of frequency and predictability on the recognition of
+up in English verb+up collocations.}
+\author[1]{Zachary Houghton%
+%
+}
+ \ead{znhoughton@gmail.com} 
+\author[2]{Jungah Lee%
+%
+}
+
+\author[1]{Casey Felton%
+%
+}
+
+\author[1]{Georgia Zellou%
+%
+}
+
+\author[1]{Emily Morgan%
+%
+}
+
+
+\affiliation[1]{organization={University of California,
+Davis},,postcodesep={}}
+\affiliation[2]{organization={Chosun University},,postcodesep={}}
+
+\cortext[cor1]{Corresponding author}
+
+
+
+
+
+        
+\begin{abstract}
+The question of what items are stored in the lexicon is one that has
+drawn a lot of attention in the last few decades, and while the general
+consensus is that a lot more is stored than we previously realized, it
+is still largely unclear what factors drive storage. For example, some
+have argued that frequency drives storage, while others have posited
+that predictability drives storage. Further, it is unclear what the
+relationship between stored multi-word items and the representation of
+each individual word is. For example, it is possible that stored items
+fuse together, losing some amount of their internal structure. The
+present paper examines both of these questions by looking at the
+recognizability of the segment \emph{up} in English V+\emph{up} phrases.
+We find that the time it takes to recognize \emph{up} decreases as
+frequency or predictability increases, but increases once again for the
+highest frequency or highest predictability items. Our results suggest
+that frequency and predictability both drive storage, and that stored
+items may lose some amount of their internal representation.
+\end{abstract}
+
+
+
+
+
+\end{frontmatter}
+    
+
+\section{Introduction}\label{introduction}
+
+When a listener hears the phrase \emph{trick or treat}, do they process
+it compositionally, processing each word individually before combining
+them into a single parse? Or do they access a single holistically stored
+representation of the phrase from memory? This question of to what
+extent larger-than-word constructions can be stored and accessed
+holistically is one that psycholinguists have been interested in for
+quite some time
+\citep[e.g.,][]{bybee2002, bybee2003, goldberg2003, nooteboom2002, stembergerFrequencyLexicalStorage1986, stemberger2004}.
+
+Throughout the years different theories have argued for different
+degrees of holistic storage, with two theories in particular dominating
+the field. On one hand, Chomskyan theories
+\citep[e.g.,][]{chomskyAspectsTheorySyntax1965} have proposed that only
+necessary items (e.g., items that can't be formed compositionally) are
+stored. On the other hand, usage-based theories
+\citep[e.g.,][]{bybee2003} have proposed that some items that could in
+principle be formed compositionally can be stored under certain
+usage-based conditions, such as frequency of use.
+
+Traditional Chomskyan theories
+\citep[e.g.,][]{chomskyAspectsTheorySyntax1965} have argued that
+processing multi-word phrases is completely compositional: each piece is
+accessed individually and then combined to form the larger meaning. Some
+exceptions are reserved for idioms and other outliers, which can't be
+formed compositionally. More specifically, Chomskyan views of storage
+argue that whether an item is stored is determined purely by the degree
+of compositionality. According to these theories, if a multi-word
+expression can be composed from its parts then there is no need to
+holistically store the expression, and thus it is not stored
+holistically. For example since \emph{I don't know} can be processed
+compositionally, it would be processed by composing a representation
+from each of the individual words, \emph{I, don't,} and \emph{know}. On
+the other hand, \emph{kicked the bucket} would be stored holistically
+because there's very little relationship between the meaning of the
+individual words and the meaning of the expression (i.e., it's
+non-compositional).
+
+Chomskyan theories of storage gained popularity partly because storage
+was thought to be a valuable resource that was taken up only by units
+that necessitated storage. This was perhaps influenced by the limited
+storage space of sophisticated computers at the time. In recent times,
+however, we've learned that the brain may have dramatically more space
+for storage than we had previously realized, with an upper bound of
+10\textsuperscript{8432} bits \citep{wang2003}. This is magnitudes
+larger than any current estimate of how much storage language
+requires.\footnote{Indeed, \citet{mollica2019} estimated that, in terms
+  of linguistic information, humans store only somewhere between one
+  million and ten million bits of information, meaning that even their
+  upper estimate is well within the capacity of the brain.} Considering
+this, it might not come as a surprise that there has been a rise in
+support for usage-based theories of holistic storage over the past few
+decades
+\citep{kapatsinski2009, kapatsinski2018, stembergerFrequencyLexicalStorage1986, stemberger2004, morgan2016, bybee1999, bybee2001, bybee2002, bybee2003, baayenDutchInflectionRules2002, ambridgeStoredAbstractionsRadical2020, zangParafovealProcessingChinese2024}.
+
+Usage-based theories posit that more than just non-compositional items
+(e.g., multi-word expressions) may be stored holistically in the
+lexicon, arguing that storage is driven by usage-based factors. For
+example, factors like frequency or predictability of the phrase may
+influence whether the phrase is stored holistically or not. According to
+these theories, in addition to idioms and non-compositional items,
+multi-word phrases such as \emph{I don't know} may also be stored
+holistically if they are used frequently enough
+\citep[e.g.,][]{ambridgeStoredAbstractionsRadical2020, kapatsinski2018, kapatsinski2009, hay2001, lee2015, arnon2010, stembergerFrequencyLexicalStorage1986, stemberger2004, morgan2016, tomasello2005}.
+
+While it has become a dominant view in the field that at least some
+multi-word items are stored, it remains unclear what exactly the size of
+the units being stored is and, more so, what the factors driving storage
+are. Further, if multi-word representations are stored holistically,
+what are the consequences of this in terms of language processing?
+
+\subsection{Evidence of Holistic
+Storage}\label{evidence-of-holistic-storage}
+
+There is no shortage of evidence for holistic multi-word storage
+\citep[e.g.,][]{bybee1999, stembergerFrequencyLexicalStorage1986, stemberger2004, hay2001, christiansen2017, zwitserlood2018},
+especially in the phonology literature. For example, \citet{bybee1999}
+demonstrated that the word \emph{don't} is reduced to a larger extent in
+the phrase \emph{I don't know} than in other phrases containing
+\emph{don't}. In other words, the phrase \emph{I don't know} seems to
+have its own mental representation. If it was the case that the
+representation of \emph{don't} in \emph{I don't know} was the same as
+the representation of \emph{don't} in other contexts, then one would
+expect \emph{don't} to be equally reduced in both cases \citep[which is
+contrary to the finding in][]{bybee1999}. Similarly, in Korean, certain
+consonants undergo tensification when they occur after the future marker
+-\emph{l}. The rate of this tensification is higher in high-frequency
+phrases than low-frequency phrases, further suggesting that
+high-frequency phrases may be stored holistically \citep{yi2002}.
+
+In addition to the phonology literature, the Psycholinguistics
+literature has also provided an abundance of evidence for multi-word
+storage. For example, \citet{siyanova-chanturia2011} demonstrated that
+binomial phrases (e.g., \emph{cat and dog}) are read faster in their
+more frequent ordering than in their less frequent ordering. Further, in
+a follow-up study, \citet{morgan2016} demonstrated that these ordering
+preferences for frequent binomials are not due to abstract ordering
+preferences (e.g., a preference for short words before long words), but
+are rather driven by experience with the specific binomial (i.e., how
+frequent each binomial ordering is), providing additional evidence that
+frequent phrases are stored holistically.
+
+Further, there is also evidence of multi-word storage from the learning
+literature. For example, \citet{siegelman2015} demonstrated that
+learning is facilitated by attending to the whole utterance, as opposed
+to attending to each individual word. Specifically, they used an
+artificial language paradigm to examine adult L2 learners' ability to
+learn grammatical gender. They found that adults learn grammatical
+gender better when they are presented with unsegmented utterances rather
+than segmented utterances. In other words, attending to the entire
+utterance, rather than learning to compose the utterance word-by-word,
+facilitated their learning. It seems plausible that the learned segments
+are the segments being stored, and that storing larger-than-word chunks
+is possibly what is facilitating the learning of grammatical gender in
+their study.
+
+\subsection{What Drives Storage?}\label{what-drives-storage}
+
+Despite the evidence of multi-word holistic storage, however, it is
+still largely unclear what factors drive storage. Humans seem to be
+sensitive to a variety of statistical information, including both
+frequency \citep[e.g.,][]{bybee1999, maye2000, kapatsinski2009, lee2015}
+and predictability \citep[e.g,][]{olejarczuk2018, ramscar2013}.
+
+Traditionally, frequency has been assumed to be the driving factor
+behind multi-word storage. Indeed, most of the examples of storage given
+so far have been with respect to frequency. Perhaps the most famous
+series of studies demonstrating this were conducted by Bybee
+\citep{bybee1999, bybee2003, bybee2001}. In a series of studies, Bybee
+and colleagues demonstrated that a variety of words are reduced more in
+high-frequency contexts than low-frequency contexts \citep[additionally
+see][ for further discussion of
+this]{kapatsinskiHierarchicalInferenceSound2021}. For example, in
+addition to the earlier examples, \emph{going to} can be reduced in the
+frequent future marker, \emph{gonna}, but not in the less frequent verb
+phrase construction describing motion \citep[e.g., *\emph{gonna the
+store},][]{bybee2003}. This mirrors patterns we see on a word-level
+(which for the most part must be stored). For example, the reduction of
+vowels to schwa in English is more advanced in high-frequency words than
+low-frequency words \citep{hooper1976, bybee2003}. In other words, the
+fact that sound changes occur differently depending on the frequency of
+the word/phrase in a context suggests that they have separate
+representations (i.e., holistic storage).
+
+On the other hand, predictability has not been directly examined much
+within the context of holistic multi-word storage. As far as the authors
+are aware, there is only one study directly examining the role of
+predictability in multi-word storage \citep{houghton2023does}. In their
+study, using the maze task\footnote{In the maze task, participants are
+  presented a sentence word-by-word. For each word in the sentence, they
+  are presented with the target word and an ungrammatical distractor.
+  Upon selecting the target word, the next word in the sentence is
+  presented along with yet another ungrammatical distractor. The key
+  measure is how long it takes for participants to select the target
+  word.} \citep{boyceMazeMadeEasy2020} the authors examined whether
+participants were slower to select the first noun in high-predictability
+compound nouns in locally implausible contexts (i.e., contexts where the
+first noun in the compound is implausible but where the second noun
+eliminates the implausibility; see the below sentences) relative to
+low-predictability compound nouns.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \begin{description}
+  \item[\textbf{High Predictability Plausible:}]
+  ~~~~~~~~Jimmy spread out the peanut butter.
+  \end{description}
+\item
+  \begin{description}
+  \item[\textbf{High Predictability Implausible:}]
+  ~~~~Jimmy picked up the peanut butter.
+  \end{description}
+\end{enumerate}
+
+\noindent Note that in the implausible condition, the second noun always
+eliminates the implausibility (i.e., \emph{spread out the peanut} is
+implausible, but \emph{spread out the peanut butter} is not). If
+high-predictability compound nouns are stored holistically, participants
+may be able to access the full compound noun upon encountering the first
+noun, thus overcoming the local implausibility effect (since the second
+noun in the compound always eliminates the implausibility).
+Interestingly, they found that the first noun in the compound nouns was
+selected equally slower for both high and low-predictability compound
+nouns (relative to their plausible counterparts). That is, there was an
+increase in reaction time for selecting the first noun in the compound
+in the implausible condition (relative to the plausible condition)
+regardless of the predictability of the second noun in the compound
+noun. Their results suggest that either predictability doesn't drive the
+holistic storage of compound nouns or that it doesn't facilitate
+processing in this manner. However they noted that this may be a task
+effect, since they used the maze task as opposed to an eye-tracking
+task.
+
+Despite the lack of direct evidence of predictability in the role of
+multi-word storage, however, predictability has been shown to play a
+crucial role in learning
+\citep{olejarczuk2018, ramscar2013, saffran1996}. For example,
+\citet{olejarczuk2018} demonstrated that when learning new phonetic
+categories, learners don't just pay attention to co-occurrence rates,
+but actively try to predict upcoming sounds, suggesting that the
+learning of phonetic categories is also driven by prediction (i.e., the
+predictability of a given sound within a context). Further, in learning
+new words, \citet{ramscar2013} demonstrated that children are sensitive
+to how predictable a cue is of an outcome (e.g., a high-frequency cue
+will be ignored if it isn't predictive of a specific outcome).
+Additionally, word-segmentation (i.e., learning which segments in an
+utterance are words) is also highly sensitive to predictability
+\citep{saffran1996}. In their classic paper, \citet{saffran1996}
+demonstrated that children keep track of transitional probabilities -- a
+measurement of predictability -- to segment the speech stream. While
+these are studies examining learning, not storage, the units that we
+learn may likely be the units we store. If predictability drives what we
+learn, it may also drive what we store.
+
+Thus, the current literature presents strong evidence for the role of
+frequency in the storage of multi-word phrases, as well as suggests the
+possibility of a further influence of predictability. However, it
+remains unclear to what extent each of these factors drives storage and
+whether they interact at all with each other.
+
+\subsection{Processing Consequences of
+Storage}\label{processing-consequences-of-storage}
+
+Given the evidence that a lot more may be stored than previously
+thought, another important question to consider is what exactly the
+processing consequences of storage are. Specifically, do the stored
+units maintain their own internal representation with respect to their
+component parts? For example, it is possible that the representation of
+high-frequency phrases, such as \emph{pick up,} retains the
+representations of the component parts \emph{pick} and \emph{up}. On the
+other hand, it is possible that the phrase lacks internal representation
+of the component parts, either because it was lost over time or because
+it was never learned -- we will revisit both of these ideas in the
+discussion section.
+
+Indeed, there seems to be some evidence that multi-word phrases may not
+have a fully intact internal structure with respect to their component
+parts. For example, \citet{kapatsinski2009} demonstrated that in high
+frequency V+\emph{up} constructions, it is harder to recognize the
+segment \emph{up} (with respect to medium-frequency V+\emph{up}
+constructions). This suggests that those items may have a holistic
+representation that has lost some of its internal structure. In their
+study, participants were given different auditory sentences and tasked
+with pressing a button immediately if they heard the segment \emph{up}.
+Interestingly, they found that recognizability of \emph{up} follows a
+U-shaped pattern with respect to the frequency of the phrase. That is,
+participants were slow to recognize \emph{up} in low frequency phrasal
+verbs, but for medium-high frequency phrasal verbs they were quicker to
+recognize \emph{up}. However, upon reaching the highest frequency words
+participants grew slower to recognize \emph{up} (See Figure
+Figure~\ref{fig-kapatsinskiplot}). Though it's important to note that
+the original paper does not take into account predictability. It's
+unclear how to account for the increase in recognition time for the
+highest frequency items if there is no loss of internal representation
+of those items.
+
+A visualization of what a stored representation with and without
+internal structure may look like is presented in Figure
+Figure~\ref{fig-lossinternalstructure}. The left tree represents the
+phrase \emph{pick up} stored with its internal structure still intact,
+whereas the right tree represents \emph{pick up} stored without internal
+structure. Note that both trees are examples of a holistically stored
+representation. The key difference is whether the internal structure
+remains intact in the holistic representation. The results from
+\citet{kapatsinski2009} suggest that for high-frequency verb+\emph{up}
+collocations, their representation may be more similar to the tree on
+the right, since participants were slower to recognize \emph{up}. We
+will revisit this point in the discussion section in more detail.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{Figures/kapatsinskiradicke_graph.png}
+
+}
+
+\caption{\label{fig-kapatsinskiplot}The U-shaped effect of the frequency
+of verb+\emph{up} constructions on the speed with which \emph{up} is
+detected, reproduced from \citet{kapatsinski2009}.}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=1.13542in,height=\textheight]{Figures/syntax_tree.png}
+
+}
+
+\caption{\label{fig-lossinternalstructure}A diagram of two ways the word
+\emph{pick up} could be stored. The left tree demonstrates a stored
+representation of \emph{pick up}, where the internal structure is still
+intact. The right tree demonstrates a holistically stored unit, where
+there is a loss of internal structure. Note that these are stored
+structures, as opposed to a compositional representation of \emph{pick
+up} which would be comprised of the individual representations
+\emph{pick} and \emph{up}.}
+
+\end{figure}%
+
+It's worth noting that in the case of phrasal verbs like \emph{pick up},
+it can't be the case that the entire internal representation is lost
+because it is possible to syntactically alternate it (e.g., \emph{pick
+up the cup} vs \emph{pick the cup up}). However, it is possible that
+semantic or lemma information is lost in the holistic representation. In
+other words, loss of internal representation may happen at different
+levels as opposed to being an all-or-nothing process.
+
+Additionally, there is also evidence from the word-recognition
+literature that some stored words may also lose some of their internal
+structure as well. For example, \citet{healy1976} examined participants'
+ability to recognize letters in various words. He found that people were
+worse at recognizing the letter \emph{t} in \emph{the} than in other
+lower frequency words, which suggests that even words can develop a
+representation separate from their component pieces (in this case, the
+component parts being letters instead of words). If it is the case that
+\emph{the} is recognized as a composition of its parts, then it's
+unclear how to account for these results \citep[c.f.,][who suggested
+that one explanation is that people don't fixate as long on
+high-frequency and function words, of which \emph{the} is
+both]{kapatsinski2009}.
+
+On the other hand, there is a necessary temporal linearity to speech, so
+listeners receive the information for some of the component parts before
+the entire phrase. For example, the listener necessarily hears
+\emph{pick} before \emph{pick up}. It seems unlikely that a listener
+would process \emph{pick up} without having processed \emph{pick} at
+all. Thus if holistically stored phrases do lose the representation of
+their component parts, it's unclear what exactly the relationship with
+processing is. One such possibility that was put forth by both
+\citet{kapatsinski2009} and \citet{healy1976} is that during processing,
+the holistic representations compete with the representations of the
+individual parts for recognition. In other words: for high frequency
+phrases, hearing \emph{pick} may be enough to predict that the speaker
+intends to say \emph{pick up}. The listener may then process \emph{pick
+up} before actually hearing \emph{up} (thus explaining the increase in
+recognition times for \emph{up} in the highest frequency items). In
+other words, once the listener finishes processing the phrase, they move
+on to the rest of the utterance, even if they haven't fully processed
+the individual parts.\footnote{Note that competition can be implemented
+  in other ways though, e.g., using top-down inhibition
+  \citep{libbenEverythingPsycholinguisticsMaterial2005}.} This is
+necessary to account for the results in \citet{kapatsinski2009} because
+high-frequency phrases are still processed more quickly than lower
+frequency phrases. If accessing the holistic representation facilitates
+the accessing of the individual parts \citep[as predicted by the IA
+model,][]{mcclellandInteractiveActivationModel1981}, then we would
+expect to see a decrease in recognition times for the component parts.
+However, an increase in recognition times suggests there is competition
+for recognition between the holistic representation and the
+representations of the individual parts.
+
+\subsection{Present Study}\label{present-study}
+
+The present study examines the factors that drive storage and the
+processing consequences of storage by extending \citet{kapatsinski2009}
+to look at the effects of both frequency, predictability, and their
+interaction on the processing of V+\emph{up} phrases. Similar to
+\citet{kapatsinski2009}, participants are tasked with pressing a button
+once they hear the segment \emph{up} (which in our study occurs either
+as a particle within verb phrases, e.g., \emph{pick up}, or part of a
+word, e.g., \emph{puppet}), but in our case the stimuli varied in both
+frequency and predictability. Since frequency effects are rather robust
+in the literature, we should at the very least see a negative
+correlation between frequency and recognition time (up to perhaps a
+certain point, where recognition time may increase). The effects of
+predictability on recognition times, however, are still relatively
+untested in the literature. If predictability is not a driving factor of
+storage, we should see only frequency effects on the recognizability of
+\emph{up}. On the other hand, if predictability does drive storage, we
+may see a loss of internal representation for high-predictability items.
+Further, if storage does result in a loss of internal structure, we
+should see similar effects to those found in \citet{kapatsinski2009}.
+Specifically, we should see a U-shaped effect, where recognition gets
+easier until we get to the highest frequency/predictability items, where
+recognizability should then become harder.
+
+\section{Methods}\label{methods}
+
+\subsection{Participants}\label{participants}
+
+Participants were recruited through the University of California, Davis
+Linguistics/Psychology Human Subjects Pool. 350 people participated in
+this study and were compensated in the form of SONA credit. All
+participants self-reported being native English speakers. Additionally,
+44 participants were excluded due to an accuracy score below our
+threshold of 70\%, leaving a total of 306 participants for the data
+analysis.
+
+\subsection{Materials}\label{materials}
+
+We searched the Google \emph{n}-grams corpus
+\citep{linSyntacticAnnotationsGoogle2012} for the most predictable and
+the highest frequency phrases that matched our criteria of containing a
+verb immediately followed by the word \emph{up}. We operationalized
+predictability as the odds ratio of the probability of \emph{up}
+occurring immediately after the verb to the probability of any other
+word occurring (Equation Equation~\ref{eq-logodds}).
+
+\begin{equation}\phantomsection\label{eq-logodds}{
+\frac{\mathrm{count(\textit{Verb+up})}}{\mathrm{count(\textit{Verb})} - \mathrm{count(\textit{Verb+up})}} 
+}\end{equation}
+
+In non-mathematical terms, the above equation quantifies how likely
+\emph{up} is to follow after the verb relative to every other word that
+could follow. For example, the odds ratio of \emph{pick up} would be the
+number of times the entire verb phrase occurs -- \emph{pick up} --
+divided by the number of times the verb -- \emph{pick} -- occurs without
+\emph{up} following it.
+
+For the purposes of the present study, we gathered a variety of phrases
+that varied in both their predictability and frequency and their
+combination. In order to do this, we extracted the 50 most frequent
+Verb+\emph{up} items and the 50 most predictable ones. Next, we selected
+100 more by randomly sampling from the remaining items. In order to
+ensure stable predictability estimates we eliminated words that a
+college-aged speaker wouldn't have heard more than 10 times.\footnote{\citet{levyProcessingExtraposedStructures2012}
+  extrapolated that the average college-aged speaker has heard about 350
+  million words in their lifetime. Thus we excluded items that had a
+  frequency smaller than 10 per 350 million.} We then visually inspected
+the data to confirm that our data spanned across both the frequency and
+predictability continuum. This distribution is presented in Figure
+\citet{fig} below.
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-stimplot-1.pdf}
+
+}
+
+\caption{\label{fig-stimplot}log-predictability by log-frequency (per
+million) plot of our items.}
+
+\end{figure}%
+
+\begin{exe} 
+\ex
+  \begin{xlist}
+    \ex The controversy stirred up a heated debate. \\
+    \ex ??The controversy stirred a heated debate up. \\
+  \end{xlist}
+\end{exe}
+
+These verbs show a syntactic alternation that is not present in all
+verb+\emph{up} collocations (e.g., \emph{stirred up a heated debate} is
+fine, but \emph{stirred a heated debate up} is weird at best). It is
+possible that due to this syntactic alternation, phrasal verbs may be
+stored regardless of frequency/predictability. Thus, we additionally
+coded our stimuli for whether they were phrasal verbs or not. This
+coding was done based on whether they could syntactically alternate
+between having the noun within the verb phrase and having the noun
+immediately after the verb phrase. For example, since both \emph{pick
+the cat up} and \emph{pick up the cat} are grammatical, \emph{pick up}
+was classified as a phrasal verb. Each item was checked by two of the
+authors. Disagreement was easily resolved by discussion and an agreement
+was reached for every item.
+
+We also searched the same corpus for words that contained the segment
+\emph{up} (e.g., \emph{cupcake}). In order to gather a subset of words
+that roughly matches the frequency range of our experimental stimuli, we
+extracted the 50 most frequent words, then sampled from the rest of the
+dataset to gather an additional 100 words. These 350 items together
+comprise our stimuli.
+
+For each item, we constructed two sentences: one sentence which
+contained \emph{up}, and one sentence that was identical except that it
+didn't include the segment \emph{up.} For words, the entire word was
+replaced. For phrases, \emph{up} was simply deleted if possible (e.g.,
+\emph{clean up} replaced with \emph{clean}). If this resulted in an
+awkward sentence, the entire phrase was replaced. An example is given
+below.
+
+\begin{exe} 
+\ex
+  \begin{xlist}
+    \ex He picked up the phone and answered the call. \\
+    \ex He grabbed the phone and answered the call. \\
+  \end{xlist}
+\end{exe}
+
+In summary, our stimuli were comprised of 200 Verb+\emph{up} phrases
+that varied in both frequency and predictability, 150 words that
+contained \emph{up}, and 350 filler sentences which were matched with
+our experimental sentences with the exception of having \emph{up}
+replaced.
+
+After creating the sentences, a native English speaker then recorded
+each sentence in a random order to minimize any list effect. We
+subsequently equalized the amplitude such that every sentence was
+roughly the same loudness.
+
+\subsection{Procedure}\label{procedure}
+
+Participants were presented with audio sentences via Pavlovia
+(\url{https://pavlovia.org/}), a website for presenting PsychoPy
+experiments \citep{peircePsychoPy2ExperimentsBehavior2019}. Each
+participant was presented with 3 practice trials and then 350 sentences.
+While we had a total of 700 sentences, participants didn't see both the
+filler and experimental sentence for the same item, thus they only saw
+half of the stimuli. The order of the sentences was random and exactly
+half of the sentences contained the target segment (to avoid biasing the
+participants towards a specific response). Participants were instructed
+to press a key as soon as they heard the segment \emph{up}, or to press
+a separate key at the end of the sentence if they did not hear the
+target segment in the sentence. We then recorded their reaction time of
+the button press. The experiment took approximately 40 minutes.
+
+\subsection{Analysis}\label{analysis}
+
+The data\footnote{The stimuli, data, and analyses scripts can all be
+  found freely available here:
+  \url{https://github.com/znhoughton/Recognizability-Experiment}} was
+analyzed using General Additive Mixed models, as implemented in the
+\emph{mgcv} package \citep{mgcv} within the R programming environment
+\citep{Rpackage}. General Additive Mixed Models are models that allow us
+to model our outcome variable as a combination of the predictors. GAMMs
+differ from generalized linear regression models in that they allow the
+predictors to be modeled as non-linear functions, similar to polynomial
+regression. Specifically, in a Generalized Additive Mixed Model,
+beta-coefficients are replaced with a smooth function, which is a
+combination of splines. The more splines that we include, the more
+wiggly our line will be. In order to avoid overfitting, GAMMs also
+include a penalty term, \(\lambda\), which can be modified to penalize
+more wiggly lines that aren't justified by the data. While the
+predictors are allowed to vary non-linearly, the linking function in our
+case was linear (i.e., response time varied linearly with the spline
+functions).
+
+For all of our models, the dependent variable was the time it took for
+participants to react to the onset of the target segment (i.e., the time
+it took participants to press the button after hearing \emph{up}). For
+the first model, the predictors were the interaction between
+log-predictability and log-frequency, which was allowed to vary
+non-linearly, and duration of the segment, which was not allowed to vary
+non-linearly. Additionally, we also included random intercepts for
+participant, trial, and item, as well as random by-participant slopes
+for predictability, frequency, and trial. Our model formula is included
+below in Equation @ref(eq:gammInteraction):
+
+\begin{equation}
+\begin{aligned}
+(\#eq:gammInteraction)
+log(RT) & \sim ti(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\
+& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) 
+\end{aligned}
+\end{equation}
+
+We also ran an additional analysis similar to the first model, but
+allowing the interaction to vary for phrasal vs non-phrasal verbs.
+Specifically, the model is identical to the first model with the
+exception that the effect of the interaction term was allowed to be
+different for phrasal verbs and non-phrasal verbs. This was done in
+order to examine whether the effect of frequency and predictability was
+different for phrasal verbs versus non-phrasal verbs. See Equation
+@ref(eq:gammPhrasalNonphrasal):
+
+\begin{equation}
+\begin{aligned}
+(\#eq:gammPhrasalNonphrasal)
+log(RT) & \sim ti(Predictability, Frequency, by = PhrasalVerb) + Duration + s(participant, bs = \text{`}re\text{'}) \\ 
+& + s(Item, bs = \text{`}re\text{'}) + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) 
+\end{aligned}
+\end{equation}
+
+Additionally, we ran a Generalized Additive Model with frequency,
+predictability, and the interaction between frequency and predictability
+as fixed-effects that could vary non-linearly, and duration of the
+segment as a fixed-effect that could not vary non-linearly. The
+random-effects structure for this model was identical to the previous
+two models. The model syntax is included below in Equation
+@ref(eq:gammFull):
+
+\begin{equation}
+\begin{aligned}
+(\#eq:gammFull)
+log(RT) & \sim s(Predictability) + s(Frequency) + ti (Predictability, Frequency) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  
++ s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) 
+\end{aligned}
+\end{equation}
+
+Finally, we replicated the analyses from \citet{kapatsinski2009} using
+two Bayesian quadratic regression models \citep[implemented in
+\emph{brms;}][]{brms}, one which only included frequency, and one which
+only included predictability. For the frequency model, the fixed-effects
+were log-frequency and log-frequency\(^2\), along with duration. The
+model also included random intercepts for participant and item, and
+random slopes for log-frequency by participant, duration by participant,
+and log-frequency\(^2\) by participant.
+
+The quadratic regression with predictability was identical to the
+quadratic regression with frequency, except that log-frequency was
+replaced with log-predictability, and log-frequency\(^2\) was replaced
+with log-predictability\(^2\). The random-effects were modeled without
+correlations between them for both models (this was done to allow the
+model to run faster, since we collected a large amount of data).
+
+The model syntax for both models is included below in Equations
+@ref(eq:brmsFreq) and @ref(eq:brmsPredic):
+
+\begin{equation}
+\begin{aligned}
+(\#eq:brmsFreq)
+log(RT) & \sim log(Frequency) + Duration + log(Frequency^2) \\ & + (1 + log(Frequency) + log(Frequency^2) + Duration || Participant) + (1 || Item)
+\end{aligned}
+\end{equation} \begin{equation}
+\begin{aligned}
+(\#eq:brmsPredic)
+log(RT) & \sim  log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
+\end{aligned}
+\end{equation}
+
+\section{Results}\label{results}
+
+The effect of the interaction between frequency and predictability was
+not significant in any of our models (see Tables
+Table~\ref{tbl-gamModelTab} through Table~\ref{tbl-gamModelInterTab} for
+the output of each model). Further, there was no significant effect of
+whether the verb phrase was a phrasal verb (e.g., \emph{pick up}) or not
+(e.g., \emph{stir up})\footnote{A BIC analysis confirmed that the model
+  that included whether the verb phrase was a phrasal verb or not
+  (analysis in Table \ref{tab:gamModelPhrasalNonPhrasalTab}) was not a
+  better fit than the identical model without it (the analysis in Table
+  \ref{tab:gamModelTab}).}. In other words, the recognition times
+patterned similarly regardless of whether the item was a phrasal verb or
+not. Additionally, our third Generalized Additive Model (eq.
+\ref{eq:gammFull} and Table \ref{tab:gamModelInterTab}) suggested that
+there was a significant main-effect of predictability.
+
+\begin{table}
+
+\caption{\label{tbl-gamModelTab}Model results for the generalized
+Additive Mixed Model cotanining only the interaction between frequency
+and predictability.}
+
+\centering{
+
+[H]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{}
+
+\begin{tabular}{lllll}
+\toprule
+ & \multicolumn{1}{c}{edf} & \multicolumn{1}{c}{Ref.df} & \multicolumn{1}{c}{F} & \multicolumn{1}{c}{p-value}\\
+\midrule
+te(log-predictability, log-frequency) & 5.59 & 5.73 & 1.86 & 0.090\\
+s(trial) & 0.99 & 1.00 & 115.38 & <0.001\\
+s(participant) & 296.00 & 305.00 & 39.74 & <0.001\\
+s(item) & 175.44 & 195.00 & 10.68 & <0.001\\
+s(log-predictability, log-frequency, trial, participant) & 43.00 & 306.00 & 0.46 & 0.100\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-gamModelPhrasalNonPhrasalTab}Model results for the
+Generalized Additive Mixed Model cotaining the interaction between
+frequency and predictability for phrasal vs nonphrasal verbs.}
+
+\centering{
+
+[H]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{}
+
+\begin{tabular}{lllll}
+\toprule
+ & \multicolumn{1}{c}{edf} & \multicolumn{1}{c}{Ref.df} & \multicolumn{1}{c}{F} & \multicolumn{1}{c}{p-value}\\
+\midrule
+te(log-predictability, log-frequency):Nonphrasal & 3.93 & 3.98 & 1.46 & 0.210\\
+te(log-predictability, log-frequency):Phrasal & 4.07 & 4.12 & 1.27 & 0.240\\
+s(trial) & 0.99 & 1.00 & 115.65 & <0.001\\
+s(participant) & 295.99 & 305.00 & 39.83 & <0.001\\
+s(item) & 172.59 & 191.00 & 10.94 & <0.001\\
+s(log-predictability, log-frequency, trial, participant) & 42.97 & 306.00 & 0.46 & 0.100\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-gamModelInterTab}Model results for the Generalized
+Additive Mixed Model cotaining Frequency, Predictability, and the
+interaction between them.}
+
+\centering{
+
+[H]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{}
+
+\begin{tabular}{lllll}
+\toprule
+ & \multicolumn{1}{c}{edf} & \multicolumn{1}{c}{Ref.df} & \multicolumn{1}{c}{F} & \multicolumn{1}{c}{p-value}\\
+\midrule
+s(log-frequency) & 2.43 & 2.48 & 1.68 & 0.320\\
+s(log-predictability) & 1.88 & 1.92 & 3.30 & 0.030\\
+s(log-frequency*log-predictability) & 0.00 & 0.00 & 0.05 & 0.990\\
+s(participant) & 296.33 & 305.00 & 37.57 & <0.001\\
+s(item) & 176.42 & 196.00 & 10.64 & <0.001\\
+s(log-pred., log-freq., log-freq.:log-pred., participant) & 0.02 & 306.00 & 0.00 & 0.750\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+}
+
+\end{table}%
+
+A visualization of \ref{tab:gamModelTab} and
+\ref{tab:gamModelPhrasalNonPhrasalTab} are presented in Figures
+@ref(fig:gam2dplot1) and @ref(fig:gam2dplot2).
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/gam2dplot1-1.pdf}
+
+}
+
+\caption{Plot of the interaction effect between predictability and
+frequency of our GAM model containing only the interaction between
+frequency and predictability. The brightness of the coloration denotes
+the strength of the effect at the point in the graph. Brighter colors
+denote longer reaction times.}
+
+\end{figure}%
+
+\begin{figure}[H]
+
+{\centering \includegraphics{quarto-writeup_files/figure-pdf/gam2dplot2-1.pdf}
+
+}
+
+\caption{Plot of the interaction effect between predictability and
+frequency of our GAM model containing the interaction between frequency
+and predictability for phrasal vs nonphrasal verbs. Brighter colors
+denote longer reaction times. The left graph is the predicted effect for
+phrasal verbs (e.g., pick up), the right graph is the predicted effect
+for non-phrasal verbs (e.g., walk up).}
+
+\end{figure}%
+
+Given these results, we ran a follow-up Bayesian quadratic regression
+model to further examine the effects. Since the Generalized Additive
+Model suggested that there was no significant interaction between
+frequency and predictability, we left out the interaction term from the
+regression model. Similar to the above Bayesian models, we also modeled
+the random-effects without correlations between them. Equation
+@ref(eq:BayesianFullModelSyntax) below presents the full model syntax:
+
+\begin{equation}
+\begin{aligned}
+(\#eq:BayesianFullModelSyntax)
+log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^2)  
++ log(Predictability^2) \\ 
+& + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\
+& + Duration || Participant) + (1 || Item)
+\end{aligned}
+\end{equation}
+
+The results of this model are presented below in Table
+\ref{tab:brmsQuadraticNoInter} and visualized in Figure
+@ref(fig:FullQuadraticPlot). Following
+\citet{houghtonTaskdependentConsequencesDisfluency2023}, in some cases
+where the confidence interval crosses zero, we also report the
+percentage of posterior samples greater than or less than zero. For the
+current model, although the confidence intervals for both quadratic
+terms crossed zero, nearly 97\% of the posterior samples for
+predictability\(^2\) were greater than zero, and nearly 93\% of the
+posterior samples for frequency\(^2\) were greater than zero. A plot of
+the posterior distribution for each coefficient is presented in Figure
+@ref(fig:posteriorplotFullQuadratic). The results suggest a U-shaped
+effect of both frequency and predictability on recognition times. In
+other words, participants recognized \emph{up} faster as frequency or
+predictability increased, except for the most frequent or most
+predictable items, where participants were slower to recognize
+\emph{up}.
+
+\begin{table}[H]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics.}
+
+\begin{tabular}{llllll}
+\toprule
+ & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Est.Error} & \multicolumn{1}{c}{Q2.5} & \multicolumn{1}{c}{Q97.5} & \multicolumn{1}{c}{\% Samples > 0}\\
+\midrule
+Intercept & -0.102 & 0.029 & -0.161 & -0.046 & 0.03\\
+log-frequency & 0.019 & 0.011 & -0.002 & 0.041 & 96.16\\
+log-predictability & 0.009 & 0.011 & -0.013 & 0.032 & 79.00\\
+duration & -0.135 & 0.098 & -0.328 & 0.057 & 8.27\\
+log-predictability\textasciicircum{}2 & 0.003 & 0.002 & -0.000 & 0.007 & 96.88\\
+log-frequency\textasciicircum{}2 & 0.005 & 0.004 & -0.002 & 0.012 & 92.94\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/posteriorplotFullQuadratic-1.pdf}
+
+}
+
+\caption{Plot of the posterior distribution for the beta value of each
+fixed-effect in our Bayesian quadratic regression model. The y-axis
+contains the different fixed-effects and the x-axis contains the
+posterior distribution of beta values for the corresponding
+fixed-effect.}
+
+\end{figure}%
+
+(ref:fullquadratictableplot) Visualization of the model results from
+Table \ref{tab:brmsQuadraticNoInter} for frequency (top) and
+predictability (bottom). Frequencies are per million.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/FullQuadraticPlot-1.pdf}
+
+}
+
+\caption{(ref:fullquadratictableplot)}
+
+\end{figure}%
+
+Finally tables \ref{tab:brmsFreq} and \ref{tab:brmsPredic} present the
+results for the quadratic regression models including only frequency and
+frequency\(^2\) as well as the quadratic regression model including only
+predictability and predictability\(^2\) respectively:
+
+(ref:brmsFreqCaption) Results for the Bayesian quadratic regression
+model containing only frequency and frequency\(^2\).
+
+\begin{table}[H]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{(ref:brmsFreqCaption)}
+
+\begin{tabular}{llllll}
+\toprule
+ & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Est.Error} & \multicolumn{1}{c}{Q2.5} & \multicolumn{1}{c}{Q97.5} & \multicolumn{1}{c}{\% Samples > 0}\\
+\midrule
+Intercept & -0.102 & 0.025 & -0.150 & -0.054 & 0.00\\
+log-frequency & 0.016 & 0.011 & -0.005 & 0.038 & 93.31\\
+Duration & -0.084 & 0.098 & -0.274 & 0.108 & 19.36\\
+log-frequency\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 95.22\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+(ref:brmsPredicCaption) Results for the Bayesian quadratic regression
+model containing only predidctability and \(predictability^2\).
+
+\begin{table}[H]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{(ref:brmsPredicCaption)}
+
+\begin{tabular}{llllll}
+\toprule
+ & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Est.Error} & \multicolumn{1}{c}{Q2.5} & \multicolumn{1}{c}{Q97.5} & \multicolumn{1}{c}{\% Samples > 0}\\
+\midrule
+Intercept & -0.102 & 0.025 & -0.150 & -0.054 & 0.00\\
+log-predictability & 0.016 & 0.011 & -0.005 & 0.038 & 19.36\\
+Duration & -0.084 & 0.098 & -0.274 & 0.108 & 95.22\\
+log-predictability\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 93.31\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+\end{table}
+
+While the confidence interval for the quadratic term in both models
+crosses zero, over 95\% of the posterior samples for log-frequency\(^2\)
+were greater than zero and over 96 percent of the posterior samples for
+log-predictability\(^2\) were greater than zero. A visualization of the
+posterior distributions for both models are presented in Figure
+@ref(fig:FreqOnlyBetaPlot) and Figure @ref(fig:PredicOnlyBetaPlot).
+Further, visualizations of the model predictions are also included below
+in Figures @ref(fig:FreqOnlyPlot) and @ref(fig:PredicOnlyPlot).
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/FreqOnlyBetaPlot-1.pdf}
+
+}
+
+\caption{Plot of the posterior distribution for the beta value of each
+fixed-effect in our frequency-only quadratic regression model. The
+y-axis contains the different fixed-effects and the x-axis contains the
+posterior distribution of beta values for the corresponding
+fixed-effect.}
+
+\end{figure}%
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/PredicOnlyBetaPlot-1.pdf}
+
+}
+
+\caption{Plot of the posterior distribution for the beta value of each
+fixed-effect in our predictability-only quadratic regression model. The
+y-axis contains the different fixed-effects and the x-axis contains the
+posterior distribution of beta values for the corresponding
+fixed-effect.}
+
+\end{figure}%
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/FreqOnlyPlot-1.pdf}
+
+}
+
+\caption{Model predictions for the effects of frequency on reaction
+times for the frequency-only Bayesian quadratic model.}
+
+\end{figure}%
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.6\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/PredicOnlyPlot-1.pdf}
+
+}
+
+\caption{Model predictions for the effect of predictability on reaction
+times for the predictability-only models.}
+
+\end{figure}%
+
+\section{Discussion}\label{discussion}
+
+The present study examined the effects of frequency and predictability
+on the recognizability of the particle \emph{up} in English phrasal
+verbs. We found a U-shaped effect for both frequency and predictability
+on recognizability: as frequency/predictability increased, people were
+faster at recognizing \emph{up}, until reaching the highest
+frequency/most predictable items, where people were slower. These
+results suggest that the most predictable and/or highest frequency items
+have a lack of internal structure. We also found no meaningful
+differences between phrasal verbs (e.g., \emph{pick up}) and non-phrasal
+verbs (e.g., \emph{stir up}), suggesting that this effect is driven
+primarily by the statistical distribution of the input as opposed to
+syntactic properties.
+
+First, our results suggest that both frequency and predictability drive
+storage, as we see an increase in recognition times for the highest
+frequency and highest predictability items. It is unclear how this
+result can arise without storage of the entire verb phrase, since in
+order for \emph{up} to be harder to recognize in some contexts than in
+other contexts, it must have a separate representation.
+
+Our results also demonstrate that as frequency or predictability
+increases, recognition time decreases until reaching the highest
+frequency/predictability items where there is an increase in recognition
+time. Our results suggest competition between different levels (e.g.,
+competition between the representation for a holistically stored phrase
+and the separate representations for its component parts). Specifically,
+for medium-high frequency items, since they are likely not stored, there
+is no holistically stored representation to compete, hence the decrease
+in recognition times. However, for the highest frequency items, they may
+have a holistically stored representation which may compete with, and
+even inhibit, the representations of the component parts, thus leading
+to an increase in recognition times.
+
+This replicates previous findings that found competition between
+different levels during processing
+\citep[e.g.,][]{kapatsinski2009, healy1976, healy1994, minkoff2000}. For
+example, as stated earlier, \citet{healy1976} found that people make
+more letter-detection errors in high-frequency words (e.g., \emph{the})
+than in lower frequency words. Further, \citet{minkoff2000} found that
+letters are more difficult to detect in high-frequency nouns than in
+low-frequency nouns. Taken altogether, these results suggest that
+recognizing words or holistically stored phrases does not necessarily
+require processing them through the representations of the component
+parts, and in fact, processing the holistically stored phrases may make
+it even more difficult (via inhibition) to process the representations
+of the component parts.
+
+On the other hand, rather than inhibiting the representations of the
+individual words, it's possible that the holistic representation and the
+representations of the individual words race for activation (without
+inhibition). For example, it's possible that for high-frequency and
+high-predictability items, when accessing the first word, e.g.,
+\emph{pick}, the listener accesses the representation of the entire
+phrase (e.g., \emph{pick up}) immediately, before even hearing
+\emph{up}, and then continues on to process the next words (skipping
+over \emph{up}). Since the task is to respond when they hear \emph{up},
+the delay in reaction time may be because they're not accessing the
+phonological representation of \emph{up}. Instead, they may access the
+semantic representation of the phrase without initially accessing the
+phonological representation of \emph{up}. They may then be recovering
+the phonological representation from the semantic representation of the
+phrase, causing a delay in recognition time. Indeed, this possibility
+was suggested by \citet{healy1976}, who suggested that in reading once
+people process the meaning of a word, they move on to the next word
+regardless of whether they have processed each individual letter.
+However, while this is plausible in reading, it seems much less likely
+in speech processing. Since listeners receive auditory signal in a
+continuous stream, listeners don't have an option analogous to skipping
+to the next word in reading. Our results are instead more compatible
+with a race model with inhibition, such as the TRACE model
+\citep{mcclellandTRACEModelSpeech1984}. Specifically, it seems plausible
+that rather than skipping the word, it is being inhibited by the
+holistic representation. That is, upon processing \emph{pick up}, the
+representations of the component parts \emph{pick} and \emph{up} are
+inhibited. It is still the case, however, that both explanations are
+compatible with our results. Thus further research is necessary to
+disentangle these two accounts.
+
+However, neither of these possibilities alone -- competition between the
+representations, or accessing the phrase and moving on -- can account
+for the increase in recognition time. A high-frequency holistically
+stored representation with intact internal structure would show a
+similar decrease in recognition time for its component parts. This is
+because accessing the holistically stored representation, if its
+internal representation is intact, entails accessing the representations
+of the individual parts. One way to account for this is that the
+holistic representation may lack internal structure. For example,
+perhaps the increase in recognition time reflects a loss of internal
+structure over time. That is, it is possible that over time, more
+experience with the phrases results in a loss of the internal structure,
+or a weakening of the associations between the individual words and the
+representation of the phrase (as demonstrated in Figure
+@ref(fig:lossInternal)).
+
+Another possible account is that, rather than being lost over time,
+perhaps the internal structure for the high-frequency and
+high-predictability items was never learned to begin with. For example,
+children are experts at statistical learning and use transitional
+probabilities to divide the continuous speech stream
+\citep{saffran1996}. High predictability phrases in the present study,
+by definition, have higher transitional probabilities between words.
+Thus if children are relying on transitional probabilities to separate
+speech into individual words, the most predictable phrases may not be
+separated out of the speech stream initially.
+
+Further, many high-frequency (e.g., \emph{set up}) and
+high-predictability (e.g., \emph{conjure up}) phrases have semantically
+vague relationships that might make it difficult to split them up on a
+semantic basis. It seems plausible then that maybe these phrases weren't
+learned as being composed of individual words initially and thus the
+internal structure for the holistically stored items may not have been
+learned. The example, \emph{trick or treat}, is a prime example of a
+phrase that does not seem to have a clear semantic relationship between
+the phrase and its component parts.
+
+If it is the case that the internal structure for the phrase was never
+learned, it would explain why we see an increase in recognition times
+for \emph{up}: as one encounters the phrase more often, the association
+between the holistic representation and the words/sounds in the phrase
+increases. Even after one learns that \emph{pick up}, for example, is
+composed of two words, the holistic representation will still be more
+strongly associated with the phrase and continue to be activated.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# On the other hand, it is possible that the holistically stored representation actually inhibits the representation of the individual words. That is, instead of processing the meaning and moving on (thus not even paying attention to the rest of the phrase), it is possible that ... The argument put forth by @kapatsinski2009 is somewhat paradoxical in the sense that how does one know what to skip without paying attention to the speech stream? Rather than stopping processing and then starting again, it is possible that the holistic representation inhibits the representation of the individual parts.}
+\CommentTok{\# }
+\CommentTok{\# This could weaken the association between the individual words and the holistically stored phrase (which lacks internal structure). Indeed, this parallels findings from the learning literature where an association between two cues and an outcome can cause the association between the individual cues and that outcome to weaken [i.e., an overexpectation effect; for example, when a noise and light are paired with a shock, the strength of the association between the individual cues and the shock decreases; @boutonLearning2007]. In this case, the two cues would be the words (e.g., pick and up) and the outcome would be the holistically stored meaning (e.g., pick up).}
+\CommentTok{\# }
+\CommentTok{\# It also mirrors evidence from the artificial language learning literature, where it\textquotesingle{}s been demonstrated that increased exposure to a morpheme or word makes one more confident that the meaning of that morpheme or word is not used to express other meanings [@xuWordLearningBayesian2007; @harmonPuttingOldTools2017]. For example, @harmonPuttingOldTools2017 demonstrated that increased exposure to a novel suffix makes learners less likely to extend it to novel meanings in comprehension. While the meanings in our case are the same, the representations are different (compositional vs holistic representation). It is possible that increased exposure to pick up, for example, entrenches the association between the form pick up and the holistically stored representation, inhibiting the association between the form and the compositional representation. This would explain why for the highest frequency and predictability items recognition time increases: accessing the holistically stored phrase inhibits access of the compositional form, making it harder to recognize the individual parts (though it\textquotesingle{}s worth noting that inhibition may not even be necessary to account for the increase in reaction time).}
+\end{Highlighting}
+\end{Shaded}
+
+Further, if the lack of internal representation is a function of our
+learning mechanisms, it may not be surprising that both predictability
+and frequency drive this lack of representation, since our brain employs
+both Hebbian (frequency-driven learning) and error-driven learning
+mechanisms \citep[i.e., predictability-driven
+learning,][]{ashby2007, kapatsinski2018}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Our results also open an interesting question of how gradient the internal structure is. For example, our results may suggest that the internal structure isn\textquotesingle{}t completely eroded even for the highest frequency/most predictable items. Participants are clearly aware that the segment up is contained in the phrase, it just takes them longer to recognize. On the other hand, the internal structure seems to have degraded at least a little bit, since participants are not as quick to recognize the segment as we would expect. }
+\CommentTok{\# }
+\CommentTok{\# Alternatively, it\textquotesingle{}s possible that the internal structure for the holistic item is completely eroded and what we see is actually a recognition of up driven by the compositional interpretation. That is, it is possible that the holistically stored phrase (e.g., pick up) has completely lost the internal representation of up. However, that doesn\textquotesingle{}t mean participants are unable to also decode the meaning by combining pick with up. The delayed recognition times could be reflecting the composition time. If this is the case, it opens up the question of whether experience with a phrase increases the strength of the association between the words and the representation of the phrase, or the strength of the association between the words and the representation of each individual words, or both.}
+\end{Highlighting}
+\end{Shaded}
+
+Finally, we see the same U-shaped effect in both phrasal (e.g.,
+\emph{pick up}) and non-phrasal verbs (e.g., \emph{stir up}). Phrasal
+verbs have a syntactic alternation that may lead to all of them being
+stored, regardless of whether they are frequent/predictable or not. Thus
+this possibility, at a glance, seems to be problematic for the
+interpretation of our results. Mainly, if the increase in reaction time
+is due to storage, then if all phrasal verbs are stored we would expect
+that all of the phrasal verbs were slower. However, while loss of
+internal representation indicates storage, storage does not necessitate
+a loss of internal representation. It is the combination of storage and
+usage that leads to loss of internal representation. Thus, the
+interpretation of our results holds regardless of whether phrasal verbs
+as a whole are stored holistically.
+
+In summary, we demonstrate that both frequency and predictability drive
+the holistic storage of phrasal verbs, and these holistically stored
+items may compete with their component parts during lexical access.
+Further, we demonstrate that the most frequent and most predictable
+items do not have a fully intact internal representation. Future work
+would do well to examine if stored items are learned without internal
+structure or if the internal structure is lost over time as a function
+of experience.
+
+\section{Acknowledgements}\label{acknowledgements}
+
+The authors would like to thank Dingyi (Penny) Pan, a graduate student
+in Linguistics, for reading and offering comments on a draft of this
+paper. The authors would also like to thank Vsevolod Kapatsinski and
+Zara Harmon for providing interesting discussion about the nature of
+competition in processing.
+
+
+  \bibliography{r-references.bib,references.bib}
+
+
+
+\end{document}
