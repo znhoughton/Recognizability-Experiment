@@ -67,46 +67,6 @@
 \fi
 \makeatother
 
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{241,243,245}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
@@ -191,7 +151,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-\journal{Test Journal}
+\journal{Journal}
 
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
@@ -820,15 +780,11 @@ non-linearly, and duration of the segment, which was not allowed to vary
 non-linearly. Additionally, we also included random intercepts for
 participant, trial, and item, as well as random by-participant slopes
 for predictability, frequency, and trial. Our model formula is included
-below in Equation @ref(eq:gammInteraction):
+below in Equation Equation~\ref{eq-gamminteraction}:
 
-\begin{equation}
-\begin{aligned}
-(\#eq:gammInteraction)
-log(RT) & \sim ti(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\
-& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) 
-\end{aligned}
-\end{equation}
+\begin{equation}\phantomsection\label{eq-gamminteraction}{
+\begin{aligned}log(RT) & \sim ti(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
+}\end{equation}
 
 We also ran an additional analysis similar to the first model, but
 allowing the interaction to vary for phrasal vs non-phrasal verbs.
@@ -837,15 +793,13 @@ exception that the effect of the interaction term was allowed to be
 different for phrasal verbs and non-phrasal verbs. This was done in
 order to examine whether the effect of frequency and predictability was
 different for phrasal verbs versus non-phrasal verbs. See Equation
-@ref(eq:gammPhrasalNonphrasal):
+Equation~\ref{eq-gammPhrasalNonphrasal}:
 
-\begin{equation}
+\begin{equation}\phantomsection\label{eq-gammPhrasalNonphrasal}{
 \begin{aligned}
-(\#eq:gammPhrasalNonphrasal)
-log(RT) & \sim ti(Predictability, Frequency, by = PhrasalVerb) + Duration + s(participant, bs = \text{`}re\text{'}) \\ 
-& + s(Item, bs = \text{`}re\text{'}) + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) 
+log(RT) & \sim ti(Predictability, Frequency, by = PhrasalVerb) + Duration + s(participant, bs = \text{`}re\text{'}) \\ & + s(Item, bs = \text{`}re\text{'}) + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) 
 \end{aligned}
-\end{equation}
+}\end{equation}
 
 Additionally, we ran a Generalized Additive Model with frequency,
 predictability, and the interaction between frequency and predictability
@@ -853,15 +807,11 @@ as fixed-effects that could vary non-linearly, and duration of the
 segment as a fixed-effect that could not vary non-linearly. The
 random-effects structure for this model was identical to the previous
 two models. The model syntax is included below in Equation
-@ref(eq:gammFull):
+Equation~\ref{eq-gammFull}:
 
-\begin{equation}
-\begin{aligned}
-(\#eq:gammFull)
-log(RT) & \sim s(Predictability) + s(Frequency) + ti (Predictability, Frequency) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  
-+ s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) 
-\end{aligned}
-\end{equation}
+\begin{equation}\phantomsection\label{eq-gammFull}{
+\begin{aligned}log(RT) & \sim s(Predictability) + s(Frequency) + ti (Predictability, Frequency) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  + s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) \end{aligned}
+}\end{equation}
 
 Finally, we replicated the analyses from \citet{kapatsinski2009} using
 two Bayesian quadratic regression models \citep[implemented in
@@ -880,19 +830,19 @@ correlations between them for both models (this was done to allow the
 model to run faster, since we collected a large amount of data).
 
 The model syntax for both models is included below in Equations
-@ref(eq:brmsFreq) and @ref(eq:brmsPredic):
+Equation~\ref{eq-brmsFreq} and Equation~\ref{eq-brmsPredic}:
 
-\begin{equation}
+\begin{equation}\phantomsection\label{eq-brmsFreq}{
 \begin{aligned}
-(\#eq:brmsFreq)
 log(RT) & \sim log(Frequency) + Duration + log(Frequency^2) \\ & + (1 + log(Frequency) + log(Frequency^2) + Duration || Participant) + (1 || Item)
 \end{aligned}
-\end{equation} \begin{equation}
+}\end{equation}
+
+\begin{equation}\phantomsection\label{eq-brmsPredic}{
 \begin{aligned}
-(\#eq:brmsPredic)
-log(RT) & \sim  log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
+log(RT) & \sim log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
 \end{aligned}
-\end{equation}
+}\end{equation}
 
 \section{Results}\label{results}
 
@@ -903,13 +853,13 @@ the output of each model). Further, there was no significant effect of
 whether the verb phrase was a phrasal verb (e.g., \emph{pick up}) or not
 (e.g., \emph{stir up})\footnote{A BIC analysis confirmed that the model
   that included whether the verb phrase was a phrasal verb or not
-  (analysis in Table \ref{tab:gamModelPhrasalNonPhrasalTab}) was not a
-  better fit than the identical model without it (the analysis in Table
-  \ref{tab:gamModelTab}).}. In other words, the recognition times
+  (analysis in Table~\ref{tbl-gamModelPhrasalNonPhrasalTab} was not a
+  better fit than the identical model without it (the analysis in
+  Table~\ref{tbl-gamModelTab}).}. In other words, the recognition times
 patterned similarly regardless of whether the item was a phrasal verb or
-not. Additionally, our third Generalized Additive Model (eq.
-\ref{eq:gammFull} and Table \ref{tab:gamModelInterTab}) suggested that
-there was a significant main-effect of predictability.
+not. Additionally, our third Generalized Additive Model
+(Equation~\ref{eq-gammFull} and Table~\ref{tbl-gamModelInterTab})
+suggested that there was a significant main-effect of predictability.
 
 \begin{table}
 
@@ -919,16 +869,9 @@ and predictability.}
 
 \centering{
 
-[H]
-
-\begin{center}
-\begin{threeparttable}
-
-\caption{}
-
-\begin{tabular}{lllll}
+\begin{tabular}{lrrrl}
 \toprule
- & \multicolumn{1}{c}{edf} & \multicolumn{1}{c}{Ref.df} & \multicolumn{1}{c}{F} & \multicolumn{1}{c}{p-value}\\
+  & edf & Ref.df & F & p-value\\
 \midrule
 te(log-predictability, log-frequency) & 5.59 & 5.73 & 1.86 & 0.090\\
 s(trial) & 0.99 & 1.00 & 115.38 & <0.001\\
@@ -937,9 +880,6 @@ s(item) & 175.44 & 195.00 & 10.68 & <0.001\\
 s(log-predictability, log-frequency, trial, participant) & 43.00 & 306.00 & 0.46 & 0.100\\
 \bottomrule
 \end{tabular}
-
-\end{threeparttable}
-\end{center}
 
 }
 
@@ -953,28 +893,19 @@ frequency and predictability for phrasal vs nonphrasal verbs.}
 
 \centering{
 
-[H]
-
-\begin{center}
-\begin{threeparttable}
-
-\caption{}
-
-\begin{tabular}{lllll}
+\begin{tabular}{lrrrl}
 \toprule
- & \multicolumn{1}{c}{edf} & \multicolumn{1}{c}{Ref.df} & \multicolumn{1}{c}{F} & \multicolumn{1}{c}{p-value}\\
+  & edf & Ref.df & F & p-value\\
 \midrule
 te(log-predictability, log-frequency):Nonphrasal & 3.93 & 3.98 & 1.46 & 0.210\\
 te(log-predictability, log-frequency):Phrasal & 4.07 & 4.12 & 1.27 & 0.240\\
 s(trial) & 0.99 & 1.00 & 115.65 & <0.001\\
 s(participant) & 295.99 & 305.00 & 39.83 & <0.001\\
 s(item) & 172.59 & 191.00 & 10.94 & <0.001\\
+\addlinespace
 s(log-predictability, log-frequency, trial, participant) & 42.97 & 306.00 & 0.46 & 0.100\\
 \bottomrule
 \end{tabular}
-
-\end{threeparttable}
-\end{center}
 
 }
 
@@ -988,63 +919,58 @@ interaction between them.}
 
 \centering{
 
-[H]
-
-\begin{center}
-\begin{threeparttable}
-
-\caption{}
-
-\begin{tabular}{lllll}
+\begin{tabular}{lrrrl}
 \toprule
- & \multicolumn{1}{c}{edf} & \multicolumn{1}{c}{Ref.df} & \multicolumn{1}{c}{F} & \multicolumn{1}{c}{p-value}\\
+  & edf & Ref.df & F & p-value\\
 \midrule
 s(log-frequency) & 2.43 & 2.48 & 1.68 & 0.320\\
 s(log-predictability) & 1.88 & 1.92 & 3.30 & 0.030\\
 s(log-frequency*log-predictability) & 0.00 & 0.00 & 0.05 & 0.990\\
 s(participant) & 296.33 & 305.00 & 37.57 & <0.001\\
 s(item) & 176.42 & 196.00 & 10.64 & <0.001\\
+\addlinespace
 s(log-pred., log-freq., log-freq.:log-pred., participant) & 0.02 & 306.00 & 0.00 & 0.750\\
 \bottomrule
 \end{tabular}
-
-\end{threeparttable}
-\end{center}
 
 }
 
 \end{table}%
 
-A visualization of \ref{tab:gamModelTab} and
-\ref{tab:gamModelPhrasalNonPhrasalTab} are presented in Figures
-@ref(fig:gam2dplot1) and @ref(fig:gam2dplot2).
+A visualization of Table~\ref{tbl-gamModelTab} and
+Table~\ref{tbl-gamModelPhrasalNonPhrasalTab} are presented in
+Figure~\ref{fig-gam2dplot1} and Figure~\ref{fig-gam2dplot2}.
 
-\begin{figure}[H]
+\begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/gam2dplot1-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-gam2dplot1-1.pdf}
 
 }
 
-\caption{Plot of the interaction effect between predictability and
-frequency of our GAM model containing only the interaction between
-frequency and predictability. The brightness of the coloration denotes
-the strength of the effect at the point in the graph. Brighter colors
-denote longer reaction times.}
+\caption{\label{fig-gam2dplot1}Plot of the interaction effect between
+predictability and frequency of our GAM model containing only the
+interaction between frequency and predictability. The brightness of the
+coloration denotes the strength of the effect at the point in the graph.
+Brighter colors denote longer reaction times.}
 
 \end{figure}%
 
-\begin{figure}[H]
+\begin{figure}
 
-{\centering \includegraphics{quarto-writeup_files/figure-pdf/gam2dplot2-1.pdf}
+\centering{
+
+\includegraphics{quarto-writeup_files/figure-pdf/fig-gam2dplot2-1.pdf}
 
 }
 
-\caption{Plot of the interaction effect between predictability and
-frequency of our GAM model containing the interaction between frequency
-and predictability for phrasal vs nonphrasal verbs. Brighter colors
-denote longer reaction times. The left graph is the predicted effect for
-phrasal verbs (e.g., pick up), the right graph is the predicted effect
-for non-phrasal verbs (e.g., walk up).}
+\caption{\label{fig-gam2dplot2}Plot of the interaction effect between
+predictability and frequency of our GAM model containing the interaction
+between frequency and predictability for phrasal vs nonphrasal verbs.
+Brighter colors denote longer reaction times. The left graph is the
+predicted effect for phrasal verbs (e.g., pick up), the right graph is
+the predicted effect for non-phrasal verbs (e.g., walk up).}
 
 \end{figure}%
 
@@ -1054,21 +980,18 @@ Model suggested that there was no significant interaction between
 frequency and predictability, we left out the interaction term from the
 regression model. Similar to the above Bayesian models, we also modeled
 the random-effects without correlations between them. Equation
-@ref(eq:BayesianFullModelSyntax) below presents the full model syntax:
+Equation~\ref{eq-BayesianFullModelSyntax} below presents the full model
+syntax:
 
-\begin{equation}
+\begin{equation}\phantomsection\label{eq-BayesianFullModelSyntax}{
 \begin{aligned}
-(\#eq:BayesianFullModelSyntax)
-log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^2)  
-+ log(Predictability^2) \\ 
-& + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\
-& + Duration || Participant) + (1 || Item)
+log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^2)  + log(Predictability^2) \\ & + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\& + Duration || Participant) + (1 || Item)
 \end{aligned}
-\end{equation}
+}\end{equation}
 
-The results of this model are presented below in Table
-\ref{tab:brmsQuadraticNoInter} and visualized in Figure
-@ref(fig:FullQuadraticPlot). Following
+The results of this model are presented below in
+Table~\ref{tbl-brmsQuadraticNoInter} and visualized in
+Figure~\ref{fig-FullQuadraticPlot}. Following
 \citet{houghtonTaskdependentConsequencesDisfluency2023}, in some cases
 where the confidence interval crosses zero, we also report the
 percentage of posterior samples greater than or less than zero. For the
@@ -1076,180 +999,186 @@ current model, although the confidence intervals for both quadratic
 terms crossed zero, nearly 97\% of the posterior samples for
 predictability\(^2\) were greater than zero, and nearly 93\% of the
 posterior samples for frequency\(^2\) were greater than zero. A plot of
-the posterior distribution for each coefficient is presented in Figure
-@ref(fig:posteriorplotFullQuadratic). The results suggest a U-shaped
-effect of both frequency and predictability on recognition times. In
-other words, participants recognized \emph{up} faster as frequency or
-predictability increased, except for the most frequent or most
-predictable items, where participants were slower to recognize
+the posterior distribution for each coefficient is presented in
+Figure~\ref{fig-posteriorplotFullQuadratic}. The results suggest a
+U-shaped effect of both frequency and predictability on recognition
+times. In other words, participants recognized \emph{up} faster as
+frequency or predictability increased, except for the most frequent or
+most predictable items, where participants were slower to recognize
 \emph{up}.
 
-\begin{table}[H]
+\begin{table}
 
-\begin{center}
-\begin{threeparttable}
+\caption{\label{tbl-brmsQuadraticNoInter}Model results for the Bayesian
+quadratic regression model containing fixed-effects for frequency,
+predictability, and their quadratics.}
 
-\caption{Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics.}
+\centering{
 
-\begin{tabular}{llllll}
+\begin{tabular}{lllllr}
 \toprule
- & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Est.Error} & \multicolumn{1}{c}{Q2.5} & \multicolumn{1}{c}{Q97.5} & \multicolumn{1}{c}{\% Samples > 0}\\
+  & Estimate & Est.Error & Q2.5 & Q97.5 & \% Samples > 0\\
 \midrule
-Intercept & -0.102 & 0.029 & -0.161 & -0.046 & 0.03\\
-log-frequency & 0.019 & 0.011 & -0.002 & 0.041 & 96.16\\
-log-predictability & 0.009 & 0.011 & -0.013 & 0.032 & 79.00\\
-duration & -0.135 & 0.098 & -0.328 & 0.057 & 8.27\\
-log-predictability\textasciicircum{}2 & 0.003 & 0.002 & -0.000 & 0.007 & 96.88\\
-log-frequency\textasciicircum{}2 & 0.005 & 0.004 & -0.002 & 0.012 & 92.94\\
+Intercept & -0.102 & 0.029 & -0.161 & -0.046 & 0.02625\\
+log-frequency & 0.019 & 0.011 & -0.002 & 0.041 & 96.15625\\
+log-predictability & 0.009 & 0.011 & -0.013 & 0.032 & 78.99750\\
+duration & -0.135 & 0.098 & -0.328 & 0.057 & 8.27125\\
+log-predictability\textasciicircum{}2 & 0.003 & 0.002 & -0.000 & 0.007 & 96.88125\\
+\addlinespace
+log-frequency\textasciicircum{}2 & 0.005 & 0.004 & -0.002 & 0.012 & 92.94375\\
 \bottomrule
 \end{tabular}
-
-\end{threeparttable}
-\end{center}
-
-\end{table}
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/posteriorplotFullQuadratic-1.pdf}
 
 }
 
-\caption{Plot of the posterior distribution for the beta value of each
-fixed-effect in our Bayesian quadratic regression model. The y-axis
-contains the different fixed-effects and the x-axis contains the
-posterior distribution of beta values for the corresponding
-fixed-effect.}
+\end{table}%
 
-\end{figure}%
+\begin{figure}
 
-(ref:fullquadratictableplot) Visualization of the model results from
-Table \ref{tab:brmsQuadraticNoInter} for frequency (top) and
-predictability (bottom). Frequencies are per million.
+\centering{
 
-\begin{figure}[H]
-
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/FullQuadraticPlot-1.pdf}
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-posteriorplotFullQuadratic-1.pdf}
 
 }
 
-\caption{(ref:fullquadratictableplot)}
+\caption{\label{fig-posteriorplotFullQuadratic}Plot of the posterior
+distribution for the beta value of each fixed-effect in our Bayesian
+quadratic regression model. The y-axis contains the different
+fixed-effects and the x-axis contains the posterior distribution of beta
+values for the corresponding fixed-effect.}
 
 \end{figure}%
 
-Finally tables \ref{tab:brmsFreq} and \ref{tab:brmsPredic} present the
-results for the quadratic regression models including only frequency and
-frequency\(^2\) as well as the quadratic regression model including only
-predictability and predictability\(^2\) respectively:
+\begin{figure}
 
-(ref:brmsFreqCaption) Results for the Bayesian quadratic regression
-model containing only frequency and frequency\(^2\).
+\centering{
 
-\begin{table}[H]
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-FullQuadraticPlot-1.pdf}
 
-\begin{center}
-\begin{threeparttable}
+}
 
-\caption{(ref:brmsFreqCaption)}
+\caption{\label{fig-FullQuadraticPlot}Visualization of the model results
+from Table Table~\ref{tbl-brmsQuadraticNoInter} for frequency (top) and
+predictability (bottom). Frequencies are per million.}
 
-\begin{tabular}{llllll}
+\end{figure}%
+
+Finally Table~\ref{tbl-brmsFreq} and Table~\ref{tbl-brmsPredic} present
+the results for the quadratic regression models including only frequency
+and frequency\(^2\) as well as the quadratic regression model including
+only predictability and predictability\(^2\) respectively:
+
+\begin{table}
+
+\caption{\label{tbl-brmsFreq}Results for the Bayesian quadratic
+regression model containing only frequency and frequency\(^2\).}
+
+\centering{
+
+\begin{tabular}{lllllr}
 \toprule
- & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Est.Error} & \multicolumn{1}{c}{Q2.5} & \multicolumn{1}{c}{Q97.5} & \multicolumn{1}{c}{\% Samples > 0}\\
+  & Estimate & Est.Error & Q2.5 & Q97.5 & \% Samples > 0\\
 \midrule
-Intercept & -0.102 & 0.025 & -0.150 & -0.054 & 0.00\\
-log-frequency & 0.016 & 0.011 & -0.005 & 0.038 & 93.31\\
-Duration & -0.084 & 0.098 & -0.274 & 0.108 & 19.36\\
-log-frequency\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 95.22\\
+Intercept & -0.102 & 0.025 & -0.150 & -0.054 & 0.000\\
+log-frequency & 0.016 & 0.011 & -0.005 & 0.038 & 93.310\\
+Duration & -0.084 & 0.098 & -0.274 & 0.108 & 19.355\\
+log-frequency\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 95.225\\
 \bottomrule
 \end{tabular}
 
-\end{threeparttable}
-\end{center}
+}
 
-\end{table}
+\end{table}%
 
-(ref:brmsPredicCaption) Results for the Bayesian quadratic regression
-model containing only predidctability and \(predictability^2\).
+\begin{table}
 
-\begin{table}[H]
+\caption{\label{tbl-brmsPredic}Results for the Bayesian quadratic
+regression model containing only predidctability and
+predictability\(^2\).}
 
-\begin{center}
-\begin{threeparttable}
+\centering{
 
-\caption{(ref:brmsPredicCaption)}
-
-\begin{tabular}{llllll}
+\begin{tabular}{lllllr}
 \toprule
- & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{Est.Error} & \multicolumn{1}{c}{Q2.5} & \multicolumn{1}{c}{Q97.5} & \multicolumn{1}{c}{\% Samples > 0}\\
+  & Estimate & Est.Error & Q2.5 & Q97.5 & \% Samples > 0\\
 \midrule
-Intercept & -0.102 & 0.025 & -0.150 & -0.054 & 0.00\\
-log-predictability & 0.016 & 0.011 & -0.005 & 0.038 & 19.36\\
-Duration & -0.084 & 0.098 & -0.274 & 0.108 & 95.22\\
-log-predictability\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 93.31\\
+Intercept & -0.102 & 0.025 & -0.150 & -0.054 & 0.000\\
+log-predictability & 0.016 & 0.011 & -0.005 & 0.038 & 19.355\\
+Duration & -0.084 & 0.098 & -0.274 & 0.108 & 95.225\\
+log-predictability\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 93.310\\
 \bottomrule
 \end{tabular}
 
-\end{threeparttable}
-\end{center}
+}
 
-\end{table}
+\end{table}%
 
 While the confidence interval for the quadratic term in both models
 crosses zero, over 95\% of the posterior samples for log-frequency\(^2\)
 were greater than zero and over 96 percent of the posterior samples for
 log-predictability\(^2\) were greater than zero. A visualization of the
-posterior distributions for both models are presented in Figure
-@ref(fig:FreqOnlyBetaPlot) and Figure @ref(fig:PredicOnlyBetaPlot).
-Further, visualizations of the model predictions are also included below
-in Figures @ref(fig:FreqOnlyPlot) and @ref(fig:PredicOnlyPlot).
+posterior distributions for both models are presented in
+Figure~\ref{fig-FreqOnlyBetaPlot} and
+Figure~\ref{fig-PredicOnlyBetaPlot}. Further, visualizations of the
+model predictions are also included below in
+Figure~\ref{fig-FreqOnlyPlot} and Figure~\ref{fig-PredicOnlyPlot}.
 
-\begin{figure}[H]
+\begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/FreqOnlyBetaPlot-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-FreqOnlyBetaPlot-1.pdf}
 
 }
 
-\caption{Plot of the posterior distribution for the beta value of each
-fixed-effect in our frequency-only quadratic regression model. The
-y-axis contains the different fixed-effects and the x-axis contains the
-posterior distribution of beta values for the corresponding
-fixed-effect.}
+\caption{\label{fig-FreqOnlyBetaPlot}Plot of the posterior distribution
+for the beta value of each fixed-effect in our frequency-only quadratic
+regression model. The y-axis contains the different fixed-effects and
+the x-axis contains the posterior distribution of beta values for the
+corresponding fixed-effect.}
 
 \end{figure}%
 
-\begin{figure}[H]
+\begin{figure}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/PredicOnlyBetaPlot-1.pdf}
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-PredicOnlyBetaPlot-1.pdf}
 
 }
 
-\caption{Plot of the posterior distribution for the beta value of each
-fixed-effect in our predictability-only quadratic regression model. The
-y-axis contains the different fixed-effects and the x-axis contains the
-posterior distribution of beta values for the corresponding
-fixed-effect.}
+\caption{\label{fig-PredicOnlyBetaPlot}Plot of the posterior
+distribution for the beta value of each fixed-effect in our
+predictability-only quadratic regression model. The y-axis contains the
+different fixed-effects and the x-axis contains the posterior
+distribution of beta values for the corresponding fixed-effect.}
 
 \end{figure}%
 
-\begin{figure}[H]
+\begin{figure}
 
-{\centering \includegraphics[width=0.6\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/FreqOnlyPlot-1.pdf}
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-FreqOnlyPlot-1.pdf}
 
 }
 
-\caption{Model predictions for the effects of frequency on reaction
-times for the frequency-only Bayesian quadratic model.}
+\caption{\label{fig-FreqOnlyPlot}Model predictions for the effects of
+frequency on reaction times for the frequency-only Bayesian quadratic
+model.}
 
 \end{figure}%
 
-\begin{figure}[H]
+\begin{figure}
 
-{\centering \includegraphics[width=0.6\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/PredicOnlyPlot-1.pdf}
+\centering{
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-PredicOnlyPlot-1.pdf}
 
 }
 
-\caption{Model predictions for the effect of predictability on reaction
-times for the predictability-only models.}
+\caption{\label{fig-PredicOnlyPlot}Model predictions for the effect of
+predictability on reaction times for the predictability-only models.}
 
 \end{figure}%
 
@@ -1346,8 +1275,8 @@ perhaps the increase in recognition time reflects a loss of internal
 structure over time. That is, it is possible that over time, more
 experience with the phrases results in a loss of the internal structure,
 or a weakening of the associations between the individual words and the
-representation of the phrase (as demonstrated in Figure
-@ref(fig:lossInternal)).
+representation of the phrase (as demonstrated in
+Figure~\ref{fig-lossinternalstructure}).
 
 Another possible account is that, rather than being lost over time,
 perhaps the internal structure for the high-frequency and
@@ -1378,30 +1307,12 @@ increases. Even after one learns that \emph{pick up}, for example, is
 composed of two words, the holistic representation will still be more
 strongly associated with the phrase and continue to be activated.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# On the other hand, it is possible that the holistically stored representation actually inhibits the representation of the individual words. That is, instead of processing the meaning and moving on (thus not even paying attention to the rest of the phrase), it is possible that ... The argument put forth by @kapatsinski2009 is somewhat paradoxical in the sense that how does one know what to skip without paying attention to the speech stream? Rather than stopping processing and then starting again, it is possible that the holistic representation inhibits the representation of the individual parts.}
-\CommentTok{\# }
-\CommentTok{\# This could weaken the association between the individual words and the holistically stored phrase (which lacks internal structure). Indeed, this parallels findings from the learning literature where an association between two cues and an outcome can cause the association between the individual cues and that outcome to weaken [i.e., an overexpectation effect; for example, when a noise and light are paired with a shock, the strength of the association between the individual cues and the shock decreases; @boutonLearning2007]. In this case, the two cues would be the words (e.g., pick and up) and the outcome would be the holistically stored meaning (e.g., pick up).}
-\CommentTok{\# }
-\CommentTok{\# It also mirrors evidence from the artificial language learning literature, where it\textquotesingle{}s been demonstrated that increased exposure to a morpheme or word makes one more confident that the meaning of that morpheme or word is not used to express other meanings [@xuWordLearningBayesian2007; @harmonPuttingOldTools2017]. For example, @harmonPuttingOldTools2017 demonstrated that increased exposure to a novel suffix makes learners less likely to extend it to novel meanings in comprehension. While the meanings in our case are the same, the representations are different (compositional vs holistic representation). It is possible that increased exposure to pick up, for example, entrenches the association between the form pick up and the holistically stored representation, inhibiting the association between the form and the compositional representation. This would explain why for the highest frequency and predictability items recognition time increases: accessing the holistically stored phrase inhibits access of the compositional form, making it harder to recognize the individual parts (though it\textquotesingle{}s worth noting that inhibition may not even be necessary to account for the increase in reaction time).}
-\end{Highlighting}
-\end{Shaded}
-
 Further, if the lack of internal representation is a function of our
 learning mechanisms, it may not be surprising that both predictability
 and frequency drive this lack of representation, since our brain employs
 both Hebbian (frequency-driven learning) and error-driven learning
 mechanisms \citep[i.e., predictability-driven
 learning,][]{ashby2007, kapatsinski2018}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{\# Our results also open an interesting question of how gradient the internal structure is. For example, our results may suggest that the internal structure isn\textquotesingle{}t completely eroded even for the highest frequency/most predictable items. Participants are clearly aware that the segment up is contained in the phrase, it just takes them longer to recognize. On the other hand, the internal structure seems to have degraded at least a little bit, since participants are not as quick to recognize the segment as we would expect. }
-\CommentTok{\# }
-\CommentTok{\# Alternatively, it\textquotesingle{}s possible that the internal structure for the holistic item is completely eroded and what we see is actually a recognition of up driven by the compositional interpretation. That is, it is possible that the holistically stored phrase (e.g., pick up) has completely lost the internal representation of up. However, that doesn\textquotesingle{}t mean participants are unable to also decode the meaning by combining pick with up. The delayed recognition times could be reflecting the composition time. If this is the case, it opens up the question of whether experience with a phrase increases the strength of the association between the words and the representation of the phrase, or the strength of the association between the words and the representation of each individual words, or both.}
-\end{Highlighting}
-\end{Shaded}
 
 Finally, we see the same U-shaped effect in both phrasal (e.g.,
 \emph{pick up}) and non-phrasal verbs (e.g., \emph{stir up}). Phrasal
@@ -1433,6 +1344,8 @@ in Linguistics, for reading and offering comments on a draft of this
 paper. The authors would also like to thank Vsevolod Kapatsinski and
 Zara Harmon for providing interesting discussion about the nature of
 competition in processing.
+
+\newpage
 
 
   \bibliography{r-references.bib,references.bib}
