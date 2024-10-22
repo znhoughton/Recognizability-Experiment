@@ -663,7 +663,7 @@ college-aged speaker wouldn't have heard more than 10 times.\footnote{\citet{lev
   frequency smaller than 10 per 350 million.} We then visually inspected
 the data to confirm that our data spanned across both the frequency and
 predictability continuum. This distribution is presented in Figure
-\citet{fig} below.
+Figure~\ref{fig-stimplot} below.
 
 \begin{figure}
 
@@ -846,20 +846,30 @@ log(RT) & \sim log(Predictability) + Duration + log(Predictability^2) \\ & + (1 
 
 \section{Results}\label{results}
 
-The effect of the interaction between frequency and predictability was
-not significant in any of our models (see Tables
-Table~\ref{tbl-gamModelTab} through Table~\ref{tbl-gamModelInterTab} for
-the output of each model). Further, there was no significant effect of
-whether the verb phrase was a phrasal verb (e.g., \emph{pick up}) or not
-(e.g., \emph{stir up})\footnote{A BIC analysis confirmed that the model
-  that included whether the verb phrase was a phrasal verb or not
-  (analysis in Table~\ref{tbl-gamModelPhrasalNonPhrasalTab} was not a
-  better fit than the identical model without it (the analysis in
-  Table~\ref{tbl-gamModelTab}).}. In other words, the recognition times
-patterned similarly regardless of whether the item was a phrasal verb or
-not. Additionally, our third Generalized Additive Model
-(Equation~\ref{eq-gammFull} and Table~\ref{tbl-gamModelInterTab})
-suggested that there was a significant main-effect of predictability.
+First, we present the results of our generalized additive models. The
+result of our first generalized additive model
+(Table~\ref{tbl-gamModelTab}; Equation~\ref{eq-gamminteraction})
+suggested no significant interaction effect between frequency and
+predictability. A visualization is provided below in
+Figure~\ref{fig-gam2dplot1}.\footnote{We also examined the interaction
+  between frequency and predictability on accuracy (whether they
+  correctly responded to whether \emph{up} was present in the sentence)
+  and similarly found no significant effect.}
+
+Further, the results of of our second generalized additive model (
+Table~\ref{tbl-gamModelPhrasalNonPhrasalTab};
+Equation~\ref{eq-gammPhrasalNonphrasal}) suggested that even after
+accounting for whether the verb phrase was a phrasal verb or not, there
+was no significant interaction effect. A visualization is provided below
+in Figure~\ref{fig-gam2dplot2}.
+
+Finally, our third generalized additive model
+(Table~\ref{tbl-gamModelInterTab}; Equation~\ref{eq-gammFull}) suggested
+that there was a significant main-effect of predictability. To summarize
+the results of our generalized additive models, we found no interaction
+effect between frequency and predictability, no main effect of
+frequency, but we do find a significant main effect of predictability. A
+visualization is provided below in Figure~\ref{fig-gammodelinterplot}.
 
 \begin{table}
 
@@ -974,12 +984,26 @@ the predicted effect for non-phrasal verbs (e.g., walk up).}
 
 \end{figure}%
 
+\begin{figure}
+
+\centering{
+
+\includegraphics{quarto-writeup_files/figure-pdf/fig-gammodelinterplot-1.pdf}
+
+}
+
+\caption{\label{fig-gammodelinterplot}Plot of our GAM model's predicted
+effect of log(predictability) on recognition time.}
+
+\end{figure}%
+
 Given these results, we ran a follow-up Bayesian quadratic regression
-model to further examine the effects. Since the Generalized Additive
-Model suggested that there was no significant interaction between
-frequency and predictability, we left out the interaction term from the
-regression model. Similar to the above Bayesian models, we also modeled
-the random-effects without correlations between them. Equation
+model to further examine the effects of frequency and predictability on
+recognition times. Since the Generalized Additive Model suggested that
+there was no significant interaction between frequency and
+predictability, we left out the interaction term from the regression
+model. Similar to the above Bayesian models, we also modeled the
+random-effects without correlations between them. Equation
 Equation~\ref{eq-BayesianFullModelSyntax} below presents the full model
 syntax:
 
@@ -1066,7 +1090,9 @@ predictability (bottom). Frequencies are per million.}
 Finally Table~\ref{tbl-brmsFreq} and Table~\ref{tbl-brmsPredic} present
 the results for the quadratic regression models including only frequency
 and frequency\(^2\) as well as the quadratic regression model including
-only predictability and predictability\(^2\) respectively:
+only predictability and predictability\(^2\) respectively.
+Visualizations of the model predictions are also included below in
+Figure~\ref{fig-FreqOnlyPlot} and Figure~\ref{fig-PredicOnlyPlot}.
 
 \begin{table}
 
@@ -1113,15 +1139,14 @@ log-predictability\textasciicircum{}2 & 0.006 & 0.004 & -0.001 & 0.013 & 93.310\
 
 \end{table}%
 
-While the confidence interval for the quadratic term in both models
-crosses zero, over 95\% of the posterior samples for log-frequency\(^2\)
-were greater than zero and over 96 percent of the posterior samples for
-log-predictability\(^2\) were greater than zero. A visualization of the
+While the confidence interval for log(frequency)\(^2\)
+(Table~\ref{tbl-brmsFreq}) crosses zero, over 95\% of the posterior
+samples were greater than zero. Similarly, while the confidence interval
+for log(predictability)\(^2\) also crosses zero, over 96\% of the
+posterior samples were greater than zero. A visualization of the
 posterior distributions for both models are presented in
 Figure~\ref{fig-FreqOnlyBetaPlot} and
-Figure~\ref{fig-PredicOnlyBetaPlot}. Further, visualizations of the
-model predictions are also included below in
-Figure~\ref{fig-FreqOnlyPlot} and Figure~\ref{fig-PredicOnlyPlot}.
+Figure~\ref{fig-PredicOnlyBetaPlot}.
 
 \begin{figure}
 

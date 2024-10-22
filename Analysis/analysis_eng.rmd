@@ -40,7 +40,7 @@ For transparency sake we are including the preprocessing steps in this script, h
 The raw data is available on request by email.
 
 ```{r eval = F}
-data = read.csv('Database_AllParticipants_Recognizability_Experiment2_330703_2023-11-10_18h36.32_faa93908-1176-4bbf-ba5e-5e6fab9181f2.csv', quote = "\"")
+data = read.csv('../Recognizability Experiment/Experiment 2/Analysis/Database_AllParticipants_Recognizability_Experiment2_330703_2023-11-10_18h36.32_faa93908-1176-4bbf-ba5e-5e6fab9181f2.csv', quote = "\"")
 
 data = data %>%
   dplyr::select(participant, Word, textbox.text, textbox_2.text, textbox_3.text, textbox_5.text, textbox_6.text, textbox_4.text, Item, Condition, Type, Sentences, response.corr, response.rt, PhrasalVerb, Frequency, Predictability, OnsetTime, OffsetTime, Duration
@@ -422,6 +422,30 @@ mod_gam_word_internal = bam(log_rt ~  #note that RT is log seconds
               data = word_internal_analysis)
 
 summary(mod_gam_word_internal)
+```
+
+### Accuracy (Logistic) Models
+
+```{r}
+
+logistic_data = data_analysis %>% #Note that I ran this code before excluding low-accuracy participants
+  dplyr::select(participant, Item, Type, log_freq, log_predic, log_rt, Duration, trial, response.corr, response_time)
+
+
+logistic_bam = bam(response.corr ~ te(log_predic, log_freq) + Duration + 
+                 s(participant, bs = 're') + 
+                 s(Item, bs = 're') + 
+                 s(log_predic, log_freq, participant, bs = 're'),
+                 family = 'binomial',
+              #method = 'REML',
+               #optimizer = 'perf',
+              data = logistic_data)
+
+#summary(logistic_bam)
+#saveRDS(logistic_bam, 'logistic_bam.rds')
+
+
+
 ```
 
 ### Brms quadratic
