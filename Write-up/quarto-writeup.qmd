@@ -13,7 +13,7 @@ format:
 editor: visual
 author:
   - name: Zachary Houghton
-    email: znhoughton@gmail.com
+    email: znhoughton@ucdavis.edu
     affiliations:
       - name: University of California, Davis
   - name: Jungah Lee
