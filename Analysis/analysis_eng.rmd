@@ -180,7 +180,7 @@ data_analysis$Item = as.factor(data_analysis$Item)
 data_analysis$Type = as.factor(data_analysis$Type)
 data_analysis$PhrasalVerb = as.factor(data_analysis$PhrasalVerb)
 
-cloze_probs = read_csv('cloze_probs.csv') #should add this to the github repo
+cloze_probs = read_csv('../Data/cloze_probs.csv') #should add this to the github repo
 
 data_analysis = data_analysis %>%
   mutate(sentences_for_cloze = gsub(' up .*', '', Sentences)) %>%
@@ -280,16 +280,28 @@ mod_gam_phrasal_nonphrasal2 = bam(log_rt ~  #note that RT is in log seconds
 summary(mod_gam_phrasal_nonphrasal2)
 
 
-mod_bam_inter = bam(log_rt ~ s(log_freq) + s(log_predic) + s(log_freqxpred) + 
+mod_bam_inter = bam(log_rt ~ ti(log_freq) + ti(log_predic) + ti(log_predic, log_freq) + 
                  Duration + 
                  s(participant, bs = 're') + 
                  s(Item, bs = 're') + 
-                 s(log_predic, log_freq, log_freqxpred, participant, bs = 're'),
+                 s(log_predic, log_freq, participant, bs = 're'),
               method = 'REML',   
               data = gam_data)
 
 saveRDS(mod_bam_inter, '../Models/mod_bam_inter.rds')
+mod_bam_inter = readRDS('../Models/mod_bam_inter.rds')
 summary(mod_bam_inter)
+
+mod_bam_no_inter = bam(log_rt ~ ti(log_freq) + ti(log_predic) + 
+                 Duration + 
+                 s(participant, bs = 're') + 
+                 s(Item, bs = 're') + 
+                 s(log_predic, log_freq, participant, bs = 're'),
+              method = 'REML',   
+              data = gam_data)
+
+summary(mod_bam_no_inter)
+saveRDS(mod_bam_no_inter, '../Models/mod_bam_no_inter.rds')
 
 
 mod_bam_freq = bam(log_rt ~ PhrasalVerb + s(log_freq, by = PhrasalVerb) +

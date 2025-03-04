@@ -1,5 +1,5 @@
 ---
-title: "The effects of frequency and predictability on the recognition of up in English verb+up
+title: "The effects of frequency and predictability on the recognition of *up* in English verb+up
 collocations."
 format:
   elsevier-pdf:
@@ -77,6 +77,7 @@ mod_gam1 = readRDS('../Models/mod_gam1.rds')
 mod_gam_phrasal_nonphrasal = readRDS('../Models/mod_gam_phrasal_nonphrasal.rds')
 mod_bam_inter = readRDS('../Models/mod_bam_inter.rds')
 
+mod_bam_no_inter = readRDS('../Models/mod_bam_no_inter.rds')
 #brms models
 options(contrasts = c("contr.sum","contr.sum"))
 priors = c(prior(student_t(3, 0, 2.5), class = 'sd'),     #pretty standard sd and sigma priors
@@ -217,7 +218,7 @@ Despite the evidence of multi-word holistic storage, however, it is still largel
 
 Traditionally, frequency has been assumed to be the driving factor behind multi-word storage. Indeed, most of the examples of storage given so far have been with respect to frequency. Perhaps the most famous series of studies demonstrating this were conducted by Bybee [@bybee1999; @bybee2003; @bybee2001]. In a series of studies, Bybee and colleagues demonstrated that a variety of words are reduced more in high-frequency contexts than low-frequency contexts [additionally see @kapatsinskiHierarchicalInferenceSound2021 for further discussion of this]. For example, in addition to the earlier examples, *going to* can be reduced in the frequent future marker, *gonna*, but not in the less frequent verb phrase construction describing motion [e.g., \**gonna the store*, @bybee2003]. This mirrors patterns we see on a word-level (which for the most part must be stored). For example, the reduction of vowels to schwa in English is more advanced in high-frequency words than low-frequency words [@hooper1976; @bybee2003]. In other words, for both words and phrases, sound reduction advances more quickly as a function of frequency (i.e., high frequency phrases and high frequency words are both more reduced than their lower frequency counterparts). While this is not surprising for words (which most theories posit have separate representations), it is surprising for phrases which don't necessarily have to be stored holistically.
 
-On the other hand, predictability has not been directly examined much by the Psycholinguistics literature within the context of holistic multi-word storage [c.f. @odonnellFragmentGrammarsExploring2009; @houghton2023does]. One such study examining the role of predictability in holistic storage was @houghton2023does. In their study, using the maze task[^3] [@boyceMazeMadeEasy2020] the authors examined whether participants were slower to select the first noun in high-predictability compound nouns in locally implausible contexts (i.e., contexts where the first noun in the compound is implausible but where the second noun eliminates the implausibility; see the below sentences) relative to high-predictability compound nouns in locally plausible contexts.
+On the other hand, predictability has not been directly examined much by the Psycholinguistics literature within the context of holistic multi-word storage [c.f. @odonnellFragmentGrammarsExploring2009; @houghton2023does]. One such study examining the role of predictability in holistic storage was @houghton2023does [which was an extension of @staub2007]. In their study, using the maze task[^3] [@boyceMazeMadeEasy2020] the authors examined whether participants were slower to select the first noun in high-predictability compound nouns in locally implausible contexts (i.e., contexts where the first noun in the compound is implausible but where the second noun eliminates the implausibility; see the below sentences) relative to high-predictability compound nouns in locally plausible contexts.
 
 [^3]: In the maze task, participants are presented a sentence word-by-word. For each word in the sentence, they are presented with the target word and an ungrammatical distractor. Upon selecting the target word, the next word in the sentence is presented along with yet another ungrammatical distractor. The key measure is how long it takes for participants to select the target word.
 
@@ -241,7 +242,7 @@ Thus, the current literature presents strong evidence for the role of frequency 
 
 ## Representation of Stored Units
 
-Given the evidence that a lot more may be stored than previously thought, another important question to consider is what the internal representations of these units is. Specifically, do the stored units maintain their own internal representation with respect to their component parts? For example, it is possible that the representation of high-frequency phrases, such as *pick up,* retains the representations of the component parts *pick* and *up*. On the other hand, it is possible that the phrase lacks internal representation of the component parts, either because it was lost over time or because it was not learned to begin with.
+Given the evidence that a lot more may be stored than previously thought, another important question to consider is what the internal representations of these units is. Specifically, do the stored units maintain their own internal representation with respect to their component parts? For example, it is possible that the representation of high-frequency phrases, such as *pick up,* retains the representations of the component parts *pick* and *up* (@fig-lossinternalstructure). On the other hand, it is possible that the phrase lacks internal representation of the component parts, either because it was lost over time or because it was not learned to begin with.
 
 <!--# it's unclear what it means for a phrase to "lose some amount of its internal representation with respect to its component parts" I think. Maybe include something like: This loss can take the form of a loss of semantic representation (e.g., losing the connection to the meaning of the component phrases, or phonological representation (losing the internal representation of the component phonological parts), or a combination of these (or more?) -->
 
@@ -259,7 +260,7 @@ It's worth noting that in the case of phrasal verbs like *pick up*, it can't be 
 
 ## Present Study
 
-The present study examines the factors that drive storage and the representations of stored items by extending @kapatsinski2009 to look at the effects of both frequency, predictability, and their interaction on the processing of V+*up* phrases. Similar to @kapatsinski2009, participants are tasked with pressing a button once they hear the segment *up* (which in our study occurs either as a particle within verb phrases, e.g., *pick up*, or part of a word, e.g., *puppet*), but in our case the stimuli varied in frequency, predictability, and whether they were a phrasal verb or not. Since both frequency and predictability effects are rather robust in the literature, we should at the very least see a negative correlation between frequency/predictability and recognition time (up to perhaps a certain point, where recognition time may increase). Further, if predictability is not a driving factor of storage, we should see an increase in recognition times for only the most *frequent* phrases. On the other hand, if predictability does drive storage, we may see an increase in reaction time for both frequent and predictable phrases.
+The present study examines the factors that drive storage and the representations of stored items by extending @kapatsinski2009 to look at the effects of both frequency, predictability, and their interaction on the processing of V+*up* phrases. Similar to @kapatsinski2009, participants are tasked with pressing a button once they hear the segment *up* (which in our study occurs either as a particle within verb phrases, e.g., *pick up*, or part of a word, e.g., *puppet*), but in our case the stimuli varied in frequency, predictability, and whether they were a phrasal verb or not. Since both frequency and predictability effects are rather robust in the literature, we should at the very least see a negative correlation between frequency and predictability and recognition time (up to perhaps a certain point, where recognition time may increase). Further, if predictability is not a driving factor of storage, we should see an increase in recognition times for only the most *frequent* phrases. On the other hand, if predictability does drive storage, we may see an increase in reaction time for both frequent and predictable phrases.
 
 # Methods
 
@@ -277,7 +278,7 @@ $$ {#eq-logodds}
 
 In non-mathematical terms, the above equation quantifies how likely *up* is to follow after the verb relative to every other word that could follow. For example, the odds ratio of *pick up* would be the number of times the entire verb phrase occurs -- *pick up* -- divided by the number of times the verb -- *pick* -- occurs without *up* following it.
 
-For the purposes of the present study, we gathered a variety of phrases that varied in both their predictability and frequency and their combination. In order to do this, we extracted the 50 most frequent Verb+*up* items and the 50 most predictable ones. Next, we selected 100 more by randomly sampling from the remaining items. In order to ensure stable predictability estimates we eliminated words that a college-aged speaker wouldn't have heard more than 10 times.[^4] We then visually inspected the data to confirm that our data spanned across both the frequency and predictability continuum. This distribution is presented in @fig-stimplot below.
+For the purposes of the present study, we gathered a variety of phrases that varied in both their predictability and frequency and their combination. In order to do this, we extracted the 50 most frequent Verb+*up* items and the 50 most predictable ones. Next, we selected 100 more by randomly sampling from the remaining items. In order to ensure stable predictability estimates we eliminated words that a college-aged speaker wouldn't have heard more than 10 times.[^4] We then visually inspected the data to confirm that our data spanned across both the frequency and predictability continuum. This distribution is presented in @fig-stimplot.
 
 [^4]: @levyProcessingExtraposedStructures2012 extrapolated that the average college-aged speaker has heard about 350 million words in their lifetime. Thus we excluded items that had a frequency smaller than 10 per 350 million.
 
@@ -297,15 +298,17 @@ plot1 = ggplot(filter(data_verbs_up), aes(y = log(`Frequency (per Million)`), x 
 plot1
 ```
 
+Phrasal verbs show a syntactic alternation that is not present in all verb+*up* collocations (e.g., in the example below *lightened up the room* is fine, but *lightened the room up* is weird at best). It is possible that due to this syntactic alternation, phrasal verbs may be stored regardless of frequency and predictability. This is because in order to properly use phrasal verbs, a speaker must be aware of the syntactic alternation, which can't simply be predicted compositionally (e.g., some V+*up* phrases are phrasal verbs, while other V+*up* phrases are not phrasal verbs[^5]). Thus, we additionally coded our stimuli for whether they were phrasal verbs or not. This coding was done based on whether they could syntactically alternate between having the noun within the verb phrase and having the noun immediately after the verb phrase. For example, since both *pick the cat up* and *pick up the cat* are grammatical, *pick up* was classified as a phrasal verb. Each item was checked by two of the authors. Disagreement was easily resolved by discussion and an agreement was reached for every item.
+
+[^5]: Note that this largely correlates with whether the verb is transitive or not.
+
 \begin{exe} 
 \ex
   \begin{xlist}
-    \ex The controversy stirred up a heated debate. \\
-    \ex ??The controversy stirred a heated debate up. \\
+    \ex The student lightened up the room. \\
+    \ex ??The student lightened the room up. \\
   \end{xlist}
 \end{exe}
-
-Phrasal verbs show a syntactic alternation that is not present in all verb+*up* collocations (e.g., *picked the peanut up* is fine, but *stirred a heated debate up* is weird at best). It is possible that due to this syntactic alternation, phrasal verbs may be stored regardless of frequency/predictability. This is because in order to properly use phrasal verbs, a speaker must be aware of the syntactic alternation, which can't simply be predicted compositionally (e.g., some V+*up* phrases are phrasal verbs, while other V+*up* phrases are not phrasal verbs). Thus, we additionally coded our stimuli for whether they were phrasal verbs or not. This coding was done based on whether they could syntactically alternate between having the noun within the verb phrase and having the noun immediately after the verb phrase. For example, since both *pick the cat up* and *pick up the cat* are grammatical, *pick up* was classified as a phrasal verb. Each item was checked by two of the authors. Disagreement was easily resolved by discussion and an agreement was reached for every item.
 
 We also searched the same corpus for words that contained the segment *up* (e.g., *cupcake*). In order to gather a subset of words that roughly matches the frequency range of our experimental stimuli, we extracted the 50 most frequent words, then sampled from the rest of the dataset to gather an additional 100 words. These 350 items together comprise our stimuli.
 
@@ -327,59 +330,33 @@ After creating the sentences, a native English speaker then recorded each senten
 
 Participants were presented with audio sentences via Pavlovia (<https://pavlovia.org/>), a website for presenting PsychoPy experiments [@peircePsychoPy2ExperimentsBehavior2019]. Each participant was presented with 3 practice trials and then 350 sentences. While we had a total of 700 sentences, participants didn't see both the filler and experimental sentence for the same item, thus they only saw half of the stimuli. The order of the sentences was random and exactly half of the sentences contained the target segment (to avoid biasing the participants towards a specific response). Participants were instructed to press a key as soon as they heard the segment *up*, or to press a separate key at the end of the sentence if they did not hear the target segment in the sentence. We then recorded their reaction time of the button press. The experiment took approximately 40 minutes.
 
-## Analysis
-
-The data[^5] was analyzed using General Additive Mixed models, as implemented in the *mgcv* package [@mgcv] within the R programming environment [@Rpackage]. General Additive Mixed Models are models that allow us to model our outcome variable as a combination of the predictors. GAMMs differ from generalized linear regression models in that they allow the predictors to be modeled as non-linear functions, similar to polynomial regression. Specifically, in a Generalized Additive Mixed Model, beta-coefficients are replaced with a smooth function, which is a combination of splines. The more splines that we include, the more wiggly our line will be. In order to avoid overfitting, GAMMs also include a penalty term, $\lambda$, which can be modified to penalize more wiggly lines that aren't justified by the data. While the predictors are allowed to vary non-linearly, the linking function in our case was linear (i.e., response time varied linearly with the spline functions).
-
-[^5]: The stimuli, data, and analyses scripts can all be found freely available here: <https://github.com/znhoughton/Recognizability-Experiment>
-
-For all of our models, the dependent variable was the time it took for participants to react to the onset of the target segment in experimental sentences/sentences containing *up* (i.e., the time it took participants to press the button after hearing *up*). For the first model, the predictors were the interaction between log-predictability and log-frequency, which was allowed to vary non-linearly, and duration of the segment, which was not allowed to vary non-linearly. Additionally, we also included random intercepts for participant, trial, and item, as well as random by-participant slopes for predictability, frequency, their interaction, and trial. All our random-effects were allowed to be wiggly (non-linear). Our model formula is included below in @eq-gamminteraction:
-
-$$
-\begin{aligned}log(RT) & \sim ti(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
-$$ {#eq-gamminteraction}
-
-We also ran an additional analysis similar to the first model, but allowing the interaction to vary for phrasal vs non-phrasal verbs. Specifically, the model is identical to the first model with the exception that the effect of the interaction term was allowed to be different for phrasal verbs and non-phrasal verbs. This was done in order to examine whether the effect of frequency and predictability was different for phrasal verbs versus non-phrasal verbs. See @eq-gammPhrasalNonphrasal:
-
-$$
-\begin{aligned}
-log(RT) & \sim ti(Predictability, Frequency, by = PhrasalVerb) + Duration + s(participant, bs = \text{`}re\text{'}) \\ & + s(Item, bs = \text{`}re\text{'}) + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) 
-\end{aligned}
-$$ {#eq-gammPhrasalNonphrasal}
-
-Additionally, we ran a Generalized Additive Model with frequency, predictability, and the interaction between frequency and predictability as fixed-effects that could vary non-linearly, and duration of the segment as a fixed-effect that could not vary non-linearly. The random-effects structure for this model was identical to the previous two models. The model syntax is included below in @eq-gammFull:
-
-$$
-\begin{aligned}log(RT) & \sim s(Predictability) + s(Frequency) + ti (Predictability, Frequency) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  + s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) \end{aligned}
-$$ {#eq-gammFull}
-
-Finally, we replicated the analyses from @kapatsinski2009 using two Bayesian quadratic regression models [implemented in *brms;* @brms], one which only included frequency, and one which only included predictability. For the frequency model, the fixed-effects were log-frequency and log-frequency$^2$, along with duration. The model also included random intercepts for participant and item, and random slopes for log-frequency by participant, duration by participant, and log-frequency$^2$ by participant.
-
-The quadratic regression with predictability was identical to the quadratic regression with frequency, except that log-frequency was replaced with log-predictability, and log-frequency$^2$ was replaced with log-predictability$^2$. The random-effects were modeled without correlations between them for both models (this was done to allow the model to run faster, since we collected a large amount of data).
-
-The model syntax for both models is included below in @eq-brmsFreq and @eq-brmsPredic:
-
-$$
-\begin{aligned}
-log(RT) & \sim log(Frequency) + Duration + log(Frequency^2) \\ & + (1 + log(Frequency) + log(Frequency^2) + Duration || Participant) + (1 || Item)
-\end{aligned}
-$$ {#eq-brmsFreq}
-
-$$
-\begin{aligned}
-log(RT) & \sim log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
-\end{aligned}
-$$ {#eq-brmsPredic}
-
 # Results
 
-First, we present the results of our generalized additive models. The result of our first generalized additive model (@tbl-gamModelTab; @eq-gamminteraction) suggested no significant interaction effect between frequency and predictability. A visualization is provided below in @fig-gam2dplot1.[^6]
+The data[^6] was analyzed using General Additive Mixed models, as implemented in the *mgcv* package [@mgcv] within the R programming environment [@Rpackage]. General Additive Mixed Models are models that allow us to model our outcome variable as a combination of the predictors. GAMMs differ from generalized linear regression models in that they allow the predictors to be modeled as non-linear functions, similar to polynomial regression. Specifically, in a Generalized Additive Mixed Model, beta-coefficients are replaced with a smooth function, which is a combination of splines. The more splines that we include, the more wiggly our line will be. In order to avoid overfitting, GAMMs also include a penalty term, $\lambda$, which can be modified to penalize more wiggly lines that aren't justified by the data. While the predictors are allowed to vary non-linearly, the linking function in our case was linear (i.e., response time varied linearly with the spline functions). Our decision to use GAMMs was driven by our hypothesis that recognition times may vary non-linearly as a function of frequency and/or predictability [as suggested by @kapatsinski2009].
 
-[^6]: We also examined the interaction between frequency and predictability on accuracy (whether they correctly responded to whether *up* was present in the sentence) and similarly found no significant effect.
+[^6]: The stimuli, data, and analyses scripts can all be found freely available here: <https://github.com/znhoughton/Recognizability-Experiment>
 
-Further, the results of of our second generalized additive model ( @tbl-gamModelPhrasalNonPhrasalTab; @eq-gammPhrasalNonphrasal) suggested that even after accounting for whether the verb phrase was a phrasal verb or not, there was no significant interaction effect. A visualization is provided below in @fig-gam2dplot2.
+For all of our models, the dependent variable was the time it took for participants to react to the onset of the target segment in experimental sentences/sentences containing *up* (i.e., the time it took participants to press the button after hearing *up*).
 
-Finally, our third generalized additive model (@tbl-gamModelInterTab; @eq-gammFull) suggested that there was a significant main-effect of predictability. To summarize the results of our generalized additive models, we found no interaction effect between frequency and predictability, no main effect of frequency, but we do find a significant main effect of predictability. A visualization is provided below in @fig-gammodelinterplot.
+In order to visualize the surface of the interaction effect between frequency and predictability, we first ran a model with our depending variable as the interaction between log-predictability and log-frequency, which was allowed to vary non-linearly, and duration of the segment, which was not allowed to vary non-linearly. Additionally, we also included random intercepts for participant, trial, and item, as well as random by-participant slopes for predictability, frequency, their interaction, and trial. All our random-effects were allowed to be wiggly (non-linear). Our model formula is included below in @eq-gamminteraction. This model allows us to visualize the surface of the interaction effect.
+
+$$
+\begin{aligned}log(RT) & \sim te(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
+$$ {#eq-gamminteraction}
+
+The results of this model are presented in @tbl-gamModelTab and a visualization is provided in @fig-gam2dplot1.[^7] Since the interaction between frequency and predictability was not significant, we ran a follow-up analysis examining whether predictability and frequency independently drive recognition times. Thus, we ran an additional Generalized Additive Model with log-frequency, log-predictability, and the interaction between log-frequency and log-predictability as fixed-effects that could vary non-linearly, and duration of the segment as a fixed-effect that could not vary non-linearly. The random-effects structure for this model was identical to the previous two models. The model syntax is included below in @eq-gammFull:
+
+[^7]: We also examined the interaction between frequency and predictability on accuracy (whether they correctly responded to whether *up* was present in the sentence) and similarly found no significant effect.
+
+$$
+\begin{aligned}log(RT) & \sim ti(Predictability) + ti(Frequency) + ti(Predictability, Frequency) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  + s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) \end{aligned}
+$$ {#eq-gammFull}
+
+Our results are presented in @tbl-gamModelInterTab; @eq-gammFull and visualized in @fig-gammodelinterplot. The results demonstrated a significant main-effect of predictability (*p* \< 0.05), but no significant effect of frequency (*p* = 0.327).[^8]
+
+[^8]: We ran a follow-up model without the interaction to determine whether including the interaction effect takes away our power to detect an effect of frequency, however the results for our main-effects are consistent regardless of whether we include the interaction between frequency and predictability in the model.
+
+To summarize the results of our generalized additive models, we found no interaction effect between frequency and predictability, no main effect of frequency, but we do find a significant main effect of predictability.
 
 ```{r, echo = F, results='asis'}
 #| label: tbl-gamModelTab
@@ -411,7 +388,7 @@ knitr::kable(summary_table, booktabs = T)
              #label = 'tab:gamm_interaction', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
 ```
 
-```{r, echo = F, message = F, results='asis'}
+```{r, echo = F, message = F, results='asis', eval = F}
 #| label: tbl-gamModelPhrasalNonPhrasalTab
 #| tbl-cap: "Model results for the Generalized Additive Mixed Model cotaining the interaction between frequency and predictability for phrasal vs nonphrasal verbs."
 
@@ -445,7 +422,7 @@ summary_table3 = as.data.frame(summary_model3$s.table) %>%
             digits = 2) %>%
   mutate('p-value' = pvalue(`p-value`))
 
-rownames(summary_table3) = c('s(log-frequency)', 's(log-predictability)', 's(log-frequency*log-predictability)', 's(participant)', 's(item)', 's(log-pred., log-freq., log-freq.:log-pred., participant)')
+rownames(summary_table3) = c('ti(log-frequency)', 'ti(log-predictability)', 'ti(log-frequency, log-predictability)', 's(participant)', 's(item)', 's(log-predictability, log-frequency, participant)')
 
 
 knitr::kable(summary_table3, booktabs = T)
@@ -455,8 +432,6 @@ knitr::kable(summary_table3, booktabs = T)
 #print(xtable(summary_table3, caption = 'Model results for the Generalized Additive Mixed Model cotaining Frequency, Predictability, and the interaction between them.', label = 'tab:gamm_full', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
 ```
 
-A visualization of @tbl-gamModelTab and @tbl-gamModelPhrasalNonPhrasalTab are presented in @fig-gam2dplot1 and @fig-gam2dplot2.
-
 ```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
 #| label: fig-gam2dplot1
 #| fig-cap: "Plot of the interaction effect between predictability and frequency of our GAM model containing only the interaction between frequency and predictability. The brightness of the coloration denotes the strength of the effect at the point in the graph. Brighter colors denote longer reaction times."
@@ -464,7 +439,7 @@ A visualization of @tbl-gamModelTab and @tbl-gamModelPhrasalNonPhrasalTab are pr
 plot(sm(getViz(mod_gam1), 1)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
 ```
 
-```{r, echo = F, fig.width=12, fig.height = 4, fig.align = 'center', warning = F, message = F}
+```{r, echo = F, fig.width=12, fig.height = 4, fig.align = 'center', warning = F, message = F, eval = F}
 #| label: fig-gam2dplot2
 #| fig-cap: "Plot of the interaction effect between predictability and frequency of our GAM model containing the interaction between frequency and predictability for phrasal vs nonphrasal verbs. Brighter colors denote longer reaction times. The left graph is the predicted effect for phrasal verbs (e.g., pick up), the right graph is the predicted effect for non-phrasal verbs (e.g., walk up)."
 
@@ -492,7 +467,7 @@ newdata = tibble(log_predic = seq(from = -8,
                  Item = 0) 
 
 
-newdata = predict(mod_bam_inter, newdata = newdata, se = T, terms = "s(log_predic)") %>%
+newdata = predict(mod_bam_inter, newdata = newdata, se = T, terms = "ti(log_predic)") %>%
   as_tibble() %>%
   cbind(newdata)
 
@@ -507,7 +482,7 @@ ggplot(newdata, aes(x=log_predic, y=fit)) +
   theme_bw()
 ```
 
-Given these results, we ran a follow-up Bayesian quadratic regression model to further examine the effects of frequency and predictability on recognition times. Since the Generalized Additive Model suggested that there was no significant interaction between frequency and predictability, we left out the interaction term from the regression model. Similar to the above Bayesian models, we also modeled the random-effects without correlations between them. @eq-BayesianFullModelSyntax below presents the full model syntax:
+Given these results, we ran a follow-up Bayesian quadratic regression model to further examine the effects of frequency and predictability on recognition times. Since the Generalized Additive Model suggested that there was no significant interaction between frequency and predictability, we left out the interaction term from the regression model. The random-effects were modeled without correlations between them in order to allow the model to run faster. @eq-BayesianFullModelSyntax below presents the full model syntax:
 
 $$
 \begin{aligned}
@@ -515,7 +490,7 @@ log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^
 \end{aligned}
 $$ {#eq-BayesianFullModelSyntax}
 
-The results of this model are presented below in @tbl-brmsQuadraticNoInter and visualized in @fig-FullQuadraticPlot. Following @houghtonTaskdependentConsequencesDisfluency2023, in some cases where the confidence interval crosses zero, we also report the percentage of posterior samples greater than or less than zero. For the current model, although the confidence intervals for both quadratic terms crossed zero, nearly 97% of the posterior samples for predictability$^2$ were greater than zero, and nearly 93% of the posterior samples for frequency$^2$ were greater than zero. A plot of the posterior distribution for each coefficient is presented in @fig-posteriorplotFullQuadratic. The results suggest a U-shaped effect of both frequency and predictability on recognition times. In other words, participants recognized *up* faster as frequency or predictability increased, except for the most frequent or most predictable items, where participants were slower to recognize *up*.
+The results of this model are presented in @tbl-brmsQuadraticNoInter and visualized in @fig-FullQuadraticPlot. Following @houghtonTaskdependentConsequencesDisfluency2023, in some cases where the credible interval crosses zero, we also report the percentage of posterior samples greater than or less than zero. For the current model, although the credible intervals for both quadratic terms crossed zero, nearly 97% of the posterior samples for predictability$^2$ were greater than zero, and nearly 93% of the posterior samples for frequency$^2$ were greater than zero. A plot of the posterior distribution for each coefficient is presented in @fig-posteriorplotFullQuadratic. The results suggest a U-shaped effect of predictability and a marginal u-shaped effect of frequency on recognition times. In other words, participants recognized *up* faster as frequency or predictability increased, except for the most frequent or most predictable items, where participants were slower to recognize *up*.
 
 ```{r, echo = F, message = F, results='asis'}
 #| label: tbl-brmsQuadraticNoInter
@@ -578,7 +553,29 @@ brms_quadratic_no_interaction %>%
 ggarrange(freq_plot_full_quadratic, predic_plot_full_quadratic, nrow = 2, ncol = 1)
 ```
 
-Finally @tbl-brmsFreq and @tbl-brmsPredic present the results for the quadratic regression models including only frequency and frequency$^2$ as well as the quadratic regression model including only predictability and predictability$^2$ respectively. Visualizations of the model predictions are also included below in @fig-FreqOnlyPlot and @fig-PredicOnlyPlot.
+Finally, we replicated the analyses from @kapatsinski2009 using two Bayesian quadratic regression models [implemented in *brms;* @brms], one which only included frequency, and one which only included predictability. For the frequency model, the fixed-effects were log-frequency and log-frequency$^2$, along with duration. The model also included random intercepts for participant and item, and random slopes for log-frequency by participant, duration by participant, and log-frequency$^2$ by participant.
+
+The quadratic regression with predictability was identical to the quadratic regression with frequency, except that log-frequency was replaced with log-predictability, and log-frequency$^2$ was replaced with log-predictability$^2$. The random-effects were modeled without correlations between them for both models (this was done to allow the model to run faster, since we collected a large amount of data).
+
+The model syntax for both models is included below in @eq-brmsFreq and @eq-brmsPredic:
+
+$$
+\begin{aligned}
+log(RT) & \sim log(Frequency) + Duration + log(Frequency^2) \\ & + (1 + log(Frequency) + log(Frequency^2) + Duration || Participant) + (1 || Item)
+\end{aligned}
+$$ {#eq-brmsFreq}
+
+$$
+\begin{aligned}
+log(RT) & \sim log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
+\end{aligned}
+$$ {#eq-brmsPredic}
+
+The results of our first model are presented in @tbl-brmsFreq. While the credible interval for log(frequency)$^2$ crosses zero, over 95% of the posterior samples were greater than zero, suggesting an effect of frequency$^2$ on recognition times. A visualization of the model predictions is presented in @fig-FreqOnlyPlot and a visualization of the posterior distribution is presented in @fig-FreqOnlyBetaPlot.
+
+The results of our second model are presented in @tbl-brmsPredic. While the credible interval for log(predictability)$^2$ crosses zero, over 96% of the posterior samples were greater than zero, suggesting a meaningful effect. A visualization of the model predictions is included in @fig-PredicOnlyPlot and a visualization of the posterior distribution is presented in @fig-PredicOnlyBetaPlot.
+
+In summary, our results suggest that when considered independently, there appears to be a U-shaped effect for both frequency and predictability. The effect for frequency is not as reliably detected when predictability is also accounted for in our models, however we do find weak evidence for it. We do not find strong evidence for an interaction between frequency and predictability but it is possible that our study simply does not have the power to detect an interaction effect.
 
 ```{r, echo = F, warning = F, message = F, results='asis'}
 #| label: tbl-brmsFreq
@@ -617,7 +614,7 @@ knitr::kable(summary_table5, booktabs = T)
 #| tbl-cap: "Results for the Bayesian quadratic regression model containing only predidctability and predictability$^2$."
 
 
-percent_greater_zero = data.frame(fixef(brms_freq_quadratic_no_interaction, summary = F)) %>%
+percent_greater_zero = data.frame(fixef(brms_predic_quadratic_no_interaction, summary = F)) %>%
   pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
   group_by(beta_coefficient) %>%
   summarize((sum(estimate > 0) / length(estimate)) * 100)
@@ -626,7 +623,7 @@ percent_greater_zero = data.frame(fixef(brms_freq_quadratic_no_interaction, summ
 percent_greater_zero = percent_greater_zero %>%
   arrange(match(beta_coefficient, c('Intercept', 'log_predic', 'Duration', 'Ilog_predicE2')))
 
-summary_table6 = as.data.frame(fixef(brms_freq_quadratic_no_interaction)) %>%
+summary_table6 = as.data.frame(fixef(brms_predic_quadratic_no_interaction)) %>%
   mutate_if(is.numeric,
             formatC,
             format = 'f',
@@ -645,8 +642,6 @@ knitr::kable(summary_table6, booktabs = T)
 
 #print(xtable(summary_table6, caption = 'Results for the Bayesian quadratic regression model containing only predidctability and $predictability^2$', label = 'tab:brms_predic_quadratic', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
 ```
-
-While the confidence interval for log(frequency)$^2$ (@tbl-brmsFreq) crosses zero, over 95% of the posterior samples were greater than zero. Similarly, while the confidence interval for log(predictability)$^2$ also crosses zero, over 96% of the posterior samples were greater than zero. A visualization of the posterior distributions for both models are presented in @fig-FreqOnlyBetaPlot and @fig-PredicOnlyBetaPlot.
 
 ```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
 #| label: fig-FreqOnlyBetaPlot
@@ -697,27 +692,29 @@ brms_predic_quadratic_plot
 
 # Discussion
 
-The present study examined the effects of frequency and predictability on the recognizability of the particle *up* in English phrasal verbs. We found a U-shaped effect for both frequency and predictability on recognizability: as frequency/predictability increased, people were faster at recognizing *up*, until reaching the highest frequency/most predictable items, where people were slower. These results suggest that the most predictable and/or highest frequency items have a lack of internal structure. We also found no meaningful differences between phrasal verbs (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*), suggesting that this effect is driven primarily by the statistical distribution of the input as opposed to syntactic properties.
+The present study examined the effects of frequency and predictability on the recognizability of the particle *up* in English phrasal verbs. We found a U-shaped effect for both frequency and predictability on recognizability: as frequency and predictability increased, people were faster at recognizing *up*, until reaching the highest frequency/most predictable items, where people were slower. These results suggest that the most predictable and/or highest frequency items have a lack of internal structure. We also found no meaningful differences between phrasal verbs (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*), suggesting that this effect is driven primarily by the statistical distribution of the input as opposed to syntactic properties.
 
 <!--# low hanging fruit is replicating this while manipulating the semantic transparency of the phrase -->
 
-Our results suggest that both frequency and predictability drive storage, as we see an increase in recognition times for the highest frequency and highest predictability items. It is unclear how this result can arise without storage of the entire verb phrase, since in order for *up* to be harder to recognize in some contexts than in other contexts, it must have a separate representation.
+There are three possible accounts for the slowdown we see for the highest frequency or predictability items. First, it's possible that people are attending less to *up* or even skipping it in high frequency and high predictability phrases. This account, unlike the other accounts that we'll discuss, does not explicitly require the high frequency and high predictability phrase to be stored. Instead, the listener may be able to process the meaning of the phrase fast enough that they don't need to wait to hear the entire phrase. For example, it's possible that for high-frequency and high-predictability items, when accessing the first word, e.g., *pick*, the listener accesses the representation of the entire phrase — either a holistic representation or a compositional representation — immediately, before even hearing *up*. The listener can then continue to process the next words (skipping over *up*). Since the task is to respond when they hear *up*, the delay in reaction time may be because they're not accessing the phonological representation of *up*. Instead, they may access the semantic representation of the phrase without initially accessing the phonological representation of *up* and go on to recover the phonological representation from the semantic representation of the phrase, causing a delay in recognition time. Indeed, this possibility was suggested by @healy1976, who suggested that in reading once people process the meaning of a word, they move on to the next word regardless of whether they have processed each individual letter. This account doesn't explicitly require *pick up* to be stored holistically since a listener could hear *pick*, predict *up*, and compose the meaning *pick up* despite having not heard *up*. However, it also isn't incompatible with a storage account, since the listener might hear *pick,* predict *up*, and then accesses a stored holistic representation of *pick up*. In other words, if listeners are attending less to *up*, then it's unclear whether the listeners are accessing a representation formed by a compositional process (i.e., accessing *pick,* predicting *up,* and composing *pick up*) or simply retrieving a stored form from memory (accessing a holistic representation *pick up*).
 
-There are three possible accounts for the slowdown we see for the highest frequency items. First, it is possible that the slowdown for the high frequency and high predictability items is due to competition between the holistic representation and the compositional representation. That is, it is possible that high-frequency/predictability items develop a holistic representation separate from the compositional representation. This additional representation may compete with the compositional representation causing the slowdown. That is, there is a good deal of evidence that different mental representations compete for recognition [@oppenheimLexicalCompetitionDemand2019]. A representation is only activated once it receives sufficiently more activation than its competitors [@mcclellandInteractiveActivationModel1981]. For example, in picture-naming tasks in which participants are tasked with naming a picture while confronted with a distractor word, participants are generally slower to produce the intended word when the distractor word is semantically related to the picture [@starreveldSemanticInterferenceOrthographic1995; @schriefersExploringTimeCourse1990; @mcclellandInteractiveActivationModel1981]. Thus, it is possible that the delay in reaction time for *up* in high-frequency/predictability phrases may be a consequence of an additional representation competing with the compositional representation.
+The next two accounts all require the high-frequency and high-predictability items to be stored holistically, but vary with respect to whether the holistically stored representations retain their internal structure.
 
-A second possibility is that perhaps people are attending less to *up* or even skipping it in high-frequency/predictability phrases. That is, for high frequency/predictability phrases it's possible that listeners are able to process the meaning of the phrase fast enough that they don't need to hear the entire phrase. For example, it's possible that for high-frequency and high-predictability items, when accessing the first word, e.g., *pick*, the listener accesses the representation of the entire phrase (e.g., *pick up*) immediately, before even hearing *up*, and then continues on to process the next words (skipping over *up*). Since the task is to respond when they hear *up*, the delay in reaction time may be because they're not accessing the phonological representation of *up*. Instead, they may access the semantic representation of the phrase without initially accessing the phonological representation of *up*. They may then be recovering the phonological representation from the semantic representation of the phrase, causing a delay in recognition time. Indeed, this possibility was suggested by @healy1976, who suggested that in reading once people process the meaning of a word, they move on to the next word regardless of whether they have processed each individual letter.
+First, it is possible that the slowdown for the high frequency and high predictability items is due to competition between an additional representation. This competition can either be between a holistic representation that has internal structure and a compositional representation, or between a holistic representation that does not have internal structure and the compositional representation. Compositional representation here refers to a representation that is formed by accessing individual forms (e.g., *pick* and *up*) and combining them via some generative process. High-frequency and high-predictability items may develop a holistic representation separate from the compositional representation and this additional representation may compete with the compositional representation causing the slowdown. This account doesn't necessarily need to involve a loss of internal structure because simply having an additional representation to compete with can result in a slowdown, however it also not incompatible with an account where the holistic representation has lost some of its internal structure. These two possibilities both account for the slowdown at the highest frequency and highest predictability items.
 
-Lastly it is possible that the holistic phrase's internal structure may not be fully intact. Indeed, this interpretation seems quite likely given that we see a U-shaped effect in both phrasal (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*). That is, phrasal verbs have a syntactic alternation that may lead to all of them being stored, regardless of whether they are frequent/predictable or not. If the increase in reaction time is simply due to competition between the holistically stored representation and the individual word-level representations, then if all phrasal verbs are stored we would expect that all of the phrasal verbs were slower. However, while loss of internal representation indicates storage, storage does not necessitate a loss of internal representation. It is the combination of storage and usage that leads to loss of internal representation. Thus, our results seem most compatible with a combination of a lack of internal representation in frequent/predictable items along with competition (inhibition of the component words upon processing the holistic representation).
+To break it down further, there is a good deal of evidence that different mental representations compete for recognition [@oppenheimLexicalCompetitionDemand2019; c.f. @staubInfluenceClozeProbability2015]. A representation is only activated once it receives sufficiently more activation than its competitors [@mcclellandInteractiveActivationModel1981]. For example, in picture-naming tasks in which participants are tasked with naming a picture while confronted with a distractor word, participants are generally slower to produce the intended word when the distractor word is semantically related to the picture [@starreveldSemanticInterferenceOrthographic1995; @schriefersExploringTimeCourse1990; @mcclellandInteractiveActivationModel1981]. This effect is not restricted to production as we see similar competition effects in comprehension as well. For example, @magnuson2007 examined the role of competition in word recognition using a visual world paradigm, where participants saw words on a screen and were instructed to select the word that they heard. To measure word-recognition, an eye-tracker was used to track pupil fixations. In each of the trials there was a single distractor image. They found that words with low cohort density (i.e., words that have fewer phonological competitors) showed a larger proportion of target to nontarget fixations. That is, participants looked the distractor image less relative to the target word when the word had fewer competitors. Given the inhibitory effects of competition, it is possible that the delay in reaction time for *up* in high-frequency and predictability phrases may be a consequence of an additional representation competing with the compositional representation. However, there is also evidence that competition in comprehension (and our task is a comprehension task) has no effect on comprehension [@staubInfluenceClozeProbability2015]. Using reaction time data from a cloze completion task, @staubInfluenceClozeProbability2015 demonstrated that a RACE model with neither facilitation nor inhibition between competitors can account for the data. Thus the evidence for competition effects in comprehension is mixed. Note that this account is agnostic about whether the holistic representation has lost its internal structure or not: simply having an additional representation to compete with can cause the slowdown.
 
-One explanation for why high-frequency/predictability items may not have an intact internal representation is that perhaps the internal structure for those items was never learned to begin with. Children are experts at statistical learning and use transitional probabilities to divide the continuous speech stream [@saffran1996]. High predictability phrases in the present study, by definition, have higher transitional probabilities between words. Thus if children are relying on transitional probabilities to separate speech into individual words, the individual words in the most predictable phrases may not be separated out of the speech stream initially.
+Lastly it is possible that rather than being driven by competition, listeners are simply accessing a holistically stored representation of the phrase that lacks internal structure. This interpretation seems quite likely given that we see a U-shaped effect in both phrasal (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*). Phrasal verbs have a syntactic alternation that may lead to all of them being stored, regardless of whether they are frequent/predictable or not. For example, In a corpus study, @hampeTransitivePhrasalVerbs2012 argued that *Verb-Object-Particle* constructions and *Verb-Particle-Object* constructions are two distinct constructions.[^9] If the increase in reaction time is simply due to competition between the holistically stored representation and the individual word-level representations, then if all phrasal verbs are stored we would expect all of the phrasal verbs to be recognized more slowly. This is because all of the phrasal verbs, regardless of frequency, would have an additional representation that would compete for activation. However, we only see a slowdown for the most frequent or most predictable phrases, suggesting that storage alone isn't driving the effect. Instead, it is the combination of storage and usage that leads to loss of internal representation.
+
+[^9]: However, the same study also makes the claim that these templates are different from more lexically specific constructions, thus it is unclear in what ways these templates may pattern similarly to holistically stored lexical items.
+
+One explanation for why high frequency and high predictability items may not have an intact internal representation is that the internal structure for those items may never have been learned to begin with. Children are experts at statistical learning and use transitional probabilities to divide the continuous speech stream [@saffran1996]. High predictability phrases in the present study, by definition, have higher transitional probabilities between words. Thus if children are relying on transitional probabilities to separate speech into individual words, the individual words in the most predictable phrases may not be separated out of the speech stream initially.
 
 <!--# some interesting follow-up ideas: seeing how different computational models split up the speech stream. How do they do this for high predictability items? -->
 
 Further, many high-frequency (e.g., *set up*) and high-predictability (e.g., *conjure up*) phrases have semantically vague relationships that might make it difficult to split them up on a semantic basis. It seems plausible then that maybe these phrases weren't learned as being composed of individual words initially and thus the internal structure for the holistically stored items may not have been learned. The example, *trick or treat*, is a prime example of a phrase that does not seem to have a clear semantic relationship between the phrase and its component parts.
 
-On the other hand, the internal structure may have been lost over time. For example, as
-
-<!--# this is another cool idea to examine -->
+On the other hand, the internal structure may have been lost over time. For example, @harmonPuttingOldTools2017 demonstrated that as learners repeatedly experience a form with a specific meaning, they become more likely to use that form to express novel meanings in production (resulting in semantic extension). It is possible that this accessibility effect similarly drives a loss of internal structure: As a phrase becomes more semantically extended, the internal structure may be lost over time. That is, as a phrase such as *pick up* becomes extended to express novel meanings such as *continue* ("Let's pick up from where we last left off"), the relationship between the phrase and its internal pieces (e.g., the relationship between *pick up* and the individual words *pick* and *up*) becomes less transparent, and the learner may slowly unlearn this relationship as it becomes less useful.
 
 <!--# need to revisit this and clarify how this increase in association explains the increase in rt for up in those phrases -->
 
@@ -745,6 +742,6 @@ In summary, we demonstrate that both frequency and predictability drive the holi
 
 # Acknowledgements
 
-The authors would like to thank Dingyi (Penny) Pan, a graduate student in Linguistics, for reading and offering comments on a draft of this paper. The authors would also like to thank Vsevolod Kapatsinski and Zara Harmon for providing interesting discussion about the nature of competition in processing.
+The authors would like to thank Dingyi (Penny) Pan, a graduate student in Linguistics, for reading and offering comments on a draft of this paper. The authors would also like to thank Vsevolod Kapatsinski and Zara Harmon for providing helpful discussion about the nature of competition in lexical processing.
 
 \newpage
