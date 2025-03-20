@@ -218,7 +218,7 @@ Despite the evidence of multi-word holistic storage, however, it is still largel
 
 Traditionally, frequency has been assumed to be the driving factor behind multi-word storage. Indeed, most of the examples of storage given so far have been with respect to frequency. Perhaps the most famous series of studies demonstrating this were conducted by Bybee [@bybee1999; @bybee2003; @bybee2001]. In a series of studies, Bybee and colleagues demonstrated that a variety of words are reduced more in high-frequency contexts than low-frequency contexts [additionally see @kapatsinskiHierarchicalInferenceSound2021 for further discussion of this]. For example, in addition to the earlier examples, *going to* can be reduced in the frequent future marker, *gonna*, but not in the less frequent verb phrase construction describing motion [e.g., \**gonna the store*, @bybee2003]. This mirrors patterns we see on a word-level (which for the most part must be stored). For example, the reduction of vowels to schwa in English is more advanced in high-frequency words than low-frequency words [@hooper1976; @bybee2003]. In other words, for both words and phrases, sound reduction advances more quickly as a function of frequency (i.e., high frequency phrases and high frequency words are both more reduced than their lower frequency counterparts). While this is not surprising for words (which most theories posit have separate representations), it is surprising for phrases which don't necessarily have to be stored holistically.
 
-On the other hand, predictability has not been directly examined much by the Psycholinguistics literature within the context of holistic multi-word storage [c.f. @odonnellFragmentGrammarsExploring2009; @houghton2023does]. One such study examining the role of predictability in holistic storage was @houghton2023does [which was an extension of @staub2007]. In their study, using the maze task[^3] [@boyceMazeMadeEasy2020] the authors examined whether participants were slower to select the first noun in high-predictability compound nouns in locally implausible contexts (i.e., contexts where the first noun in the compound is implausible but where the second noun eliminates the implausibility; see the below sentences) relative to high-predictability compound nouns in locally plausible contexts.
+On the other hand, predictability has not been directly examined much by the Psycholinguistics literature within the context of holistic multi-word storage [c.f. @odonnellFragmentGrammarsExploring2009; @houghton2023does]. One such study examining the role of predictability in holistic storage was [@houghton2023does; which was an extension of @staub2007]. In their study, using the maze task[^3] [@boyceMazeMadeEasy2020] the authors examined whether participants were slower to select the first noun in high-predictability compound nouns in locally implausible contexts (i.e., contexts where the first noun in the compound is implausible but where the second noun eliminates the implausibility; see the below sentences) relative to high-predictability compound nouns in locally plausible contexts.
 
 [^3]: In the maze task, participants are presented a sentence word-by-word. For each word in the sentence, they are presented with the target word and an ungrammatical distractor. Upon selecting the target word, the next word in the sentence is presented along with yet another ungrammatical distractor. The key measure is how long it takes for participants to select the target word.
 
@@ -338,13 +338,13 @@ The data[^6] was analyzed using General Additive Mixed models, as implemented in
 
 For all of our models, the dependent variable was the time it took for participants to react to the onset of the target segment in experimental sentences/sentences containing *up* (i.e., the time it took participants to press the button after hearing *up*).
 
-In order to visualize the surface of the interaction effect between frequency and predictability, we first ran a model with our depending variable as the interaction between log-predictability and log-frequency, which was allowed to vary non-linearly, and duration of the segment, which was not allowed to vary non-linearly. Additionally, we also included random intercepts for participant, trial, and item, as well as random by-participant slopes for predictability, frequency, their interaction, and trial. All our random-effects were allowed to be wiggly (non-linear). Our model formula is included below in @eq-gamminteraction. This model allows us to visualize the surface of the interaction effect.
+In order to visualize the surface of the interaction effect between frequency and predictability, we first ran a model with our independent variable as the interaction between log-predictability and log-frequency, which was allowed to vary non-linearly, and duration of the segment, which was not allowed to vary non-linearly. Additionally, we also included random intercepts for participant, trial, and item, as well as random by-participant slopes for predictability, frequency, their interaction, and trial. All our random-effects were allowed to be wiggly (non-linear). Our model formula is included below in @eq-gamminteraction. This model allows us to visualize the surface of the interaction effect. Note that in GAMMs, `ti()` is used to model the interaction effects since it produces a tensor product interaction from which the main-effects have been excluded. On the other hand `te()` models the full tensor product smooth without the main-effects excluded. In other words, when modeling the main-effects with the interaction effect, it's best practice to use `ti()`.
 
 $$
 \begin{aligned}log(RT) & \sim te(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
 $$ {#eq-gamminteraction}
 
-The results of this model are presented in @tbl-gamModelTab and a visualization is provided in @fig-gam2dplot1.[^7] Since the interaction between frequency and predictability was not significant, we ran a follow-up analysis examining whether predictability and frequency independently drive recognition times. Thus, we ran an additional Generalized Additive Model with log-frequency, log-predictability, and the interaction between log-frequency and log-predictability as fixed-effects that could vary non-linearly, and duration of the segment as a fixed-effect that could not vary non-linearly. The random-effects structure for this model was identical to the previous two models. The model syntax is included below in @eq-gammFull:
+The results of this model are presented in @tbl-gamModelTab and a visualization is provided in @fig-gam2dplot1.[^7] Although the tensor product smooth for the interaction effect was not significant, it's possible that the frequency or predictability independently affect recognition times. Thus, we ran an additional Generalized Additive Model with log-frequency, log-predictability, and the interaction between log-frequency and log-predictability as fixed-effects that could vary non-linearly. Similar to before, duration of the segment was also modeled as a fixed-effect that could not vary non-linearly. The random-effects structure for this model was identical to the previous two models. The model syntax is included below in @eq-gammFull:
 
 [^7]: We also examined the interaction between frequency and predictability on accuracy (whether they correctly responded to whether *up* was present in the sentence) and similarly found no significant effect.
 
@@ -357,6 +357,41 @@ Our results are presented in @tbl-gamModelInterTab; @eq-gammFull and visualized 
 [^8]: We ran a follow-up model without the interaction to determine whether including the interaction effect takes away our power to detect an effect of frequency, however the results for our main-effects are consistent regardless of whether we include the interaction between frequency and predictability in the model.
 
 To summarize the results of our generalized additive models, we found no interaction effect between frequency and predictability, no main effect of frequency, but we do find a significant main effect of predictability.
+
+In the Psycholinguistics literature, generalized additive mixed models are not yet well established. Thus, we ran a follow-up Bayesian quadratic regression model to further examine the effects of frequency and predictability on recognition times. Since the Generalized Additive Model suggested that there was no significant interaction between frequency and predictability, we left out the interaction term from the regression model. The random-effects were modeled without correlations between them in order to allow the model to run faster. @eq-BayesianFullModelSyntax below presents the full model syntax:
+
+$$
+\begin{aligned}
+log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency)^2  + log(Predictability)^2 \\ & + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\& + Duration || Participant) + (1 || Item)
+\end{aligned}
+$$ {#eq-BayesianFullModelSyntax}
+
+The results of this model are presented in @tbl-brmsQuadraticNoInter and visualized in @fig-FullQuadraticPlot. Following @houghtonTaskdependentConsequencesDisfluency2023, in some cases where the credible interval crosses zero, we also report the percentage of posterior samples greater than or less than zero. For the current model, although the credible intervals for both quadratic terms crossed zero, nearly 97% of the posterior samples for predictability$^2$ were greater than zero, and nearly 93% of the posterior samples for frequency$^2$ were greater than zero. A plot of the posterior distribution for each coefficient is presented in @fig-posteriorplotFullQuadratic. The results suggest a U-shaped effect of predictability and a marginal u-shaped effect of frequency on recognition times. In other words, participants recognized *up* faster as frequency or predictability increased, except for the most frequent or most predictable items, where participants were slower to recognize *up*.
+
+Finally, we replicated the analyses from @kapatsinski2009 using two Bayesian quadratic regression models [implemented in *brms;* @brms], one which only included frequency, and one which only included predictability. For the frequency model, the fixed-effects were log-frequency and log-frequency$^2$, along with duration. The model also included random intercepts for participant and item, and random slopes for log-frequency by participant, duration by participant, and log-frequency$^2$ by participant.
+
+The quadratic regression with predictability was identical to the quadratic regression with frequency, except that log-frequency was replaced with log-predictability, and log-frequency$^2$ was replaced with log-predictability$^2$. The random-effects were modeled without correlations between them for both models (this was done to allow the model to run faster, since we collected a large amount of data).
+
+The model syntax for both models is included below in @eq-brmsFreq and @eq-brmsPredic:
+
+$$
+\begin{aligned}
+log(RT) & \sim log(Frequency) + Duration + log(Frequency)^2 \\ & + (1 + log(Frequency) + log(Frequency)^2 + Duration || Participant) + (1 || Item)
+\end{aligned}
+$$ {#eq-brmsFreq}
+
+$$
+\begin{aligned}
+log(RT) & \sim log(Predictability) + Duration + log(Predictability)^2 \\ & + (1 + log(Predictability) + log(Predictability)^2 + Duration || Participant) + (1 || Item)
+\end{aligned}
+$$ {#eq-brmsPredic}
+
+The results of our first model are presented in @tbl-brmsFreq. While the credible interval for log(frequency)$^2$ crosses zero, over 95% of the posterior samples were greater than zero, suggesting an effect of frequency$^2$ on recognition times. A visualization of the model predictions is presented in @fig-FreqOnlyPlot and a visualization of the posterior distribution is presented in @fig-FreqOnlyBetaPlot.
+
+The results of our second model are presented in @tbl-brmsPredic. While the credible interval for log(predictability)$^2$ crosses zero, over 96% of the posterior samples were greater than zero, suggesting a meaningful effect. A visualization of the model predictions is included in @fig-PredicOnlyPlot and a visualization of the posterior distribution is presented in @fig-PredicOnlyBetaPlot.
+
+In summary, our results suggest that when considered independently, there appears to be a U-shaped effect for both frequency and predictability. The effect for frequency is not as reliably detected when predictability is also accounted for in our models, however we do find weak evidence for it. We do not find strong evidence for an interaction between frequency and predictability but it is possible that our study simply does not have the power to detect an interaction effect.
+
 
 ```{r, echo = F, results='asis'}
 #| label: tbl-gamModelTab
@@ -432,150 +467,6 @@ knitr::kable(summary_table3, booktabs = T)
 #print(xtable(summary_table3, caption = 'Model results for the Generalized Additive Mixed Model cotaining Frequency, Predictability, and the interaction between them.', label = 'tab:gamm_full', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
 ```
 
-```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
-#| label: fig-gam2dplot1
-#| fig-cap: "Plot of the interaction effect between predictability and frequency of our GAM model containing only the interaction between frequency and predictability. The brightness of the coloration denotes the strength of the effect at the point in the graph. Brighter colors denote longer reaction times."
-
-plot(sm(getViz(mod_gam1), 1)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
-```
-
-```{r, echo = F, fig.width=12, fig.height = 4, fig.align = 'center', warning = F, message = F, eval = F}
-#| label: fig-gam2dplot2
-#| fig-cap: "Plot of the interaction effect between predictability and frequency of our GAM model containing the interaction between frequency and predictability for phrasal vs nonphrasal verbs. Brighter colors denote longer reaction times. The left graph is the predicted effect for phrasal verbs (e.g., pick up), the right graph is the predicted effect for non-phrasal verbs (e.g., walk up)."
-
-
-nonphrasal_plot = plot(sm(getViz(mod_gam_phrasal_nonphrasal), 1)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
-
-phrasal_plot = plot(sm(getViz(mod_gam_phrasal_nonphrasal), 2)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
-
-
-gridPrint(nonphrasal_plot, phrasal_plot, ncol=2)
-```
-
-```{r echo = F, message = F, warning = F}
-#| label: fig-gammodelinterplot
-#| fig-cap: "Plot of our GAM model's predicted effect of log(predictability) on recognition time."
-
-
-newdata = tibble(log_predic = seq(from = -8,
-                        to = 2,
-                        length.out = 1000),
-                 Duration = 0,
-                 log_freq = 0,
-                 log_freqxpred = 0,
-                 participant = 0,
-                 Item = 0) 
-
-
-newdata = predict(mod_bam_inter, newdata = newdata, se = T, terms = "ti(log_predic)") %>%
-  as_tibble() %>%
-  cbind(newdata)
-
-
-ggplot(newdata, aes(x=log_predic, y=fit)) +
-  geom_ribbon(alpha=0.3,
-              aes(ymin =fit-se.fit, 
-                  ymax = fit+se.fit)) +
-  geom_line() +
-  xlab('log(Predictability)') + 
-  ylab('Predicted Effect on Recognition Time') +
-  theme_bw()
-```
-
-Given these results, we ran a follow-up Bayesian quadratic regression model to further examine the effects of frequency and predictability on recognition times. Since the Generalized Additive Model suggested that there was no significant interaction between frequency and predictability, we left out the interaction term from the regression model. The random-effects were modeled without correlations between them in order to allow the model to run faster. @eq-BayesianFullModelSyntax below presents the full model syntax:
-
-$$
-\begin{aligned}
-log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^2)  + log(Predictability^2) \\ & + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\& + Duration || Participant) + (1 || Item)
-\end{aligned}
-$$ {#eq-BayesianFullModelSyntax}
-
-The results of this model are presented in @tbl-brmsQuadraticNoInter and visualized in @fig-FullQuadraticPlot. Following @houghtonTaskdependentConsequencesDisfluency2023, in some cases where the credible interval crosses zero, we also report the percentage of posterior samples greater than or less than zero. For the current model, although the credible intervals for both quadratic terms crossed zero, nearly 97% of the posterior samples for predictability$^2$ were greater than zero, and nearly 93% of the posterior samples for frequency$^2$ were greater than zero. A plot of the posterior distribution for each coefficient is presented in @fig-posteriorplotFullQuadratic. The results suggest a U-shaped effect of predictability and a marginal u-shaped effect of frequency on recognition times. In other words, participants recognized *up* faster as frequency or predictability increased, except for the most frequent or most predictable items, where participants were slower to recognize *up*.
-
-```{r, echo = F, message = F, results='asis'}
-#| label: tbl-brmsQuadraticNoInter
-#| tbl-cap: "Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics."
-
-#table 1: full interaction model
-
-
-percent_greater_zero = data.frame(fixef(brms_quadratic_no_interaction, summary = F)) %>%
-  pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
-  group_by(beta_coefficient) %>%
-  summarize((sum(estimate > 0) / length(estimate)) * 100)
-  
-
-summary_table4 = as.data.frame(fixef(brms_quadratic_no_interaction)) %>%
-  mutate_if(is.numeric,
-            formatC,
-            format = 'f',
-            digits = 3) 
-
-percent_greater_zero = percent_greater_zero %>%
-  arrange(match(beta_coefficient, c('Intercept', 'log_freq', 'log_predic', 'Duration', 'Ilog_predicE2', 'Ilog_freqE2')))
-
-
-summary_table4 = summary_table4 %>%
-  mutate(percent_greater_zero = percent_greater_zero$`(sum(estimate > 0)/length(estimate)) * 100`) %>%
-  rename('% Samples > 0' = `percent_greater_zero`)
-
-rownames(summary_table4) = c('Intercept', 'log-frequency', 'log-predictability', 'duration', 'log-predictability^2', 'log-frequency^2')
-
-knitr::kable(summary_table4, booktabs = T)
-#apa_table(summary_table4,
-          #caption = 'Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics.',
-          #placement = 'H')
-
-#print(xtable(summary_table4, caption = 'Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics', label = 'tab:brms_quadratic', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
-
-```
-
-```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
-#| label: fig-posteriorplotFullQuadratic
-#| fig-cap: "Plot of the posterior distribution for the beta value of each fixed-effect in our Bayesian quadratic regression model. The y-axis contains the different fixed-effects and the x-axis contains the posterior distribution of beta values for the corresponding fixed-effect."
-
-beta_coef_labels = list.reverse(c('log-predictability', 'log-frequency', 'Intercept', 'log-predictability^2', 'log-frequency^2')) #ordered them the opposite way and I'm too lazy to reverse it manually
-brms_quadratic_no_interaction %>%
-  gather_draws(b_Intercept, b_log_freq, b_log_predic, b_Ilog_predicE2, b_Ilog_freqE2) %>%
-  ggplot(aes(x = .value, y = .variable)) +
-  stat_halfeye() +
-  xlab('Posterior Distribution') +
-  ylab('Beta Coefficent for each fixed-effect') +
-  scale_y_discrete(labels = beta_coef_labels) + 
-  theme_bw()
-
-```
-
-```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
-#| label: fig-FullQuadraticPlot
-#| fig-cap: "Visualization of the model results from @tbl-brmsQuadraticNoInter for frequency (top) and predictability (bottom). Frequencies are per million."
-
-ggarrange(freq_plot_full_quadratic, predic_plot_full_quadratic, nrow = 2, ncol = 1)
-```
-
-Finally, we replicated the analyses from @kapatsinski2009 using two Bayesian quadratic regression models [implemented in *brms;* @brms], one which only included frequency, and one which only included predictability. For the frequency model, the fixed-effects were log-frequency and log-frequency$^2$, along with duration. The model also included random intercepts for participant and item, and random slopes for log-frequency by participant, duration by participant, and log-frequency$^2$ by participant.
-
-The quadratic regression with predictability was identical to the quadratic regression with frequency, except that log-frequency was replaced with log-predictability, and log-frequency$^2$ was replaced with log-predictability$^2$. The random-effects were modeled without correlations between them for both models (this was done to allow the model to run faster, since we collected a large amount of data).
-
-The model syntax for both models is included below in @eq-brmsFreq and @eq-brmsPredic:
-
-$$
-\begin{aligned}
-log(RT) & \sim log(Frequency) + Duration + log(Frequency^2) \\ & + (1 + log(Frequency) + log(Frequency^2) + Duration || Participant) + (1 || Item)
-\end{aligned}
-$$ {#eq-brmsFreq}
-
-$$
-\begin{aligned}
-log(RT) & \sim log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
-\end{aligned}
-$$ {#eq-brmsPredic}
-
-The results of our first model are presented in @tbl-brmsFreq. While the credible interval for log(frequency)$^2$ crosses zero, over 95% of the posterior samples were greater than zero, suggesting an effect of frequency$^2$ on recognition times. A visualization of the model predictions is presented in @fig-FreqOnlyPlot and a visualization of the posterior distribution is presented in @fig-FreqOnlyBetaPlot.
-
-The results of our second model are presented in @tbl-brmsPredic. While the credible interval for log(predictability)$^2$ crosses zero, over 96% of the posterior samples were greater than zero, suggesting a meaningful effect. A visualization of the model predictions is included in @fig-PredicOnlyPlot and a visualization of the posterior distribution is presented in @fig-PredicOnlyBetaPlot.
-
-In summary, our results suggest that when considered independently, there appears to be a U-shaped effect for both frequency and predictability. The effect for frequency is not as reliably detected when predictability is also accounted for in our models, however we do find weak evidence for it. We do not find strong evidence for an interaction between frequency and predictability but it is possible that our study simply does not have the power to detect an interaction effect.
 
 ```{r, echo = F, warning = F, message = F, results='asis'}
 #| label: tbl-brmsFreq
@@ -643,6 +534,44 @@ knitr::kable(summary_table6, booktabs = T)
 #print(xtable(summary_table6, caption = 'Results for the Bayesian quadratic regression model containing only predidctability and $predictability^2$', label = 'tab:brms_predic_quadratic', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
 ```
 
+```{r, echo = F, message = F, results='asis'}
+#| label: tbl-brmsQuadraticNoInter
+#| tbl-cap: "Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics."
+
+#table 1: full interaction model
+
+
+percent_greater_zero = data.frame(fixef(brms_quadratic_no_interaction, summary = F)) %>%
+  pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
+  group_by(beta_coefficient) %>%
+  summarize((sum(estimate > 0) / length(estimate)) * 100)
+  
+
+summary_table4 = as.data.frame(fixef(brms_quadratic_no_interaction)) %>%
+  mutate_if(is.numeric,
+            formatC,
+            format = 'f',
+            digits = 3) 
+
+percent_greater_zero = percent_greater_zero %>%
+  arrange(match(beta_coefficient, c('Intercept', 'log_freq', 'log_predic', 'Duration', 'Ilog_predicE2', 'Ilog_freqE2')))
+
+
+summary_table4 = summary_table4 %>%
+  mutate(percent_greater_zero = percent_greater_zero$`(sum(estimate > 0)/length(estimate)) * 100`) %>%
+  rename('% Samples > 0' = `percent_greater_zero`)
+
+rownames(summary_table4) = c('Intercept', 'log-frequency', 'log-predictability', 'duration', 'log-predictability^2', 'log-frequency^2')
+
+knitr::kable(summary_table4, booktabs = T)
+#apa_table(summary_table4,
+          #caption = 'Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics.',
+          #placement = 'H')
+
+#print(xtable(summary_table4, caption = 'Model results for the Bayesian quadratic regression model containing fixed-effects for frequency, predictability, and their quadratics', label = 'tab:brms_quadratic', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
+
+```
+
 ```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
 #| label: fig-FreqOnlyBetaPlot
 #| fig-cap: "Plot of the posterior distribution for the beta value of each fixed-effect in our frequency-only quadratic regression model. The y-axis contains the different fixed-effects and the x-axis contains the posterior distribution of beta values for the corresponding fixed-effect."
@@ -690,6 +619,82 @@ brms_predic_quadratic_plot
 
 ```
 
+```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
+#| label: fig-gam2dplot1
+#| fig-cap: "Plot of the interaction effect between predictability and frequency of our GAM model containing only the interaction between frequency and predictability. The brightness of the coloration denotes the strength of the effect at the point in the graph. Brighter colors denote longer reaction times."
+
+plot(sm(getViz(mod_gam1), 1)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
+```
+
+```{r, echo = F, fig.width=12, fig.height = 4, fig.align = 'center', warning = F, message = F, eval = F}
+#| label: fig-gam2dplot2
+#| fig-cap: "Plot of the interaction effect between predictability and frequency of our GAM model containing the interaction between frequency and predictability for phrasal vs nonphrasal verbs. Brighter colors denote longer reaction times. The left graph is the predicted effect for phrasal verbs (e.g., pick up), the right graph is the predicted effect for non-phrasal verbs (e.g., walk up)."
+
+
+nonphrasal_plot = plot(sm(getViz(mod_gam_phrasal_nonphrasal), 1)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
+
+phrasal_plot = plot(sm(getViz(mod_gam_phrasal_nonphrasal), 2)) + l_fitRaster() + l_fitContour() + l_points(shape = 19, size = 1.5, alpha = 0.1) + xlab('Predictability (log)') + ylab('Frequency (log)') + ggtitle(NULL) + scale_fill_viridis_c(breaks = c(0.0, 0.1, 0.2), name = 's(x)', labels = c('0.0', '0.1', '0.2'))
+
+
+gridPrint(nonphrasal_plot, phrasal_plot, ncol=2)
+```
+
+```{r echo = F, message = F, warning = F}
+#| label: fig-gammodelinterplot
+#| fig-cap: "Plot of our GAM model's predicted effect of log(predictability) on recognition time."
+
+
+newdata = tibble(log_predic = seq(from = -8,
+                        to = 2,
+                        length.out = 1000),
+                 Duration = 0,
+                 log_freq = 0,
+                 log_freqxpred = 0,
+                 participant = 0,
+                 Item = 0) 
+
+
+newdata = predict(mod_bam_inter, newdata = newdata, se = T, terms = "ti(log_predic)") %>%
+  as_tibble() %>%
+  cbind(newdata)
+
+
+ggplot(newdata, aes(x=log_predic, y=fit)) +
+  geom_ribbon(alpha=0.3,
+              aes(ymin =fit-se.fit, 
+                  ymax = fit+se.fit)) +
+  geom_line() +
+  xlab('log(Predictability)') + 
+  ylab('Predicted Effect on Recognition Time') +
+  theme_bw()
+```
+
+
+
+```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
+#| label: fig-posteriorplotFullQuadratic
+#| fig-cap: "Plot of the posterior distribution for the beta value of each fixed-effect in our Bayesian quadratic regression model. The y-axis contains the different fixed-effects and the x-axis contains the posterior distribution of beta values for the corresponding fixed-effect."
+
+beta_coef_labels = list.reverse(c('log-predictability', 'log-frequency', 'Intercept', 'log-predictability^2', 'log-frequency^2')) #ordered them the opposite way and I'm too lazy to reverse it manually
+brms_quadratic_no_interaction %>%
+  gather_draws(b_Intercept, b_log_freq, b_log_predic, b_Ilog_predicE2, b_Ilog_freqE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficent for each fixed-effect') +
+  scale_y_discrete(labels = beta_coef_labels) + 
+  theme_bw()
+
+```
+
+```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
+#| label: fig-FullQuadraticPlot
+#| fig-cap: "Visualization of the model results from @tbl-brmsQuadraticNoInter for frequency (top) and predictability (bottom). Frequencies are per million."
+
+ggarrange(freq_plot_full_quadratic, predic_plot_full_quadratic, nrow = 2, ncol = 1)
+```
+
+
 # Discussion
 
 The present study examined the effects of frequency and predictability on the recognizability of the particle *up* in English phrasal verbs. We found a U-shaped effect for both frequency and predictability on recognizability: as frequency and predictability increased, people were faster at recognizing *up*, until reaching the highest frequency/most predictable items, where people were slower. These results suggest that the most predictable and/or highest frequency items have a lack of internal structure. We also found no meaningful differences between phrasal verbs (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*), suggesting that this effect is driven primarily by the statistical distribution of the input as opposed to syntactic properties.
@@ -702,7 +707,7 @@ The next two accounts all require the high-frequency and high-predictability ite
 
 First, it is possible that the slowdown for the high frequency and high predictability items is due to competition between an additional representation. This competition can either be between a holistic representation that has internal structure and a compositional representation, or between a holistic representation that does not have internal structure and the compositional representation. Compositional representation here refers to a representation that is formed by accessing individual forms (e.g., *pick* and *up*) and combining them via some generative process. High-frequency and high-predictability items may develop a holistic representation separate from the compositional representation and this additional representation may compete with the compositional representation causing the slowdown. This account doesn't necessarily need to involve a loss of internal structure because simply having an additional representation to compete with can result in a slowdown, however it also not incompatible with an account where the holistic representation has lost some of its internal structure. These two possibilities both account for the slowdown at the highest frequency and highest predictability items.
 
-To break it down further, there is a good deal of evidence that different mental representations compete for recognition [@oppenheimLexicalCompetitionDemand2019; c.f. @staubInfluenceClozeProbability2015]. A representation is only activated once it receives sufficiently more activation than its competitors [@mcclellandInteractiveActivationModel1981]. For example, in picture-naming tasks in which participants are tasked with naming a picture while confronted with a distractor word, participants are generally slower to produce the intended word when the distractor word is semantically related to the picture [@starreveldSemanticInterferenceOrthographic1995; @schriefersExploringTimeCourse1990; @mcclellandInteractiveActivationModel1981]. This effect is not restricted to production as we see similar competition effects in comprehension as well. For example, @magnuson2007 examined the role of competition in word recognition using a visual world paradigm, where participants saw words on a screen and were instructed to select the word that they heard. To measure word-recognition, an eye-tracker was used to track pupil fixations. In each of the trials there was a single distractor image. They found that words with low cohort density (i.e., words that have fewer phonological competitors) showed a larger proportion of target to nontarget fixations. That is, participants looked the distractor image less relative to the target word when the word had fewer competitors. Given the inhibitory effects of competition, it is possible that the delay in reaction time for *up* in high-frequency and predictability phrases may be a consequence of an additional representation competing with the compositional representation. However, there is also evidence that competition in comprehension (and our task is a comprehension task) has no effect on comprehension [@staubInfluenceClozeProbability2015]. Using reaction time data from a cloze completion task, @staubInfluenceClozeProbability2015 demonstrated that a RACE model with neither facilitation nor inhibition between competitors can account for the data. Thus the evidence for competition effects in comprehension is mixed. Note that this account is agnostic about whether the holistic representation has lost its internal structure or not: simply having an additional representation to compete with can cause the slowdown.
+To break it down further, there is a good deal of evidence that different mental representations compete for recognition [@oppenheimLexicalCompetitionDemand2019; c.f. @staubInfluenceClozeProbability2015]. A representation is selected once it receives sufficiently more activation than its competitors [@mcclellandInteractiveActivationModel1981]. For example, in picture-naming tasks in which participants are tasked with naming a picture while confronted with a distractor word, participants are generally slower to produce the intended word when the distractor word is semantically related to the picture [@starreveldSemanticInterferenceOrthographic1995; @schriefersExploringTimeCourse1990; @mcclellandInteractiveActivationModel1981]. This effect is not restricted to production as we see similar competition effects in comprehension as well. For example, @magnuson2007 examined the role of competition in word recognition using a visual world paradigm, where participants saw words on a screen and were instructed to select the word that they heard. To measure word-recognition, an eye-tracker was used to track pupil fixations. In each of the trials there was a single distractor image. They found that words with low cohort density (i.e., words that have fewer phonological competitors) showed a larger proportion of target to nontarget fixations. That is, participants looked the distractor image less relative to the target word when the word had fewer competitors. Given the inhibitory effects of competition, it is possible that the delay in reaction time for *up* in high-frequency and predictability phrases may be a consequence of an additional representation competing with the compositional representation. However, there is also evidence that competition in comprehension (and our task is a comprehension task) has no effect on comprehension [@staubInfluenceClozeProbability2015]. Using reaction time data from a cloze completion task, @staubInfluenceClozeProbability2015 demonstrated that a RACE model with neither facilitation nor inhibition between competitors can account for the data. Thus the evidence for competition effects in comprehension is mixed. Note that this account is agnostic about whether the holistic representation has lost its internal structure or not: simply having an additional representation to compete with can cause the slowdown.
 
 Lastly it is possible that rather than being driven by competition, listeners are simply accessing a holistically stored representation of the phrase that lacks internal structure. This interpretation seems quite likely given that we see a U-shaped effect in both phrasal (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*). Phrasal verbs have a syntactic alternation that may lead to all of them being stored, regardless of whether they are frequent/predictable or not. For example, In a corpus study, @hampeTransitivePhrasalVerbs2012 argued that *Verb-Object-Particle* constructions and *Verb-Particle-Object* constructions are two distinct constructions.[^9] If the increase in reaction time is simply due to competition between the holistically stored representation and the individual word-level representations, then if all phrasal verbs are stored we would expect all of the phrasal verbs to be recognized more slowly. This is because all of the phrasal verbs, regardless of frequency, would have an additional representation that would compete for activation. However, we only see a slowdown for the most frequent or most predictable phrases, suggesting that storage alone isn't driving the effect. Instead, it is the combination of storage and usage that leads to loss of internal representation.
 
@@ -738,10 +743,10 @@ On the other hand, the internal structure may have been lost over time. For exam
 
 <!--# I've commented out this part because I think it's outside the scope of the paper to examine the gradience of the representation of internal structures, but I didn't delete it because I think it's an interesting question for future work -->
 
-In summary, we demonstrate that both frequency and predictability drive the holistic storage of phrasal verbs, and these holistically stored items may compete with their component parts during lexical access. Further, while future work is needed to fully rule-out a simple competition account, we argue that our results demonstrate a lack of internal structure for frequent/predictable multi-word phrases.
+In summary, we demonstrate that both frequency and predictability drive the holistic storage of phrasal verbs, and these holistically stored items may compete with their component parts during lexical access. Further, our results suggest that either the holistic representation is competing with the composition representation, or the holistic representation has lost its internal structure. We look forward to disentangling these two accounts in future work.
 
 # Acknowledgements
 
-The authors would like to thank Dingyi (Penny) Pan, a graduate student in Linguistics, for reading and offering comments on a draft of this paper. The authors would also like to thank Vsevolod Kapatsinski and Zara Harmon for providing helpful discussion about the nature of competition in lexical processing.
+The authors would like to thank Dingyi (Penny) Pan for reading and offering comments on a draft of this paper. The authors would also like to thank Vsevolod Kapatsinski and Zara Harmon for providing helpful discussion about the nature of competition in lexical processing.
 
 \newpage
