@@ -406,21 +406,20 @@ the Psycholinguistics literature within the context of holistic
 multi-word storage
 \citep[c.f.][]{odonnellFragmentGrammarsExploring2009, houghton2023does}.
 One such study examining the role of predictability in holistic storage
-was \citeauthor{houghton2023does}
-\citetext{\citeyear{houghton2023does}; \citealp[which was an extension
-of][]{staub2007}}. In their study, using the maze task\footnote{In the
-  maze task, participants are presented a sentence word-by-word. For
-  each word in the sentence, they are presented with the target word and
-  an ungrammatical distractor. Upon selecting the target word, the next
-  word in the sentence is presented along with yet another ungrammatical
-  distractor. The key measure is how long it takes for participants to
-  select the target word.} \citep{boyceMazeMadeEasy2020} the authors
-examined whether participants were slower to select the first noun in
-high-predictability compound nouns in locally implausible contexts
-(i.e., contexts where the first noun in the compound is implausible but
-where the second noun eliminates the implausibility; see the below
-sentences) relative to high-predictability compound nouns in locally
-plausible contexts.
+was \citetext{\citealp{houghton2023does}; \citealp[which was an
+extension of][]{staub2007}}. In their study, using the maze
+task\footnote{In the maze task, participants are presented a sentence
+  word-by-word. For each word in the sentence, they are presented with
+  the target word and an ungrammatical distractor. Upon selecting the
+  target word, the next word in the sentence is presented along with yet
+  another ungrammatical distractor. The key measure is how long it takes
+  for participants to select the target word.}
+\citep{boyceMazeMadeEasy2020} the authors examined whether participants
+were slower to select the first noun in high-predictability compound
+nouns in locally implausible contexts (i.e., contexts where the first
+noun in the compound is implausible but where the second noun eliminates
+the implausibility; see the below sentences) relative to
+high-predictability compound nouns in locally plausible contexts.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -760,7 +759,7 @@ sentences/sentences containing \emph{up} (i.e., the time it took
 participants to press the button after hearing \emph{up}).
 
 In order to visualize the surface of the interaction effect between
-frequency and predictability, we first ran a model with our depending
+frequency and predictability, we first ran a model with our independent
 variable as the interaction between log-predictability and
 log-frequency, which was allowed to vary non-linearly, and duration of
 the segment, which was not allowed to vary non-linearly. Additionally,
@@ -769,7 +768,12 @@ well as random by-participant slopes for predictability, frequency,
 their interaction, and trial. All our random-effects were allowed to be
 wiggly (non-linear). Our model formula is included below in
 Equation~\ref{eq-gamminteraction}. This model allows us to visualize the
-surface of the interaction effect.
+surface of the interaction effect. Note that in GAMMs, \texttt{ti()} is
+used to model the interaction effects since it produces a tensor product
+interaction from which the main-effects have been excluded. On the other
+hand \texttt{te()} models the full tensor product smooth without the
+main-effects excluded. In other words, when modeling the main-effects
+with the interaction effect, it's best practice to use \texttt{ti()}.
 
 \begin{equation}\phantomsection\label{eq-gamminteraction}{
 \begin{aligned}log(RT) & \sim te(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
@@ -780,16 +784,17 @@ and a visualization is provided in
 Figure~\ref{fig-gam2dplot1}.\footnote{We also examined the interaction
   between frequency and predictability on accuracy (whether they
   correctly responded to whether \emph{up} was present in the sentence)
-  and similarly found no significant effect.} Since the interaction
-between frequency and predictability was not significant, we ran a
-follow-up analysis examining whether predictability and frequency
-independently drive recognition times. Thus, we ran an additional
-Generalized Additive Model with log-frequency, log-predictability, and
-the interaction between log-frequency and log-predictability as
-fixed-effects that could vary non-linearly, and duration of the segment
-as a fixed-effect that could not vary non-linearly. The random-effects
-structure for this model was identical to the previous two models. The
-model syntax is included below in Equation~\ref{eq-gammFull}:
+  and similarly found no significant effect.} Although the tensor
+product smooth for the interaction effect was not significant, it's
+possible that the frequency or predictability independently affect
+recognition times. Thus, we ran an additional Generalized Additive Model
+with log-frequency, log-predictability, and the interaction between
+log-frequency and log-predictability as fixed-effects that could vary
+non-linearly. Similar to before, duration of the segment was also
+modeled as a fixed-effect that could not vary non-linearly. The
+random-effects structure for this model was identical to the previous
+two models. The model syntax is included below in
+Equation~\ref{eq-gammFull}:
 
 \begin{equation}\phantomsection\label{eq-gammFull}{
 \begin{aligned}log(RT) & \sim ti(Predictability) + ti(Frequency) + ti(Predictability, Frequency) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  + s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) \end{aligned}
@@ -810,6 +815,97 @@ To summarize the results of our generalized additive models, we found no
 interaction effect between frequency and predictability, no main effect
 of frequency, but we do find a significant main effect of
 predictability.
+
+In the Psycholinguistics literature, generalized additive mixed models
+are not yet well established. Thus, we ran a follow-up Bayesian
+quadratic regression model to further examine the effects of frequency
+and predictability on recognition times. Since the Generalized Additive
+Model suggested that there was no significant interaction between
+frequency and predictability, we left out the interaction term from the
+regression model. The random-effects were modeled without correlations
+between them in order to allow the model to run faster.
+Equation~\ref{eq-BayesianFullModelSyntax} below presents the full model
+syntax:
+
+\begin{equation}\phantomsection\label{eq-BayesianFullModelSyntax}{
+\begin{aligned}
+log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency)^2  + log(Predictability)^2 \\ & + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\& + Duration || Participant) + (1 || Item)
+\end{aligned}
+}\end{equation}
+
+The results of this model are presented in
+Table~\ref{tbl-brmsQuadraticNoInter} and visualized in
+Figure~\ref{fig-FullQuadraticPlot}. Following
+\citet{houghtonTaskdependentConsequencesDisfluency2023}, in some cases
+where the credible interval crosses zero, we also report the percentage
+of posterior samples greater than or less than zero. For the current
+model, although the credible intervals for both quadratic terms crossed
+zero, nearly 97\% of the posterior samples for predictability\(^2\) were
+greater than zero, and nearly 93\% of the posterior samples for
+frequency\(^2\) were greater than zero. A plot of the posterior
+distribution for each coefficient is presented in
+Figure~\ref{fig-posteriorplotFullQuadratic}. The results suggest a
+U-shaped effect of predictability and a marginal u-shaped effect of
+frequency on recognition times. In other words, participants recognized
+\emph{up} faster as frequency or predictability increased, except for
+the most frequent or most predictable items, where participants were
+slower to recognize \emph{up}.
+
+Finally, we replicated the analyses from \citet{kapatsinski2009} using
+two Bayesian quadratic regression models \citep[implemented in
+\emph{brms;}][]{brms}, one which only included frequency, and one which
+only included predictability. For the frequency model, the fixed-effects
+were log-frequency and log-frequency\(^2\), along with duration. The
+model also included random intercepts for participant and item, and
+random slopes for log-frequency by participant, duration by participant,
+and log-frequency\(^2\) by participant.
+
+The quadratic regression with predictability was identical to the
+quadratic regression with frequency, except that log-frequency was
+replaced with log-predictability, and log-frequency\(^2\) was replaced
+with log-predictability\(^2\). The random-effects were modeled without
+correlations between them for both models (this was done to allow the
+model to run faster, since we collected a large amount of data).
+
+The model syntax for both models is included below in
+Equation~\ref{eq-brmsFreq} and Equation~\ref{eq-brmsPredic}:
+
+\begin{equation}\phantomsection\label{eq-brmsFreq}{
+\begin{aligned}
+log(RT) & \sim log(Frequency) + Duration + log(Frequency)^2 \\ & + (1 + log(Frequency) + log(Frequency)^2 + Duration || Participant) + (1 || Item)
+\end{aligned}
+}\end{equation}
+
+\begin{equation}\phantomsection\label{eq-brmsPredic}{
+\begin{aligned}
+log(RT) & \sim log(Predictability) + Duration + log(Predictability)^2 \\ & + (1 + log(Predictability) + log(Predictability)^2 + Duration || Participant) + (1 || Item)
+\end{aligned}
+}\end{equation}
+
+The results of our first model are presented in
+Table~\ref{tbl-brmsFreq}. While the credible interval for
+log(frequency)\(^2\) crosses zero, over 95\% of the posterior samples
+were greater than zero, suggesting an effect of frequency\(^2\) on
+recognition times. A visualization of the model predictions is presented
+in Figure~\ref{fig-FreqOnlyPlot} and a visualization of the posterior
+distribution is presented in Figure~\ref{fig-FreqOnlyBetaPlot}.
+
+The results of our second model are presented in
+Table~\ref{tbl-brmsPredic}. While the credible interval for
+log(predictability)\(^2\) crosses zero, over 96\% of the posterior
+samples were greater than zero, suggesting a meaningful effect. A
+visualization of the model predictions is included in
+Figure~\ref{fig-PredicOnlyPlot} and a visualization of the posterior
+distribution is presented in Figure~\ref{fig-PredicOnlyBetaPlot}.
+
+In summary, our results suggest that when considered independently,
+there appears to be a U-shaped effect for both frequency and
+predictability. The effect for frequency is not as reliably detected
+when predictability is also accounted for in our models, however we do
+find weak evidence for it. We do not find strong evidence for an
+interaction between frequency and predictability but it is possible that
+our study simply does not have the power to detect an interaction
+effect.
 
 \begin{table}
 
@@ -861,181 +957,6 @@ s(log-predictability, log-frequency, participant) & 0.17 & 305.00 & 0.00 & 0.600
 
 \end{table}%
 
-\begin{figure}
-
-\centering{
-
-\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-gam2dplot1-1.pdf}
-
-}
-
-\caption{\label{fig-gam2dplot1}Plot of the interaction effect between
-predictability and frequency of our GAM model containing only the
-interaction between frequency and predictability. The brightness of the
-coloration denotes the strength of the effect at the point in the graph.
-Brighter colors denote longer reaction times.}
-
-\end{figure}%
-
-\begin{figure}
-
-\centering{
-
-\includegraphics{quarto-writeup_files/figure-pdf/fig-gammodelinterplot-1.pdf}
-
-}
-
-\caption{\label{fig-gammodelinterplot}Plot of our GAM model's predicted
-effect of log(predictability) on recognition time.}
-
-\end{figure}%
-
-Given these results, we ran a follow-up Bayesian quadratic regression
-model to further examine the effects of frequency and predictability on
-recognition times. Since the Generalized Additive Model suggested that
-there was no significant interaction between frequency and
-predictability, we left out the interaction term from the regression
-model. The random-effects were modeled without correlations between them
-in order to allow the model to run faster.
-Equation~\ref{eq-BayesianFullModelSyntax} below presents the full model
-syntax:
-
-\begin{equation}\phantomsection\label{eq-BayesianFullModelSyntax}{
-\begin{aligned}
-log(RT) & \sim  log(Frequency) + log(Predictability) + Duration + log(Frequency^2)  + log(Predictability^2) \\ & + (1 + log(Frequency) + log(Predictability) + log(Frequency^2) + log(Predictability^2) \\& + Duration || Participant) + (1 || Item)
-\end{aligned}
-}\end{equation}
-
-The results of this model are presented in
-Table~\ref{tbl-brmsQuadraticNoInter} and visualized in
-Figure~\ref{fig-FullQuadraticPlot}. Following
-\citet{houghtonTaskdependentConsequencesDisfluency2023}, in some cases
-where the credible interval crosses zero, we also report the percentage
-of posterior samples greater than or less than zero. For the current
-model, although the credible intervals for both quadratic terms crossed
-zero, nearly 97\% of the posterior samples for predictability\(^2\) were
-greater than zero, and nearly 93\% of the posterior samples for
-frequency\(^2\) were greater than zero. A plot of the posterior
-distribution for each coefficient is presented in
-Figure~\ref{fig-posteriorplotFullQuadratic}. The results suggest a
-U-shaped effect of predictability and a marginal u-shaped effect of
-frequency on recognition times. In other words, participants recognized
-\emph{up} faster as frequency or predictability increased, except for
-the most frequent or most predictable items, where participants were
-slower to recognize \emph{up}.
-
-\begin{table}
-
-\caption{\label{tbl-brmsQuadraticNoInter}Model results for the Bayesian
-quadratic regression model containing fixed-effects for frequency,
-predictability, and their quadratics.}
-
-\centering{
-
-\begin{tabular}{lllllr}
-\toprule
-  & Estimate & Est.Error & Q2.5 & Q97.5 & \% Samples > 0\\
-\midrule
-Intercept & -0.102 & 0.029 & -0.161 & -0.046 & 0.02625\\
-log-frequency & 0.019 & 0.011 & -0.002 & 0.041 & 96.15625\\
-log-predictability & 0.009 & 0.011 & -0.013 & 0.032 & 78.99750\\
-duration & -0.135 & 0.098 & -0.328 & 0.057 & 8.27125\\
-log-predictability\textasciicircum{}2 & 0.003 & 0.002 & -0.000 & 0.007 & 96.88125\\
-\addlinespace
-log-frequency\textasciicircum{}2 & 0.005 & 0.004 & -0.002 & 0.012 & 92.94375\\
-\bottomrule
-\end{tabular}
-
-}
-
-\end{table}%
-
-\begin{figure}
-
-\centering{
-
-\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-posteriorplotFullQuadratic-1.pdf}
-
-}
-
-\caption{\label{fig-posteriorplotFullQuadratic}Plot of the posterior
-distribution for the beta value of each fixed-effect in our Bayesian
-quadratic regression model. The y-axis contains the different
-fixed-effects and the x-axis contains the posterior distribution of beta
-values for the corresponding fixed-effect.}
-
-\end{figure}%
-
-\begin{figure}
-
-\centering{
-
-\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-FullQuadraticPlot-1.pdf}
-
-}
-
-\caption{\label{fig-FullQuadraticPlot}Visualization of the model results
-from Table~\ref{tbl-brmsQuadraticNoInter} for frequency (top) and
-predictability (bottom). Frequencies are per million.}
-
-\end{figure}%
-
-Finally, we replicated the analyses from \citet{kapatsinski2009} using
-two Bayesian quadratic regression models \citep[implemented in
-\emph{brms;}][]{brms}, one which only included frequency, and one which
-only included predictability. For the frequency model, the fixed-effects
-were log-frequency and log-frequency\(^2\), along with duration. The
-model also included random intercepts for participant and item, and
-random slopes for log-frequency by participant, duration by participant,
-and log-frequency\(^2\) by participant.
-
-The quadratic regression with predictability was identical to the
-quadratic regression with frequency, except that log-frequency was
-replaced with log-predictability, and log-frequency\(^2\) was replaced
-with log-predictability\(^2\). The random-effects were modeled without
-correlations between them for both models (this was done to allow the
-model to run faster, since we collected a large amount of data).
-
-The model syntax for both models is included below in
-Equation~\ref{eq-brmsFreq} and Equation~\ref{eq-brmsPredic}:
-
-\begin{equation}\phantomsection\label{eq-brmsFreq}{
-\begin{aligned}
-log(RT) & \sim log(Frequency) + Duration + log(Frequency^2) \\ & + (1 + log(Frequency) + log(Frequency^2) + Duration || Participant) + (1 || Item)
-\end{aligned}
-}\end{equation}
-
-\begin{equation}\phantomsection\label{eq-brmsPredic}{
-\begin{aligned}
-log(RT) & \sim log(Predictability) + Duration + log(Predictability^2) \\ & + (1 + log(Predictability) + log(Predictability^2) + Duration || Participant) + (1 || Item)
-\end{aligned}
-}\end{equation}
-
-The results of our first model are presented in
-Table~\ref{tbl-brmsFreq}. While the credible interval for
-log(frequency)\(^2\) crosses zero, over 95\% of the posterior samples
-were greater than zero, suggesting an effect of frequency\(^2\) on
-recognition times. A visualization of the model predictions is presented
-in Figure~\ref{fig-FreqOnlyPlot} and a visualization of the posterior
-distribution is presented in Figure~\ref{fig-FreqOnlyBetaPlot}.
-
-The results of our second model are presented in
-Table~\ref{tbl-brmsPredic}. While the credible interval for
-log(predictability)\(^2\) crosses zero, over 96\% of the posterior
-samples were greater than zero, suggesting a meaningful effect. A
-visualization of the model predictions is included in
-Figure~\ref{fig-PredicOnlyPlot} and a visualization of the posterior
-distribution is presented in Figure~\ref{fig-PredicOnlyBetaPlot}.
-
-In summary, our results suggest that when considered independently,
-there appears to be a U-shaped effect for both frequency and
-predictability. The effect for frequency is not as reliably detected
-when predictability is also accounted for in our models, however we do
-find weak evidence for it. We do not find strong evidence for an
-interaction between frequency and predictability but it is possible that
-our study simply does not have the power to detect an interaction
-effect.
-
 \begin{table}
 
 \caption{\label{tbl-brmsFreq}Results for the Bayesian quadratic
@@ -1074,6 +995,32 @@ Intercept & -0.110 & 0.027 & -0.163 & -0.058 & 0.0000\\
 log-predictability & 0.008 & 0.011 & -0.014 & 0.029 & 75.7350\\
 Duration & -0.089 & 0.098 & -0.280 & 0.102 & 18.4225\\
 log-predictability\textasciicircum{}2 & 0.003 & 0.002 & -0.000 & 0.006 & 96.0975\\
+\bottomrule
+\end{tabular}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-brmsQuadraticNoInter}Model results for the Bayesian
+quadratic regression model containing fixed-effects for frequency,
+predictability, and their quadratics.}
+
+\centering{
+
+\begin{tabular}{lllllr}
+\toprule
+  & Estimate & Est.Error & Q2.5 & Q97.5 & \% Samples > 0\\
+\midrule
+Intercept & -0.102 & 0.029 & -0.161 & -0.046 & 0.02625\\
+log-frequency & 0.019 & 0.011 & -0.002 & 0.041 & 96.15625\\
+log-predictability & 0.009 & 0.011 & -0.013 & 0.032 & 78.99750\\
+duration & -0.135 & 0.098 & -0.328 & 0.057 & 8.27125\\
+log-predictability\textasciicircum{}2 & 0.003 & 0.002 & -0.000 & 0.007 & 96.88125\\
+\addlinespace
+log-frequency\textasciicircum{}2 & 0.005 & 0.004 & -0.002 & 0.012 & 92.94375\\
 \bottomrule
 \end{tabular}
 
@@ -1137,6 +1084,65 @@ model.}
 
 \caption{\label{fig-PredicOnlyPlot}Model predictions for the effect of
 predictability on reaction times for the predictability-only models.}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-gam2dplot1-1.pdf}
+
+}
+
+\caption{\label{fig-gam2dplot1}Plot of the interaction effect between
+predictability and frequency of our GAM model containing only the
+interaction between frequency and predictability. The brightness of the
+coloration denotes the strength of the effect at the point in the graph.
+Brighter colors denote longer reaction times.}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{quarto-writeup_files/figure-pdf/fig-gammodelinterplot-1.pdf}
+
+}
+
+\caption{\label{fig-gammodelinterplot}Plot of our GAM model's predicted
+effect of log(predictability) on recognition time.}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-posteriorplotFullQuadratic-1.pdf}
+
+}
+
+\caption{\label{fig-posteriorplotFullQuadratic}Plot of the posterior
+distribution for the beta value of each fixed-effect in our Bayesian
+quadratic regression model. The y-axis contains the different
+fixed-effects and the x-axis contains the posterior distribution of beta
+values for the corresponding fixed-effect.}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\includegraphics[width=0.8\textwidth,height=\textheight]{quarto-writeup_files/figure-pdf/fig-FullQuadraticPlot-1.pdf}
+
+}
+
+\caption{\label{fig-FullQuadraticPlot}Visualization of the model results
+from Table~\ref{tbl-brmsQuadraticNoInter} for frequency (top) and
+predictability (bottom). Frequencies are per million.}
 
 \end{figure}%
 
@@ -1218,7 +1224,7 @@ highest frequency and highest predictability items.
 To break it down further, there is a good deal of evidence that
 different mental representations compete for recognition
 \citetext{\citealp{oppenheimLexicalCompetitionDemand2019}; \citealp[c.f.][]{staubInfluenceClozeProbability2015}}.
-A representation is only activated once it receives sufficiently more
+A representation is selected once it receives sufficiently more
 activation than its competitors
 \citep{mcclellandInteractiveActivationModel1981}. For example, in
 picture-naming tasks in which participants are tasked with naming a
@@ -1317,17 +1323,17 @@ becomes less useful.
 In summary, we demonstrate that both frequency and predictability drive
 the holistic storage of phrasal verbs, and these holistically stored
 items may compete with their component parts during lexical access.
-Further, while future work is needed to fully rule-out a simple
-competition account, we argue that our results demonstrate a lack of
-internal structure for frequent/predictable multi-word phrases.
+Further, our results suggest that either the holistic representation is
+competing with the composition representation, or the holistic
+representation has lost its internal structure. We look forward to
+disentangling these two accounts in future work.
 
 \section{Acknowledgements}\label{acknowledgements}
 
-The authors would like to thank Dingyi (Penny) Pan, a graduate student
-in Linguistics, for reading and offering comments on a draft of this
-paper. The authors would also like to thank Vsevolod Kapatsinski and
-Zara Harmon for providing helpful discussion about the nature of
-competition in lexical processing.
+The authors would like to thank Dingyi (Penny) Pan for reading and
+offering comments on a draft of this paper. The authors would also like
+to thank Vsevolod Kapatsinski and Zara Harmon for providing helpful
+discussion about the nature of competition in lexical processing.
 
 \newpage
 
