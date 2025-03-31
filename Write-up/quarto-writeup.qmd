@@ -392,7 +392,6 @@ The results of our second model are presented in @tbl-brmsPredic. While the cred
 
 In summary, our results suggest that when considered independently, there appears to be a U-shaped effect for both frequency and predictability. The effect for frequency is not as reliably detected when predictability is also accounted for in our models, however we do find weak evidence for it. We do not find strong evidence for an interaction between frequency and predictability but it is possible that our study simply does not have the power to detect an interaction effect.
 
-
 ```{r, echo = F, results='asis'}
 #| label: tbl-gamModelTab
 #| tbl-cap: "Model results for the generalized Additive Mixed Model cotanining only the interaction between frequency and predictability."
@@ -466,7 +465,6 @@ knitr::kable(summary_table3, booktabs = T)
 
 #print(xtable(summary_table3, caption = 'Model results for the Generalized Additive Mixed Model cotaining Frequency, Predictability, and the interaction between them.', label = 'tab:gamm_full', auto = T), comment = F, caption.placement = 'top', type = 'latex', latex.environments = 'flushleft')
 ```
-
 
 ```{r, echo = F, warning = F, message = F, results='asis'}
 #| label: tbl-brmsFreq
@@ -669,8 +667,6 @@ ggplot(newdata, aes(x=log_predic, y=fit)) +
   theme_bw()
 ```
 
-
-
 ```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
 #| label: fig-posteriorplotFullQuadratic
 #| fig-cap: "Plot of the posterior distribution for the beta value of each fixed-effect in our Bayesian quadratic regression model. The y-axis contains the different fixed-effects and the x-axis contains the posterior distribution of beta values for the corresponding fixed-effect."
@@ -694,7 +690,6 @@ brms_quadratic_no_interaction %>%
 ggarrange(freq_plot_full_quadratic, predic_plot_full_quadratic, nrow = 2, ncol = 1)
 ```
 
-
 # Discussion
 
 The present study examined the effects of frequency and predictability on the recognizability of the particle *up* in English phrasal verbs. We found a U-shaped effect for both frequency and predictability on recognizability: as frequency and predictability increased, people were faster at recognizing *up*, until reaching the highest frequency/most predictable items, where people were slower. These results suggest that the most predictable and/or highest frequency items have a lack of internal structure. We also found no meaningful differences between phrasal verbs (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*), suggesting that this effect is driven primarily by the statistical distribution of the input as opposed to syntactic properties.
@@ -705,7 +700,7 @@ There are three possible accounts for the slowdown we see for the highest freque
 
 The next two accounts all require the high-frequency and high-predictability items to be stored holistically, but vary with respect to whether the holistically stored representations retain their internal structure.
 
-First, it is possible that the slowdown for the high frequency and high predictability items is due to competition between an additional representation. This competition can either be between a holistic representation that has internal structure and a compositional representation, or between a holistic representation that does not have internal structure and the compositional representation. Compositional representation here refers to a representation that is formed by accessing individual forms (e.g., *pick* and *up*) and combining them via some generative process. High-frequency and high-predictability items may develop a holistic representation separate from the compositional representation and this additional representation may compete with the compositional representation causing the slowdown. This account doesn't necessarily need to involve a loss of internal structure because simply having an additional representation to compete with can result in a slowdown, however it also not incompatible with an account where the holistic representation has lost some of its internal structure. These two possibilities both account for the slowdown at the highest frequency and highest predictability items.
+It is possible that the slowdown for the high frequency and high predictability items is due to competition between an additional representation. This competition can either be between a holistic representation that has internal structure and a compositional representation, or between a holistic representation that does not have internal structure and the compositional representation. Compositional representation here refers to a representation that is formed by accessing individual forms (e.g., *pick* and *up*) and combining them via some generative process. High-frequency and high-predictability items may develop a holistic representation separate from the compositional representation and this additional representation may compete with the compositional representation causing the slowdown. This account doesn't necessarily need to involve a loss of internal structure because simply having an additional representation to compete with can result in a slowdown, however it also not incompatible with an account where the holistic representation has lost some of its internal structure. These two possibilities both account for the slowdown at the highest frequency and highest predictability items.
 
 To break it down further, there is a good deal of evidence that different mental representations compete for recognition [@oppenheimLexicalCompetitionDemand2019; c.f. @staubInfluenceClozeProbability2015]. A representation is selected once it receives sufficiently more activation than its competitors [@mcclellandInteractiveActivationModel1981]. For example, in picture-naming tasks in which participants are tasked with naming a picture while confronted with a distractor word, participants are generally slower to produce the intended word when the distractor word is semantically related to the picture [@starreveldSemanticInterferenceOrthographic1995; @schriefersExploringTimeCourse1990; @mcclellandInteractiveActivationModel1981]. This effect is not restricted to production as we see similar competition effects in comprehension as well. For example, @magnuson2007 examined the role of competition in word recognition using a visual world paradigm, where participants saw words on a screen and were instructed to select the word that they heard. To measure word-recognition, an eye-tracker was used to track pupil fixations. In each of the trials there was a single distractor image. They found that words with low cohort density (i.e., words that have fewer phonological competitors) showed a larger proportion of target to nontarget fixations. That is, participants looked the distractor image less relative to the target word when the word had fewer competitors. Given the inhibitory effects of competition, it is possible that the delay in reaction time for *up* in high-frequency and predictability phrases may be a consequence of an additional representation competing with the compositional representation. However, there is also evidence that competition in comprehension (and our task is a comprehension task) has no effect on comprehension [@staubInfluenceClozeProbability2015]. Using reaction time data from a cloze completion task, @staubInfluenceClozeProbability2015 demonstrated that a RACE model with neither facilitation nor inhibition between competitors can account for the data. Thus the evidence for competition effects in comprehension is mixed. Note that this account is agnostic about whether the holistic representation has lost its internal structure or not: simply having an additional representation to compete with can cause the slowdown.
 
@@ -743,7 +738,7 @@ On the other hand, the internal structure may have been lost over time. For exam
 
 <!--# I've commented out this part because I think it's outside the scope of the paper to examine the gradience of the representation of internal structures, but I didn't delete it because I think it's an interesting question for future work -->
 
-In summary, we demonstrate that both frequency and predictability drive the holistic storage of phrasal verbs, and these holistically stored items may compete with their component parts during lexical access. Further, our results suggest that either the holistic representation is competing with the composition representation, or the holistic representation has lost its internal structure. We look forward to disentangling these two accounts in future work.
+In summary, we demonstrate that both frequency and predictability may drive the holistic storage of phrasal verbs, and these holistically stored items may compete with their component parts during lexical access. However, future work is still needed to determine whether the slowdown for the highest frequency and highest predictability items is indeed due to storage or if it is due to listeners accessing the representation of *up* before even hearing the word.
 
 # Acknowledgements
 
