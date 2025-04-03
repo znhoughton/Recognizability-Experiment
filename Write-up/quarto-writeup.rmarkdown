@@ -180,6 +180,8 @@ data_verbs_up = read_csv('../Data/Stimuli - Phrasal verbs.csv') %>%
   mutate(Lemma = paste(Verb, Up, sep = ' '))
 ```
 
+
+
 # Introduction
 
 When a listener hears the phrase *trick or treat*, do they process it compositionally, processing each word individually before combining them into a single parse? Or do they access a single holistically stored representation of the phrase from memory? This question of to what extent larger-than-word constructions can be stored and accessed holistically is one that psycholinguists have been interested in for quite some time [e.g., @bybee2002; @bybee2003; @goldberg2003; @nooteboom2002; @stembergerFrequencyLexicalStorage1986; @stemberger2004].
@@ -282,6 +284,8 @@ For the purposes of the present study, we gathered a variety of phrases that var
 
 [^4]: @levyProcessingExtraposedStructures2012 extrapolated that the average college-aged speaker has heard about 350 million words in their lifetime. Thus we excluded items that had a frequency smaller than 10 per 350 million.
 
+
+
 ```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
 #| label: fig-stimplot
 #| fig-cap: "log-predictability by log-frequency (per million) plot of our items."
@@ -297,6 +301,8 @@ plot1 = ggplot(filter(data_verbs_up), aes(y = log(`Frequency (per Million)`), x 
 
 plot1
 ```
+
+
 
 Phrasal verbs show a syntactic alternation that is not present in all verb+*up* collocations (e.g., in the example below *lightened up the room* is fine, but *lightened the room up* is weird at best). It is possible that due to this syntactic alternation, phrasal verbs may be stored regardless of frequency and predictability. This is because in order to properly use phrasal verbs, a speaker must be aware of the syntactic alternation, which can't simply be predicted compositionally (e.g., some V+*up* phrases are phrasal verbs, while other V+*up* phrases are not phrasal verbs[^5]). Thus, we additionally coded our stimuli for whether they were phrasal verbs or not. This coding was done based on whether they could syntactically alternate between having the noun within the verb phrase and having the noun immediately after the verb phrase. For example, since both *pick the cat up* and *pick up the cat* are grammatical, *pick up* was classified as a phrasal verb. Each item was checked by two of the authors. Disagreement was easily resolved by discussion and an agreement was reached for every item.
 
@@ -391,6 +397,8 @@ The results of our first model are presented in @tbl-brmsFreq. While the credibl
 The results of our second model are presented in @tbl-brmsPredic. While the credible interval for log(predictability)$^2$ crosses zero, over 96% of the posterior samples were greater than zero, suggesting a meaningful effect. A visualization of the model predictions is included in @fig-PredicOnlyPlot and a visualization of the posterior distribution is presented in @fig-PredicOnlyBetaPlot.
 
 In summary, our results suggest that when considered independently, there appears to be a U-shaped effect for both frequency and predictability. The effect for frequency is not as reliably detected when predictability is also accounted for in our models, however we do find weak evidence for it. We do not find strong evidence for an interaction between frequency and predictability but it is possible that our study simply does not have the power to detect an interaction effect.
+
+
 
 ```{r, echo = F, results='asis'}
 #| label: tbl-gamModelTab
@@ -690,6 +698,8 @@ brms_quadratic_no_interaction %>%
 ggarrange(freq_plot_full_quadratic, predic_plot_full_quadratic, nrow = 2, ncol = 1)
 ```
 
+
+
 # Discussion
 
 The present study examined the effects of frequency and predictability on the recognizability of the particle *up* in English phrasal verbs. We found a U-shaped effect for both frequency and predictability on recognizability: as frequency and predictability increased, people were faster at recognizing *up*, until reaching the highest frequency/most predictable items, where people were slower. Additionally, we also found no meaningful differences between phrasal verbs (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*), suggesting that this slowdown is due to statistical properties of the language as opposed to syntactic properties.
@@ -718,6 +728,8 @@ On the other hand, the internal structure may have been lost over time. For exam
 
 <!--# need to revisit this and clarify how this increase in association explains the increase in rt for up in those phrases -->
 
+
+
 ```{r, echo = F}
 # On the other hand, it is possible that the holistically stored representation actually inhibits the representation of the individual words. That is, instead of processing the meaning and moving on (thus not even paying attention to the rest of the phrase), it is possible that ... The argument put forth by @kapatsinski2009 is somewhat paradoxical in the sense that how does one know what to skip without paying attention to the speech stream? Rather than stopping processing and then starting again, it is possible that the holistic representation inhibits the representation of the individual parts.
 # 
@@ -726,15 +738,21 @@ On the other hand, the internal structure may have been lost over time. For exam
 # It also mirrors evidence from the artificial language learning literature, where it's been demonstrated that increased exposure to a morpheme or word makes one more confident that the meaning of that morpheme or word is not used to express other meanings [@xuWordLearningBayesian2007; @harmonPuttingOldTools2017]. For example, @harmonPuttingOldTools2017 demonstrated that increased exposure to a novel suffix makes learners less likely to extend it to novel meanings in comprehension. While the meanings in our case are the same, the representations are different (compositional vs holistic representation). It is possible that increased exposure to pick up, for example, entrenches the association between the form pick up and the holistically stored representation, inhibiting the association between the form and the compositional representation. This would explain why for the highest frequency and predictability items recognition time increases: accessing the holistically stored phrase inhibits access of the compositional form, making it harder to recognize the individual parts (though it's worth noting that inhibition may not even be necessary to account for the increase in reaction time).
 ```
 
+
+
 <!--# commented out the above without deleting because while outside the scope of the paper I think the question of whether the competition is due to inhibition or terminating processing the form once accessed the whole is interesting -->
 
 <!--# Further, if the lack of internal representation is a function of our learning mechanisms, it may not be surprising that both predictability and frequency drive this lack of representation, since our brain employs both Hebbian (frequency-driven learning) and error-driven learning mechanisms [i.e., predictability-driven learning, @ashby2007; @kapatsinski2018]. -->
+
+
 
 ```{r, echo = F}
 # Our results also open an interesting question of how gradient the internal structure is. For example, our results may suggest that the internal structure isn't completely eroded even for the highest frequency/most predictable items. Participants are clearly aware that the segment up is contained in the phrase, it just takes them longer to recognize. On the other hand, the internal structure seems to have degraded at least a little bit, since participants are not as quick to recognize the segment as we would expect. 
 # 
 # Alternatively, it's possible that the internal structure for the holistic item is completely eroded and what we see is actually a recognition of up driven by the compositional interpretation. That is, it is possible that the holistically stored phrase (e.g., pick up) has completely lost the internal representation of up. However, that doesn't mean participants are unable to also decode the meaning by combining pick with up. The delayed recognition times could be reflecting the composition time. If this is the case, it opens up the question of whether experience with a phrase increases the strength of the association between the words and the representation of the phrase, or the strength of the association between the words and the representation of each individual words, or both.
 ```
+
+
 
 <!--# I've commented out this part because I think it's outside the scope of the paper to examine the gradience of the representation of internal structures, but I didn't delete it because I think it's an interesting question for future work -->
 
@@ -745,3 +763,4 @@ In summary, our results suggest that both frequency and predictability may drive
 The authors would like to thank Dingyi (Penny) Pan for reading and offering comments on a draft of this paper. The authors would also like to thank Vsevolod Kapatsinski and Zara Harmon for providing helpful discussion about the nature of competition in lexical processing.
 
 \newpage
+

@@ -253,7 +253,7 @@ degrees of holistic storage, with two theories in particular dominating
 the field. On one hand, Chomskyan theories
 \citep[e.g.,][]{chomskyAspectsTheorySyntax1965, pinkerFutureTense2002}
 have proposed that only necessary items (e.g., items that can't be
-formed compositionally) are stored.\footnote{Some theories
+formed compositionally) are stored.\footnote{Although some theories
   \citep[e.g.,][]{pinkerFutureTense2002} have accepted that some very
   high-frequency items may be stored due to human memory, but these
   theories are much more conservative about what is stored compared to
@@ -266,8 +266,8 @@ Traditional Chomskyan theories
 \citep[e.g.,][]{chomskyAspectsTheorySyntax1965, pinkerFutureTense2002}
 have argued that processing multi-word phrases is completely
 compositional: each piece is accessed individually and then combined to
-form the larger meaning. Some exceptions are reserved for some idioms
-and other outliers, which can't be formed compositionally. More
+form the larger meaning. Some exceptions are reserved for idioms and
+other outliers, which can't be formed compositionally. More
 specifically, Chomskyan views of storage argue that whether an item is
 stored is determined purely by the degree of compositionality. According
 to these theories, if a multi-word expression can be composed from its
@@ -768,25 +768,27 @@ well as random by-participant slopes for predictability, frequency,
 their interaction, and trial. All our random-effects were allowed to be
 wiggly (non-linear). Our model formula is included below in
 Equation~\ref{eq-gamminteraction}. This model allows us to visualize the
-surface of the interaction effect. Note that in GAMMs, \texttt{ti()} is
-used to model the interaction effects since it produces a tensor product
-interaction from which the main-effects have been excluded. On the other
-hand \texttt{te()} models the full tensor product smooth without the
-main-effects excluded. In other words, when modeling the main-effects
-with the interaction effect, it's best practice to use \texttt{ti()}.
+surface of the interaction effect. Note that in GAMMs, the syntax
+\texttt{ti()} is used to model the interaction effects since it produces
+a tensor product interaction from which the main-effects have been
+excluded. On the other hand \texttt{te()} models the full tensor product
+smooth without the main-effects excluded. Thus when modeling the
+main-effects with the interaction effect we use \texttt{ti()} and when
+modeling the surface (that is, without separating the main-effects from
+the interaction) we use \texttt{te()}.
 
 \begin{equation}\phantomsection\label{eq-gamminteraction}{
 \begin{aligned}log(RT) & \sim te(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'}) \\& + s(trial, bs = \text{`}re\text{'}) + s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
 }\end{equation}
 
 The results of this model are presented in Table~\ref{tbl-gamModelTab}
-and a visualization is provided in
-Figure~\ref{fig-gam2dplot1}.\footnote{We also examined the interaction
-  between frequency and predictability on accuracy (whether they
-  correctly responded to whether \emph{up} was present in the sentence)
-  and similarly found no significant effect.} Although the tensor
-product smooth for the interaction effect was not significant, it's
-possible that the frequency or predictability independently affect
+and visualized in Figure~\ref{fig-gam2dplot1}. We found no significant
+effect of the tensor product smooth.\footnote{We also examined the
+  interaction between frequency and predictability on accuracy (whether
+  they correctly responded to whether \emph{up} was present in the
+  sentence) and similarly found no significant effect.} Although the
+tensor product smooth for the interaction effect was not significant,
+it's possible that the frequency or predictability independently affect
 recognition times. Thus, we ran an additional Generalized Additive Model
 with log-frequency, log-predictability, and the interaction between
 log-frequency and log-predictability as fixed-effects that could vary
@@ -1153,20 +1155,18 @@ on the recognizability of the particle \emph{up} in English phrasal
 verbs. We found a U-shaped effect for both frequency and predictability
 on recognizability: as frequency and predictability increased, people
 were faster at recognizing \emph{up}, until reaching the highest
-frequency/most predictable items, where people were slower. These
-results suggest that the most predictable and/or highest frequency items
-have a lack of internal structure. We also found no meaningful
-differences between phrasal verbs (e.g., \emph{pick up}) and non-phrasal
-verbs (e.g., \emph{stir up}), suggesting that this effect is driven
-primarily by the statistical distribution of the input as opposed to
-syntactic properties.
+frequency/most predictable items, where people were slower.
+Additionally, we also found no meaningful differences between phrasal
+verbs (e.g., \emph{pick up}) and non-phrasal verbs (e.g., \emph{stir
+up}), suggesting that this slowdown is due to statistical properties of
+the language as opposed to syntactic properties.
 
 There are three possible accounts for the slowdown we see for the
 highest frequency or predictability items. First, it's possible that
 people are attending less to \emph{up} or even skipping it in high
 frequency and high predictability phrases. This account, unlike the
 other accounts that we'll discuss, does not explicitly require the high
-frequency and high predictability phrase to be stored. Instead, the
+frequency and high predictability phrases to be stored. Instead, the
 listener may be able to process the meaning of the phrase fast enough
 that they don't need to wait to hear the entire phrase. For example,
 it's possible that for high-frequency and high-predictability items,
@@ -1202,7 +1202,7 @@ high-predictability items to be stored holistically, but vary with
 respect to whether the holistically stored representations retain their
 internal structure.
 
-First, it is possible that the slowdown for the high frequency and high
+It is possible that the slowdown for the high frequency and high
 predictability items is due to competition between an additional
 representation. This competition can either be between a holistic
 representation that has internal structure and a compositional
@@ -1247,8 +1247,7 @@ Given the inhibitory effects of competition, it is possible that the
 delay in reaction time for \emph{up} in high-frequency and
 predictability phrases may be a consequence of an additional
 representation competing with the compositional representation. However,
-there is also evidence that competition in comprehension (and our task
-is a comprehension task) has no effect on comprehension
+there is also evidence that competition has no effect on comprehension
 \citep{staubInfluenceClozeProbability2015}. Using reaction time data
 from a cloze completion task, \citet{staubInfluenceClozeProbability2015}
 demonstrated that a RACE model with neither facilitation nor inhibition
@@ -1320,15 +1319,13 @@ and the individual words \emph{pick} and \emph{up}) becomes less
 transparent, and the learner may slowly unlearn this relationship as it
 becomes less useful.
 
-In summary, we demonstrate that both frequency and predictability drive
-the holistic storage of phrasal verbs, and these holistically stored
-items may compete with their component parts during lexical access.
-Further, our results suggest that the holistic representation competes
-with the compositional representation in processing. Further, our
-results suggest that the holistic representation, in addition to
-competing with the compositional representation, has lost some of its
-internal structure. However, future work is needed to further rule out
-purely competition-based explanations.
+In summary, our results suggest that both frequency and predictability
+may drive the holistic storage of phrasal verbs, and these holistically
+stored items may compete with their component parts during lexical
+access. However, future work is still needed to confirm whether the
+slowdown for the highest frequency and highest predictability items is
+indeed due to a stored holistic representation or if it's due to
+shallower attention mechanisms.
 
 \section{Acknowledgements}\label{acknowledgements}
 
