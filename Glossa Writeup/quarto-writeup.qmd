@@ -153,14 +153,14 @@ freq_plot_full_quadratic = freq_plot_full_quadratic +
   ylab('Log Reaction Time') +
   xlab('Log Frequency') +
   theme_bw() +
-  theme(axis.text=element_text(size = 12),
-        axis.title=element_text(size  = 14)) 
+  theme(axis.text=element_text(size = 11),
+        axis.title=element_text(size  = 11)) 
 predic_plot_full_quadratic  = predic_plot_full_quadratic +
   ylab('Log Reaction Time') +
   xlab('Log Predictability') +
   theme_bw() +
-  theme(axis.text=element_text(size = 12),
-        axis.title=element_text(size  = 14))
+  theme(axis.text=element_text(size = 11),
+        axis.title=element_text(size  = 11))
 
 brms_freq_plot_freq_quadratic = readRDS('Figures/brms_freq_plot.rds')
 
@@ -185,22 +185,21 @@ data_verbs_up = read_csv('../Data/Stimuli - Phrasal verbs.csv') %>%
   mutate(Lemma = paste(Verb, Up, sep = ' '))
 ```
 
-
 # Introduction
 
 When a listener hears the phrase *trick or treat*, do they process it compositionally, processing each word individually before combining them into a single parse? Or do they access a single holistically stored representation of the phrase from memory? This question of to what extent larger-than-word constructions can be stored and accessed holistically is one that psycholinguists have been interested in for quite some time [e.g., @bybee2001; @bybee2003; @goldbergConstructionsNewTheoretical2003; @nooteboomStorageComputationLanguage2002; @stembergerFrequencyLexicalStorage1986; @stembergerAreInflectedForms2004].
 
-Throughout the years different theories have argued for different degrees of holistic storage, with two theories in particular dominating the field. On one hand, Generativist theories [e.g., @pinker1991rules; @pinker2002] have proposed that only necessary items (e.g., items that can't be formed compositionally) are stored.[^quarto-writeup-1] On the other hand, usage-based theories [e.g., @bybee2003] have proposed that many items that could in principle be formed compositionally can be stored under certain usage-based conditions, such as frequency of use.
+Throughout the years different theories have argued for different degrees of holistic storage, with two theories in particular dominating the field. On one hand, Generativist theories [e.g., @pinker1991rules; @pinker2002] have proposed that only necessary items (e.g., items that can't be formed compositionally) are stored.[^1] On the other hand, usage-based theories [e.g., @bybee2003] have proposed that many items that could in principle be formed compositionally can be stored under certain usage-based conditions, such as frequency of use.
 
-[^quarto-writeup-1]: Although some theories [e.g., @pinker2002] have accepted that some very high-frequency items may be stored due to human memory, but these theories are much more conservative about what is stored compared to usage-based theories.
+[^1]: Although some theories [e.g., @pinker2002] have accepted that some very high-frequency items may be stored due to human memory, but these theories are much more conservative about what is stored compared to usage-based theories.
 
 <!--# for dissertation, might be fun to change footnotes to asides using the [some text]{.aside} formatting -->
 
 Traditional Generativist theories [e.g., @pinker1991rules; @pinker2002] have argued that processing multi-word phrases is completely compositional: each piece is accessed individually and then combined to form the larger meaning. Some exceptions are reserved for idioms and other outliers, which can't be formed compositionally. More specifically, Generativist views of storage argue that whether an item is stored is determined purely by the degree of compositionality. According to these theories, if a multi-word expression can be composed from its parts then there is no need to holistically store the expression, and thus it is not stored holistically. For example since *I don't know* can be processed compositionally, it would be processed by composing a representation from each of the individual words, *I, don't,* and *know*. On the other hand, *kicked the bucket* would be stored holistically because there's very little relationship between the meaning of the individual words and the meaning of the expression (i.e., it's non-compositional).
 
-Generativist theories of storage gained popularity partly because storage was thought to be a valuable resource that was taken up only by units that necessitated storage. This was perhaps influenced by the limited storage space of sophisticated computers at the time. In recent times, however, we've learned that the brain may have dramatically more space for storage than we had previously realized, with an upper bound of 10^8432^ bits [@wangDiscoveringCapacityHuman2003]. This is magnitudes larger than any current estimate of how much storage language requires.[^quarto-writeup-2] Considering this, it might not come as a surprise that there has been a rise in support for usage-based theories of holistic storage over the past few decades [@kapatsinskiFrequencyEmergencePrefabs2009; @kapatsinski2018; @stembergerFrequencyLexicalStorage1986; @stembergerAreInflectedForms2004; @morganAbstractKnowledgeDirect2016; @bybeeEffectUsageDegrees1999; @bybee2001; @bybee2003; @baayenDutchInflectionRules2002; @ambridgeStoredAbstractionsRadical2020; @zangParafovealProcessingChinese2024].
+Generativist theories of storage gained popularity partly because storage was thought to be a valuable resource that was taken up only by units that necessitated storage. This was perhaps influenced by the limited storage space of sophisticated computers at the time. In recent times, however, we've learned that the brain may have dramatically more space for storage than we had previously realized, with an upper bound of 10^8432^ bits [@wangDiscoveringCapacityHuman2003]. This is magnitudes larger than any current estimate of how much storage language requires.[^2] Considering this, it might not come as a surprise that there has been a rise in support for usage-based theories of holistic storage over the past few decades [@kapatsinskiFrequencyEmergencePrefabs2009; @kapatsinski2018; @stembergerFrequencyLexicalStorage1986; @stembergerAreInflectedForms2004; @morganAbstractKnowledgeDirect2016; @bybeeEffectUsageDegrees1999; @bybee2001; @bybee2003; @baayenDutchInflectionRules2002; @ambridgeStoredAbstractionsRadical2020; @zangParafovealProcessingChinese2024].
 
-[^quarto-writeup-2]: Indeed, @mollicaHumansStoreMegabytes2019 estimated that, in terms of linguistic information, humans store only somewhere between one million and ten million bits of information, meaning that even their upper estimate is well within the capacity of the brain.
+[^2]: Indeed, @mollicaHumansStoreMegabytes2019 estimated that, in terms of linguistic information, humans store only somewhere between one million and ten million bits of information, meaning that even their upper estimate is well within the capacity of the brain.
 
 Usage-based theories posit that more than just non-compositional items (e.g., multi-word expressions) may be stored holistically in the lexicon, arguing that storage is driven by usage-based factors. For example, factors like frequency or predictability of the phrase may influence whether the phrase is stored holistically or not. According to these theories, in addition to idioms and non-compositional items, multi-word phrases such as *I don't know* may also be stored holistically if they are used frequently enough [e.g., @ambridgeStoredAbstractionsRadical2020; @kapatsinski2018; @kapatsinskiFrequencyEmergencePrefabs2009; @leeFrequencyEffectsMorphologisation2015; @arnonMoreWordsFrequency2010; @stembergerFrequencyLexicalStorage1986; @stembergerAreInflectedForms2004; @morganAbstractKnowledgeDirect2016; @tomaselloConstructingLanguageUsagebased2005].
 
@@ -214,7 +213,7 @@ In addition to the phonology literature, the Psycholinguistics literature has al
 
 Similarly, @arnonMoreWordsFrequency2010 demonstrated that frequent multi-word phrases are read faster than lower frequency multi-word phrases, even after accounting for the frequency of the individual words. This suggests that humans are sensitive to the frequencies of multi-word phrases. Further, in language production humans are also sensitive to the frequency of multi-word phrases. In a production study, @janssenPhraseFrequencyEffects2012 found that participants produced frequent multi-word phrases faster than lower frequency phrases, even after taking into account the frequencies of the individual words.
 
-Further, there is also evidence of multi-word storage from the learning literature [@siegelmanAdvantageStartingBig2015; @bannardStoredWordSequences2008]. For example, @siegelmanAdvantageStartingBig2015 demonstrated that learning is facilitated by attending to the whole utterance, as opposed to attending to each individual word. Specifically, they used an artificial language paradigm to examine adult L2 learners' ability to learn grammatical gender. They found that adults learn grammatical gender better when they are presented with unsegmented utterances rather than segmented utterances. In other words, attending to the entire utterance, rather than learning to compose the utterance word-by-word, facilitated their learning. It seems plausible that if the entire utterance is being attended to, then participants may be learning (i.e., storing) the entire utterance initially. Further, storing larger-than-word chunks may possibly be facilitating the learning of grammatical gender in their study.
+Finally, there is also evidence of multi-word storage from the learning literature [@siegelmanAdvantageStartingBig2015; @bannardStoredWordSequences2008]. For example, @siegelmanAdvantageStartingBig2015 demonstrated that learning is facilitated by attending to the whole utterance, as opposed to attending to each individual word. Specifically, they used an artificial language paradigm to examine adult L2 learners' ability to learn grammatical gender. They found that adults learn grammatical gender better when they are presented with unsegmented utterances rather than segmented utterances. In other words, attending to the entire utterance, rather than learning to compose the utterance word-by-word, facilitated their learning. It seems plausible that if the entire utterance is being attended to, then participants may be learning (i.e., storing) the entire utterance initially. Moreover, storing larger-than-word chunks may possibly be facilitating the learning of grammatical gender in their study.
 
 <!--# is there a follow-up study we could do looking at whether holistic storage facilitates learning? -->
 
@@ -224,7 +223,7 @@ Despite the evidence for multi-word holistic storage, however, it is still large
 
 Traditionally, frequency has been assumed to be the driving factor behind multi-word storage. Indeed, most of the examples of storage given so far have been with respect to frequency. Perhaps the most famous series of studies demonstrating this were conducted by Bybee [@bybeeEffectUsageDegrees1999; @bybee2003; @bybee2001]. In a series of studies, Bybee and colleagues demonstrated that a variety of words are reduced more in high-frequency contexts than low-frequency contexts [additionally see @kapatsinskiHierarchicalInferenceSound2021 for further discussion of this]. For example, in addition to the earlier examples, *going to* can be reduced in the frequent future marker, *gonna*, but not in the less frequent verb phrase construction describing motion [e.g., \**gonna the store*, @bybee2003]. This mirrors patterns we see on a word-level (which for the most part must be stored). For example, the reduction of vowels to schwa in English is more advanced in high-frequency words than low-frequency words [@bybee2003; @hooperWordFrequencyLexical1976a]. In other words, for both words and phrases, sound reduction advances more quickly as a function of frequency (i.e., high-frequency phrases and high-frequency words are both more reduced than their lower frequency counterparts). While this is not surprising for words (which most theories posit have separate representations), it is surprising for phrases which don't necessarily have to be stored holistically.
 
-On the other hand, predictability has not been directly examined much by the Psycholinguistics literature within the context of holistic multi-word storage [c.f. @odonnellFragmentGrammarsExploring2009]. One such study that did examine the role of predictability in holistic storage was the series of experiments in Chapter 2 of this dissertation. To refresh the readers memory, in the previous chapter we examined whether participants were slower to select the first noun in high-predictability compound nouns in locally implausible contexts (i.e., contexts where the first noun in the compound is implausible but where the second noun eliminates the implausibility; see the below sentences) relative to high-predictability compound nouns in locally plausible contexts.
+On the other hand, predictability has not been directly examined much by the Psycholinguistics literature within the context of holistic multi-word storage [c.f. @odonnellFragmentGrammarsExploring2009]. One such study that did examine the role of predictability in holistic storage was @houghton2023. @houghton2023 examined whether participants were slower to select the first noun in high-predictability compound nouns in locally implausible contexts (i.e., contexts where the first noun in the compound is implausible but where the second noun eliminates the implausibility; see the below sentences) relative to high-predictability compound nouns in locally plausible contexts.
 
 \begin{exe}
 \ex
@@ -288,9 +287,9 @@ $$ {#eq-logodds}
 
 In non-mathematical terms, the above equation quantifies how likely *up* is to follow after the verb relative to every other word that could follow. For example, the odds ratio of *pick up* would be the number of times the entire verb phrase occurs -- *pick up* -- divided by the number of times the verb -- *pick* -- occurs without *up* following it.
 
-For the purposes of the present study, we gathered a variety of phrases that varied in both their predictability and frequency and their combination. In order to do this, we extracted the 50 most frequent Verb+*up* items and the 50 most predictable ones. Next, we selected 100 more by randomly sampling from the remaining items. In order to ensure stable predictability estimates we eliminated words that a college-aged speaker wouldn't have heard more than 10 times.[^quarto-writeup-3] We then visually inspected the data to confirm that our data spanned across both the frequency and predictability continuum. This distribution is presented in @fig-stimplot.
+For the purposes of the present study, we gathered a variety of phrases that varied in both their predictability and frequency and their combination. In order to do this, we extracted the 50 most frequent Verb+*up* items and the 50 most predictable ones. Next, we selected 100 more by randomly sampling from the remaining items. In order to ensure stable predictability estimates we eliminated words that a college-aged speaker wouldn't have heard more than 10 times.[^3] We then visually inspected the data to confirm that our data spanned across both the frequency and predictability continuum. This distribution is presented in @fig-stimplot.
 
-[^quarto-writeup-3]: @levyProcessingExtraposedStructures2012 extrapolated that the average college-aged speaker has heard about 350 million words in their lifetime. Thus we excluded items that had a frequency smaller than 10 per 350 million.
+[^3]: @levyProcessingExtraposedStructures2012 extrapolated that the average college-aged speaker has heard about 350 million words in their lifetime. Thus we excluded items that had a frequency smaller than 10 per 350 million.
 
 ```{r, echo = F, out.width = '90%', fig.align = 'center', warning = F, message = F}
 #| label: fig-stimplot
@@ -308,9 +307,9 @@ plot1 = ggplot(filter(data_verbs_up), aes(y = log(`Frequency (per Million)`), x 
 plot1
 ```
 
-Phrasal verbs show a syntactic alternation that is not present in all verb+*up* collocations (e.g., in the example below *lightened up the room* is fine, but *lightened the room up* is weird at best). It is possible that due to this syntactic alternation, phrasal verbs may be stored regardless of frequency and predictability. This is because in order to properly use phrasal verbs, a speaker must be aware of the syntactic alternation, which can't simply be predicted compositionally (e.g., some V+*up* phrases are phrasal verbs, while other V+*up* phrases are not phrasal verbs[^quarto-writeup-4]). Thus, we additionally coded our stimuli for whether they were phrasal verbs or not. This coding was done based on whether they could syntactically alternate between the noun coming between the verb and the particle and the noun coming immediately after the verb phrase. For example, since both *pick the cat up* and *pick up the cat* are grammatical, *pick up* was classified as a phrasal verb. Each item was checked by two of the authors. Disagreement was easily resolved by discussion and an agreement was reached for every item.
+Phrasal verbs show a syntactic alternation that is not present in all verb+*up* collocations (e.g., in the example below *lightened up the room* is fine, but *lightened the room up* is weird at best). It is possible that due to this syntactic alternation, phrasal verbs may be stored regardless of frequency and predictability. This is because in order to properly use phrasal verbs, a speaker must be aware of the syntactic alternation, which can't simply be predicted compositionally (e.g., some V+*up* phrases are phrasal verbs, while other V+*up* phrases are not phrasal verbs[^4]). Thus, we additionally coded our stimuli for whether they were phrasal verbs or not. This coding was done based on whether they could syntactically alternate between the noun coming between the verb and the particle and the noun coming immediately after the verb phrase. For example, since both *pick the cat up* and *pick up the cat* are grammatical, *pick up* was classified as a phrasal verb. Each item was checked by two of the authors. Disagreement was easily resolved by discussion and an agreement was reached for every item.
 
-[^quarto-writeup-4]: Note that this largely correlates with whether the verb is transitive or not.
+[^4]: Note that this largely correlates with whether the verb is transitive or not.
 
 \begin{exe} 
 \ex
@@ -348,8 +347,6 @@ Participants were presented with audio sentences via Pavlovia (<https://pavlovia
 
 The data was analyzed using General Additive Mixed models, as implemented in the *mgcv* package [@wood2011fast] within the R programming environment [@Rpackage]. General Additive Mixed Models are models that allow us to model our outcome variable as a combination of the predictors. GAMMs differ from generalized linear regression models in that they allow the predictors to be modeled as non-linear functions, similar to polynomial regression. Specifically, in a Generalized Additive Mixed Model, beta-coefficients are replaced with a smooth function, which is a combination of splines. The more splines that we include, the more wiggly our line will be. In order to avoid overfitting, GAMMs also include a penalty term, $\lambda$, which can be modified to penalize more wiggly lines that aren't justified by the data. While the predictors are allowed to vary non-linearly, the linking function in our case was linear (i.e., response time varied linearly with the spline functions). Our decision to use GAMMs was driven by our hypothesis that recognition times may vary non-linearly as a function of frequency and/or predictability [as suggested by @kapatsinskiFrequencyEmergencePrefabs2009].
 
-
-
 For all of our models, the dependent variable was the time it took for participants to react to the onset of the target segment in experimental sentences/sentences containing *up* (i.e., the time it took participants to press the button after hearing *up*).
 
 In order to visualize the surface of the interaction effect between frequency and predictability, we first ran a model with our independent variable as the interaction between log-predictability and log-frequency, which was allowed to vary non-linearly, and duration of the segment, which was not allowed to vary non-linearly. Additionally, we also included random intercepts for participant, trial, and item, as well as random by-participant slopes for predictability, frequency, their interaction, and trial. All our random-effects were allowed to be wiggly (non-linear). Our model formula is included below in @eq-gamminteraction. This model allows us to visualize the surface of the interaction effect. Note that in GAMMs, the syntax `ti()` is used to model the interaction effects since it produces a tensor product interaction from which the main-effects have been excluded. On the other hand the syntax `te()` indicates that the full tensor product smooth is used without the main-effects excluded. Thus when modeling the main-effects with the interaction effect we use `ti()` and when modeling the surface (that is, without separating the main-effects from the interaction) we use `te()`.
@@ -358,9 +355,9 @@ $$
 \begin{aligned}log(RT) & \sim te(Predictability, Frequency) + Duration + s(participant, bs = \text{`}re\text{'}) + \\ & s(Item, bs = \text{`}re\text{'}) + s(trial, bs = \text{`}re\text{'}) + \\ & s(Predictability, Frequency, participant, bs = \text{`}re\text{'}) \end{aligned}
 $$ {#eq-gamminteraction}
 
-The results of this model are presented in @tbl-gamModelTab and visualized in @fig-gam2dplot1. We found no significant effect of the tensor product smooth.[^quarto-writeup-6] Although the tensor product smooth for the interaction effect was not significant, it's possible that phrasal verbs and non-phrasal verbs behave differently and that could be obscuring the interaction effect. Thus, we ran an additional model examining whether the interaction effect was different for phrasal verbs versus non-phrasal verbs. The model equation is included below in @eq-gamphrasal:
+The results of this model are presented in @tbl-gamModelTab and visualized in @fig-gam2dplot1. We found no significant effect of the tensor product smooth.[^5] Although the tensor product smooth for the interaction effect was not significant, it's possible that phrasal verbs and non-phrasal verbs behave differently and that could be obscuring the interaction effect. Thus, we ran an additional model examining whether the interaction effect was different for phrasal verbs versus non-phrasal verbs. The model equation is included below in @eq-gamphrasal:
 
-[^quarto-writeup-6]: We also examined the interaction between frequency and predictability on accuracy (whether they correctly responded to whether *up* was present in the sentence) and similarly found no significant effect.
+[^5]: We also examined the interaction between frequency and predictability on accuracy (whether they correctly responded to whether *up* was present in the sentence) and similarly found no significant effect.
 
 $$
 \begin{aligned}log(RT) & \sim te(Predictability, Frequency, by = PhrasalVerb) + Duration \\ & + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  + s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Participant, bs = \text{`}re\text{'}) \end{aligned}
@@ -374,9 +371,9 @@ $$
 \begin{aligned}log(RT) & \sim ti(Predictability) + ti(Frequency) + ti(Predictability, Frequency) \\ & + Duration + s(participant, bs = \text{`}re\text{'}) + s(Item, bs = \text{`}re\text{'})  + s(trial, bs = \text{`}re\text{'}) \\ & + s(Predictability, Frequency, Trial, Participant, bs = \text{`}re\text{'}) \end{aligned}
 $$ {#eq-gammFull}
 
-Our results are presented in @tbl-gamModelInterTab and visualized in @fig-gammodelinterplot. The results demonstrated a significant main-effect of predictability (*p* \< 0.05), but no significant effect of frequency (*p* = 0.327), and no significant interaction effect.[^quarto-writeup-7]
+Our results are presented in @tbl-gamModelInterTab and visualized in @fig-gammodelinterplot. The results demonstrated a significant main-effect of predictability (*p* \< 0.05), but no significant effect of frequency (*p* = 0.327), and no significant interaction effect.[^6]
 
-[^quarto-writeup-7]: We ran a follow-up model without the interaction to determine whether including the interaction effect takes away our power to detect an effect of frequency, however the results for our main-effects are consistent regardless of whether we include the interaction between frequency and predictability in the model.
+[^6]: We ran a follow-up model without the interaction to determine whether including the interaction effect takes away our power to detect an effect of frequency, however the results for our main-effects are consistent regardless of whether we include the interaction between frequency and predictability in the model.
 
 To summarize the results of our generalized additive models, we found no interaction effect between frequency and predictability, no main effect of frequency, but we do find a significant main effect of predictability.
 
@@ -436,10 +433,12 @@ summary_table = summary_table %>%
   mutate(across(c(edf, Ref.df, `F`), as.numeric))
 
 summary_table %>%
+  mutate(across(where(is.character), ~ gsub(">", "\\\\textgreater{}", .))) %>%
+  mutate(across(where(is.character), ~ gsub("<", "\\\\textless{}", .))) %>%
   select(term, everything()) %>%
   rename(` ` = term) %>%
-  kable(align = c('l', 'r', 'r', 'r', 'r', 'r', 'r'), digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 12, full_width = FALSE) %>%
+  kable(align = c('l', 'r', 'r', 'r', 'r', 'r', 'r'), digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = F) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 11, full_width = FALSE) %>%
   #group_rows(index = setNames(groupings$lengths, groupings$values), indent = TRUE) %>%
   row_spec(0, bold = TRUE) %>%
   column_spec(1, bold = T, width = '22em') 
@@ -475,10 +474,12 @@ summary_table2 = summary_table2 %>%
   mutate(across(c(edf, Ref.df, `F`), as.numeric))
 
 summary_table2 %>%
+  mutate(across(where(is.character), ~ gsub(">", "\\\\textgreater{}", .))) %>%
+  mutate(across(where(is.character), ~ gsub("<", "\\\\textless{}", .))) %>%
   select(term, everything()) %>%
   rename(` ` = term) %>%
-  kable(align = c('l', 'r', 'r', 'r', 'r', 'r', 'r'), digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 12, full_width = FALSE) %>%
+  kable(align = c('l', 'r', 'r', 'r', 'r', 'r', 'r'), digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = F) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 11, full_width = FALSE) %>%
   #group_rows(index = setNames(groupings$lengths, groupings$values), indent = TRUE) %>%
   row_spec(0, bold = TRUE) %>%
   column_spec(1, bold = T, width = '22em') 
@@ -505,10 +506,12 @@ summary_table3 = summary_table3 %>%
   mutate(across(c(edf, Ref.df, `F`), as.numeric))
 
 summary_table3 %>%
+  mutate(across(where(is.character), ~ gsub(">", "\\\\textgreater{}", .))) %>%
+  mutate(across(where(is.character), ~ gsub("<", "\\\\textless{}", .))) %>%
   select(term, everything()) %>%
   rename(` ` = term) %>%
-  kable(align = c('l', 'r', 'r', 'r', 'r', 'r', 'r'), digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 12, full_width = FALSE) %>%
+  kable(align = c('l', 'r', 'r', 'r', 'r', 'r', 'r'), digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = F) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 11, full_width = FALSE) %>%
   #group_rows(index = setNames(groupings$lengths, groupings$values), indent = TRUE) %>%
   row_spec(0, bold = TRUE) %>%
   column_spec(1, bold = T, width = '22em') 
@@ -541,19 +544,24 @@ percent_greater_zero = percent_greater_zero %>%
 summary_table4 = summary_table4 %>%
   mutate(percent_greater_zero = percent_greater_zero$`(sum(estimate > 0)/length(estimate)) * 100`) %>%
   rename('% Samples > 0' = `percent_greater_zero`) %>%
-  mutate(term = rep(c('Intercept', 'log-frequency', 'log-predictability', 'duration', 'log-predictability^2', 'log-frequency^2'), times = 1))
+  mutate(term = rep(c('Intercept', 'log-frequency', 'log-predictability', 'duration', 'log-predictability$^2$', 'log-frequency$^2$'), times = 1))
 
-rownames(summary_table4) = c('Intercept', 'log-frequency', 'log-predictability', 'duration', 'log-predictability^2', 'log-frequency^2')
+rownames(summary_table4) = c('Intercept', 'log-frequency', 'log-predictability', 'duration', 'log-predictability$^2$', 'log-frequency$^2$')
 
 
 summary_table4 = summary_table4 %>%
   mutate(across(c(Estimate, Est.Error, Q2.5, Q97.5, `% Samples > 0`), as.numeric))
 
+colnames(summary_table4) = colnames(summary_table4) %>%
+  gsub("%", "\\\\%", .) %>%
+  gsub("<", "\\\\textless{}", .) %>%
+  gsub(">", "\\\\textgreater{}", .)
+
 summary_table4 %>%
   select(term, everything()) %>%
   rename(` ` = term) %>%
-  kable(digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 12, full_width = FALSE) %>%
+  kable(digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = F) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 11, full_width = FALSE) %>%
   #group_rows(index = setNames(groupings$lengths, groupings$values), indent = TRUE) %>%
   row_spec(0, bold = TRUE) %>%
   column_spec(1, bold = T, width = '10em')
@@ -587,19 +595,24 @@ summary_table5 = as.data.frame(fixef(brms_freq_quadratic_no_interaction)) %>%
             digits = 3) %>%
   mutate(percent_greater_zero = percent_greater_zero$`(sum(estimate > 0)/length(estimate)) * 100`) %>%
   rename('% Samples > 0' = `percent_greater_zero`) %>%
-  mutate(term = rep(c('Intercept', 'log-frequency', 'Duration', 'log-frequency^2'), times = 1))
+  mutate(term = rep(c('Intercept', 'log-frequency', 'Duration', 'log-frequency$^2$'), times = 1))
 
-rownames(summary_table5) = c('Intercept', 'log-frequency', 'Duration', 'log-frequency^2')
+rownames(summary_table5) = c('Intercept', 'log-frequency', 'Duration', 'log-frequency$^2$')
 
 
 summary_table5 = summary_table5 %>%
   mutate(across(c(Estimate, Est.Error, Q2.5, Q97.5, `% Samples > 0`), as.numeric))
 
+colnames(summary_table5) = colnames(summary_table5) %>%
+  gsub("%", "\\\\%", .) %>%
+  gsub("<", "\\\\textless{}", .) %>%
+  gsub(">", "\\\\textgreater{}", .)
+
 summary_table5 %>%
   select(term, everything()) %>%
   rename(` ` = term) %>%
-  kable(digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 12, full_width = FALSE) %>%
+  kable(digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = F) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 11, full_width = FALSE) %>%
   #group_rows(index = setNames(groupings$lengths, groupings$values), indent = TRUE) %>%
   row_spec(0, bold = TRUE) %>%
   column_spec(1, bold = T, width = '10em')
@@ -632,19 +645,24 @@ summary_table6 = as.data.frame(fixef(brms_predic_quadratic_no_interaction)) %>%
             digits = 3) %>%
   mutate(percent_greater_zero = percent_greater_zero$`(sum(estimate > 0)/length(estimate)) * 100`) %>%
   rename('% Samples > 0' = `percent_greater_zero`) %>%
-  mutate(term = rep(c('Intercept', 'log-predictability', 'Duration', 'log-predictability^2'), times = 1))
+  mutate(term = rep(c('Intercept', 'log-predictability', 'Duration', 'log-predictability$^2$'), times = 1))
 
-rownames(summary_table6) = c('Intercept', 'log-predictability', 'Duration', 'log-predictability^2')
+rownames(summary_table6) = c('Intercept', 'log-predictability', 'Duration', 'log-predictability$^2$')
 
 
 summary_table6 = summary_table6 %>%
   mutate(across(c(Estimate, Est.Error, Q2.5, Q97.5, `% Samples > 0`), as.numeric))
 
+colnames(summary_table6) = colnames(summary_table6) %>%
+  gsub("%", "\\\\%", .) %>%
+  gsub("<", "\\\\textless{}", .) %>%
+  gsub(">", "\\\\textgreater{}", .)
+
 summary_table6 %>%
   select(term, everything()) %>%
   rename(` ` = term) %>%
-  kable(digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 12, full_width = FALSE) %>%
+  kable(digits = 2, row.names = FALSE, booktabs = TRUE, format = "latex", escape = F) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 11, full_width = FALSE) %>%
   #group_rows(index = setNames(groupings$lengths, groupings$values), indent = TRUE) %>%
   row_spec(0, bold = TRUE) %>%
   column_spec(1, bold = T, width = '10em')
@@ -771,7 +789,7 @@ ggplot(newdata, aes(x=log_predic, y=fit)) +
   theme_bw()
 ```
 
-```{r, echo = F, out.width = '80%', fig.align = 'center', warning = F, message = F}
+```{r, echo = F, out.width = '90%', fig.align = 'center', warning = F, message = F}
 #| label: fig-FullQuadraticPlot
 #| fig-cap: "Visualization of the model results from @tbl-brmsQuadraticNoInter for frequency (top) and predictability (bottom). Frequencies are per million."
 
@@ -806,9 +824,9 @@ It is possible that the slowdown for the high-frequency and high-predictability 
 
 To break it down further, there is a good deal of evidence that different mental representations compete for recognition [@oppenheimLexicalCompetitionDemand2019; c.f., @staubInfluenceClozeProbability2015]. A representation is selected once it receives sufficiently more activation than its competitors [@mcclellandInteractiveActivationModel1981]. For example, in picture-naming tasks in which participants are tasked with naming a picture while confronted with a distractor word, participants are generally slower to produce the intended word when the distractor word is semantically related to the picture [@starreveldSemanticInterferenceOrthographic1995; @schriefersExploringTimeCourse1990; @mcclellandInteractiveActivationModel1981]. This effect is not restricted to production as we see similar competition effects in comprehension as well. For example, @magnusonDynamicsLexicalCompetition2007 examined the role of competition in word recognition using a visual world paradigm, where participants saw words on a screen and were instructed to select the word that they heard. To measure word-recognition, an eye-tracker was used to track pupil fixations. In each of the trials there was a single distractor image. They found that words with low cohort density (i.e., words that have fewer phonological competitors) showed a larger proportion of target to nontarget fixations. That is, participants looked the distractor image less relative to the target word when the word had fewer competitors. Given the inhibitory effects of competition, it is possible that the delay in reaction time for *up* in high-frequency and predictability phrases may be a consequence of an additional representation competing with the compositional representation. However, there is also evidence that competition has no effect on comprehension [@staubInfluenceClozeProbability2015]. Using reaction time data from a cloze completion task, @staubInfluenceClozeProbability2015 demonstrated that a RACE model with neither facilitation nor inhibition between competitors can account for the data. Thus the evidence for competition effects in comprehension is mixed. Note that this account is agnostic about whether the holistic representation has lost its internal structure or not: simply having an additional representation to compete with can cause the slowdown.
 
-Lastly it is possible that rather than being driven by competition, listeners are simply accessing a holistically stored representation of the phrase that lacks internal structure. This interpretation seems quite likely given that we see a U-shaped effect in both phrasal (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*). Phrasal verbs have a syntactic alternation that may lead to all of them being stored, regardless of whether they are frequent/predictable or not. For example, In a corpus study, @hampeTransitivePhrasalVerbs2012 argued that *Verb-Object-Particle* (e.g., *pick the ball up*) constructions and *Verb-Particle-Object* (e.g., *pick up the ball*) constructions are two distinct constructions,[^quarto-writeup-8] as opposed to being two alternative realizations of a single construction. In contrast, non-phrasal verbs can be generated through compositional knowledge (e.g., *walk up*). This suggests that phrasal verbs may be stored holistically regardless of frequency/predictability, while non-phrasal verbs may be generated compositionally unless they are frequent or predictable enough. If the increase in reaction time is simply due to competition between the holistically stored representation and the individual word-level representations, then if all phrasal verbs are stored we would expect all of the phrasal verbs to be recognized more slowly. This is because all of the phrasal verbs, regardless of frequency, would have an additional representation that would compete for activation. However, we only see a slowdown for the most frequent or most predictable phrases, suggesting that storage alone isn't driving the effect. Instead, it is the combination of storage and usage that leads to loss of internal representation.
+Lastly it is possible that rather than being driven by competition, listeners are simply accessing a holistically stored representation of the phrase that lacks internal structure. This interpretation seems quite likely given that we see a U-shaped effect in both phrasal (e.g., *pick up*) and non-phrasal verbs (e.g., *stir up*). Phrasal verbs have a syntactic alternation that may lead to all of them being stored, regardless of whether they are frequent/predictable or not. For example, In a corpus study, @hampeTransitivePhrasalVerbs2012 argued that *Verb-Object-Particle* (e.g., *pick the ball up*) constructions and *Verb-Particle-Object* (e.g., *pick up the ball*) constructions are two distinct constructions,[^7] as opposed to being two alternative realizations of a single construction. In contrast, non-phrasal verbs can be generated through compositional knowledge (e.g., *walk up*). This suggests that phrasal verbs may be stored holistically regardless of frequency/predictability, while non-phrasal verbs may be generated compositionally unless they are frequent or predictable enough. If the increase in reaction time is simply due to competition between the holistically stored representation and the individual word-level representations, then if all phrasal verbs are stored we would expect all of the phrasal verbs to be recognized more slowly. This is because all of the phrasal verbs, regardless of frequency, would have an additional representation that would compete for activation. However, we only see a slowdown for the most frequent or most predictable phrases, suggesting that storage alone isn't driving the effect. Instead, it is the combination of storage and usage that leads to loss of internal representation.
 
-[^quarto-writeup-8]: However, the same study also makes the claim that these templates are different from more lexically specific constructions, thus it is unclear in what ways these templates may pattern similarly to holistically stored lexical items.
+[^7]: However, the same study also makes the claim that these templates are different from more lexically specific constructions, thus it is unclear in what ways these templates may pattern similarly to holistically stored lexical items.
 
 One explanation for why high-frequency and high-predictability items may not have an intact internal representation is that the internal structure for those items may never have been learned to begin with. Children are experts at statistical learning and use transitional probabilities to divide the continuous speech stream [@saffranStatisticalLearning8MonthOld1996]. High-predictability phrases in the present study, by definition, have higher transitional probabilities between words. Thus if children are relying on transitional probabilities to separate speech into individual words, the individual words in the most predictable phrases may not be separated out of the speech stream initially.
 
@@ -817,7 +835,6 @@ Further, many high-frequency (e.g., *set up*) and high-predictability (e.g., *co
 On the other hand, the internal structure may have been lost over time. For example, @harmonPuttingOldTools2017 demonstrated that as learners repeatedly experience a form with a specific meaning, they become more likely to use that form to express novel meanings in production (resulting in semantic extension). It is possible that this accessibility effect similarly drives a loss of internal structure: as a phrase becomes more semantically extended, the internal structure may be lost over time. That is, as a phrase such as *pick up* becomes extended to express novel meanings such as *continue* ("Let's pick up from where we last left off"), the relationship between the phrase and its internal pieces (e.g., the relationship between *pick up* and the individual words *pick* and *up*) becomes less transparent, and the learner may slowly unlearn this relationship as it becomes less useful.
 
 In summary, our results suggest that both frequency and predictability may drive the holistic storage of phrasal verbs, and these holistically stored items may compete with their component parts during lexical access. However, future work is still needed to confirm whether the slowdown for the highest frequency and highest predictability items is indeed due to a stored holistic representation or if it's due to shallower attention mechanisms.
-
 
 # Data Accessibility Statement {.unnumbered}
 
