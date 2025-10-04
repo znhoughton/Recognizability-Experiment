@@ -1,6 +1,6 @@
 ---
 title: "Analysis"
-author: "Zach Houghton"
+author: ""
 date: "`r Sys.Date()`"
 output: html_document
 ---
