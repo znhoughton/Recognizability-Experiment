@@ -1,0 +1,1000 @@
+---
+title: "Supplemental Analysis: GPT-2 Surprisal as Predictability Measure"
+author: ""
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(brms)
+library(mgcv)
+library(mgcViz)
+library(ggpubr)
+library(tidybayes)
+library(ggdist)
+library(rlist)
+library(plotly)
+```
+
+## Overview
+
+This document replicates the predictability analyses from the main paper, replacing the n-gram-based log-odds-ratio predictability measure with GPT-2 surprisal. Surprisal is defined as $-\log_e P(\textit{up} \mid \text{context})$, where context consists of all words preceding *up* in the sentence. Higher surprisal indicates that *up* is less predictable given the preceding context (i.e., surprisal is the inverse of predictability).
+
+## GPT-2 Surprisal Computation
+
+GPT-2 surprisal values are computed by `compute_gpt2_surprisal.py` (in this directory) and saved to `../Data/gpt2_surprisal.csv`. Run that script before knitting this document:
+
+```
+python compute_gpt2_surprisal.py
+```
+
+## Data Preparation
+
+```{r load-data, message=FALSE}
+gam_data = read_csv('../Data/gam_data.csv')
+gpt2_surprisal = read_csv('../Data/gpt2_surprisal.csv')
+
+gam_data = gam_data %>%
+  left_join(gpt2_surprisal %>% select(Item, gpt2_surprisal), by = 'Item') %>%
+  filter(!is.na(gpt2_surprisal))
+
+gam_data$participant = as.factor(gam_data$participant)
+gam_data$Item        = as.factor(gam_data$Item)
+gam_data$Type        = as.factor(gam_data$Type)
+gam_data$PhrasalVerb = as.factor(gam_data$PhrasalVerb)
+
+cat("Items with GPT-2 surprisal:", length(unique(gam_data$Item)), "\n")
+cat("Surprisal range: [", round(min(gam_data$gpt2_surprisal), 2), ",",
+    round(max(gam_data$gpt2_surprisal), 2), "]\n")
+```
+
+## GAM Models
+
+### Model 1: Interaction Between GPT-2 Surprisal and Frequency
+
+This model replicates the model from Equation 1 of the paper, replacing `log_predic` with `gpt2_surprisal`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim te(\text{GPT-2 Surprisal}, \text{Frequency}) + \text{Duration} + s(\text{participant}, bs = \text{`}re\text{'}) \\
+& + s(\text{Item}, bs = \text{`}re\text{'}) + s(\text{trial}, bs = \text{`}re\text{'}) \\
+& + s(\text{GPT-2 Surprisal}, \text{Frequency}, \text{trial}, \text{participant}, bs = \text{`}re\text{'})
+\end{aligned}
+$$
+
+```{r mod-gam1-gpt2, message=FALSE}
+mod_gam1_gpt2 = bam(log_rt ~
+                      te(gpt2_surprisal, log_freq) + Duration +
+                      s(trial, bs = 're') +
+                      s(participant, bs = 're') +
+                      s(Item, bs = 're') +
+                      s(gpt2_surprisal, log_freq, trial, participant, bs = 're'),
+                    data = gam_data)
+
+summary(mod_gam1_gpt2)
+saveRDS(mod_gam1_gpt2, '../Models/mod_gam1_gpt2.rds')
+```
+
+```{r mod-gam1-gpt2-plot, message=FALSE, warning=FALSE}
+surp_seq  = seq(min(gam_data$gpt2_surprisal), max(gam_data$gpt2_surprisal), length.out = 50)
+freq_seq  = seq(min(gam_data$log_freq),        max(gam_data$log_freq),        length.out = 50)
+
+pred_grid = expand.grid(gpt2_surprisal = surp_seq, log_freq = freq_seq) %>%
+  mutate(Duration    = 0,
+         trial       = gam_data$trial[1],
+         participant = gam_data$participant[1],
+         Item        = gam_data$Item[1])
+
+preds = predict(mod_gam1_gpt2, newdata = pred_grid,
+                exclude = c('s(trial)', 's(participant)', 's(Item)',
+                            's(gpt2_surprisal,log_freq,trial,participant)'))
+
+z_mat = matrix(preds, nrow = length(surp_seq), ncol = length(freq_seq))
+
+plot_ly(x = surp_seq, y = freq_seq, z = z_mat,
+        type = 'surface', colorscale = 'Viridis') %>%
+  layout(scene = list(
+    xaxis = list(title = 'GPT-2 Surprisal'),
+    yaxis = list(title = 'Log Frequency'),
+    zaxis = list(title = 'Predicted Log RT')
+  ))
+```
+
+```{r mod-gam1-gpt2-slices, message=FALSE, warning=FALSE}
+re_exclude_gam1 = c('s(trial)', 's(participant)', 's(Item)',
+                    's(gpt2_surprisal,log_freq,trial,participant)')
+
+slice_surp = tibble(
+  gpt2_surprisal = seq(min(gam_data$gpt2_surprisal), max(gam_data$gpt2_surprisal), length.out = 200),
+  log_freq       = mean(gam_data$log_freq),
+  Duration       = 0,
+  trial          = gam_data$trial[1],
+  participant    = gam_data$participant[1],
+  Item           = gam_data$Item[1]
+)
+preds_s = predict(mod_gam1_gpt2, newdata = slice_surp, se.fit = TRUE, exclude = re_exclude_gam1)
+slice_surp = slice_surp %>% mutate(fit = preds_s$fit, se = preds_s$se.fit)
+
+slice_freq = tibble(
+  log_freq       = seq(min(gam_data$log_freq), max(gam_data$log_freq), length.out = 200),
+  gpt2_surprisal = mean(gam_data$gpt2_surprisal),
+  Duration       = 0,
+  trial          = gam_data$trial[1],
+  participant    = gam_data$participant[1],
+  Item           = gam_data$Item[1]
+)
+preds_f = predict(mod_gam1_gpt2, newdata = slice_freq, se.fit = TRUE, exclude = re_exclude_gam1)
+slice_freq = slice_freq %>% mutate(fit = preds_f$fit, se = preds_f$se.fit)
+
+p1_surp = ggplot(slice_surp, aes(x = gpt2_surprisal, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+  geom_line() +
+  xlab('GPT-2 Surprisal\n(frequency at mean)') + ylab('Predicted Log RT') +
+  theme_bw()
+
+p1_freq = ggplot(slice_freq, aes(x = log_freq, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+  geom_line() +
+  xlab('Log Frequency\n(surprisal at mean)') + ylab('Predicted Log RT') +
+  theme_bw()
+
+ggarrange(p1_surp, p1_freq, nrow = 1)
+```
+
+### Model 2: Phrasal vs. Non-Phrasal Verbs
+
+This model replicates the model from Equation 2 of the paper, replacing `log_predic` with `gpt2_surprisal`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim te(\text{GPT-2 Surprisal}, \text{Frequency}, \text{by} = \text{PhrasalVerb}) + \text{Duration} \\
+& + s(\text{participant}, bs = \text{`}re\text{'}) + s(\text{Item}, bs = \text{`}re\text{'}) + s(\text{trial}, bs = \text{`}re\text{'}) \\
+& + s(\text{GPT-2 Surprisal}, \text{Frequency}, \text{trial}, \text{participant}, bs = \text{`}re\text{'})
+\end{aligned}
+$$
+
+```{r mod-gam-phrasal-gpt2, message=FALSE}
+mod_gam_phrasal_nonphrasal_gpt2 = bam(log_rt ~
+                                        PhrasalVerb +
+                                        te(gpt2_surprisal, log_freq, by = PhrasalVerb) + Duration +
+                                        s(trial, bs = 're') +
+                                        s(participant, bs = 're') +
+                                        s(Item, bs = 're') +
+                                        s(gpt2_surprisal, log_freq, trial, participant, bs = 're'),
+                                      data = gam_data)
+
+summary(mod_gam_phrasal_nonphrasal_gpt2)
+saveRDS(mod_gam_phrasal_nonphrasal_gpt2, '../Models/mod_gam_phrasal_nonphrasal_gpt2.rds')
+```
+
+```{r mod-gam-phrasal-gpt2-plot, message=FALSE, warning=FALSE}
+pred_grid_nonphrasal = pred_grid %>%
+  mutate(PhrasalVerb = factor('nonphrasal', levels = levels(gam_data$PhrasalVerb)))
+
+pred_grid_phrasal = pred_grid %>%
+  mutate(PhrasalVerb = factor('phrasal', levels = levels(gam_data$PhrasalVerb)))
+
+re_exclude = c('s(trial)', 's(participant)', 's(Item)',
+               's(gpt2_surprisal,log_freq,trial,participant)')
+
+preds_nonphrasal = predict(mod_gam_phrasal_nonphrasal_gpt2,
+                           newdata = pred_grid_nonphrasal, exclude = re_exclude)
+preds_phrasal    = predict(mod_gam_phrasal_nonphrasal_gpt2,
+                           newdata = pred_grid_phrasal,    exclude = re_exclude)
+
+z_nonphrasal = matrix(preds_nonphrasal, nrow = length(surp_seq), ncol = length(freq_seq))
+z_phrasal    = matrix(preds_phrasal,    nrow = length(surp_seq), ncol = length(freq_seq))
+
+scene_spec = list(xaxis = list(title = 'GPT-2 Surprisal'),
+                  yaxis = list(title = 'Log Frequency'),
+                  zaxis = list(title = 'Predicted Log RT'))
+
+p_nonphrasal = plot_ly(x = surp_seq, y = freq_seq, z = z_nonphrasal,
+                       type = 'surface', colorscale = 'Viridis', showscale = FALSE) %>%
+  layout(title = 'Non-phrasal verbs', scene = scene_spec)
+
+p_phrasal = plot_ly(x = surp_seq, y = freq_seq, z = z_phrasal,
+                    type = 'surface', colorscale = 'Viridis', showscale = FALSE) %>%
+  layout(title = 'Phrasal verbs', scene = scene_spec)
+
+p_nonphrasal
+p_phrasal
+```
+
+```{r mod-gam-phrasal-gpt2-slices, message=FALSE, warning=FALSE}
+conditions = c('nonphrasal', 'phrasal')
+
+slice_plots = lapply(conditions, function(cond) {
+  base = tibble(Duration    = 0,
+                trial       = gam_data$trial[1],
+                participant = gam_data$participant[1],
+                Item        = gam_data$Item[1],
+                PhrasalVerb = factor(cond, levels = levels(gam_data$PhrasalVerb)))
+
+  s_data = base %>%
+    slice(rep(1, 200)) %>%
+    mutate(gpt2_surprisal = seq(min(gam_data$gpt2_surprisal), max(gam_data$gpt2_surprisal), length.out = 200),
+           log_freq       = mean(gam_data$log_freq))
+  ps = predict(mod_gam_phrasal_nonphrasal_gpt2, newdata = s_data, se.fit = TRUE, exclude = re_exclude)
+  s_data = s_data %>% mutate(fit = ps$fit, se = ps$se.fit)
+
+  f_data = base %>%
+    slice(rep(1, 200)) %>%
+    mutate(log_freq       = seq(min(gam_data$log_freq), max(gam_data$log_freq), length.out = 200),
+           gpt2_surprisal = mean(gam_data$gpt2_surprisal))
+  pf = predict(mod_gam_phrasal_nonphrasal_gpt2, newdata = f_data, se.fit = TRUE, exclude = re_exclude)
+  f_data = f_data %>% mutate(fit = pf$fit, se = pf$se.fit)
+
+  ps_plot = ggplot(s_data, aes(x = gpt2_surprisal, y = fit)) +
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+    geom_line() +
+    xlab('GPT-2 Surprisal\n(frequency at mean)') + ylab('Predicted Log RT') +
+    ggtitle(paste0(tools::toTitleCase(cond), ' verbs')) +
+    theme_bw()
+
+  pf_plot = ggplot(f_data, aes(x = log_freq, y = fit)) +
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+    geom_line() +
+    xlab('Log Frequency\n(surprisal at mean)') + ylab('Predicted Log RT') +
+    ggtitle(paste0(tools::toTitleCase(cond), ' verbs')) +
+    theme_bw()
+
+  list(surp = ps_plot, freq = pf_plot)
+})
+
+ggarrange(slice_plots[[1]]$surp, slice_plots[[1]]$freq,
+          slice_plots[[2]]$surp, slice_plots[[2]]$freq,
+          nrow = 2, ncol = 2)
+```
+
+### Model 3: Main Effects and Interaction (ti() terms)
+
+This model replicates the model from Equation 3 of the paper, replacing `log_predic` with `gpt2_surprisal`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim ti(\text{Frequency}) + ti(\text{GPT-2 Surprisal}) + ti(\text{GPT-2 Surprisal}, \text{Frequency}) \\
+& + \text{Duration} + s(\text{participant}, bs = \text{`}re\text{'}) + s(\text{Item}, bs = \text{`}re\text{'}) \\
+& + s(\text{GPT-2 Surprisal}, \text{Frequency}, \text{participant}, bs = \text{`}re\text{'})
+\end{aligned}
+$$
+
+```{r mod-bam-inter-gpt2, message=FALSE}
+mod_bam_inter_gpt2 = bam(log_rt ~
+                           ti(log_freq) + ti(gpt2_surprisal) + ti(gpt2_surprisal, log_freq) +
+                           Duration +
+                           s(participant, bs = 're') +
+                           s(Item, bs = 're') +
+                           s(gpt2_surprisal, log_freq, participant, bs = 're'),
+                         method = 'REML',
+                         data = gam_data)
+
+summary(mod_bam_inter_gpt2)
+saveRDS(mod_bam_inter_gpt2, '../Models/mod_bam_inter_gpt2.rds')
+```
+
+```{r mod-bam-inter-gpt2-plot, message=FALSE, warning=FALSE}
+nd_base = tibble(Duration = 0, log_freq = 0, gpt2_surprisal = 0, participant = 0, Item = 0)
+
+nd_surp = nd_base %>%
+  slice(rep(1, 1000)) %>%
+  mutate(gpt2_surprisal = seq(min(gam_data$gpt2_surprisal), max(gam_data$gpt2_surprisal), length.out = 1000))
+nd_surp = predict(mod_bam_inter_gpt2, newdata = nd_surp, se = TRUE, terms = 'ti(gpt2_surprisal)') %>%
+  as_tibble() %>% cbind(nd_surp)
+
+nd_freq = nd_base %>%
+  slice(rep(1, 1000)) %>%
+  mutate(log_freq = seq(min(gam_data$log_freq), max(gam_data$log_freq), length.out = 1000))
+nd_freq = predict(mod_bam_inter_gpt2, newdata = nd_freq, se = TRUE, terms = 'ti(log_freq)') %>%
+  as_tibble() %>% cbind(nd_freq)
+
+p3_surp = ggplot(nd_surp, aes(x = gpt2_surprisal, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se.fit, ymax = fit + se.fit), alpha = 0.3) +
+  geom_line() +
+  xlab('GPT-2 Surprisal of "up"') + ylab('Predicted Effect on Recognition Time') +
+  theme_bw()
+
+p3_freq = ggplot(nd_freq, aes(x = log_freq, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se.fit, ymax = fit + se.fit), alpha = 0.3) +
+  geom_line() +
+  xlab('Log Frequency') + ylab('Predicted Effect on Recognition Time') +
+  theme_bw()
+
+ggarrange(p3_surp, p3_freq, nrow = 1)
+```
+
+## Bayesian Quadratic Models
+
+Priors are identical to those used in the main paper.
+
+```{r priors}
+options(contrasts = c("contr.sum", "contr.sum"))
+priors = c(prior(student_t(3, 0, 2.5), class = 'sd'),
+           prior(student_t(3, 0, 2.5), class = 'sigma'),
+           prior(student_t(3, 0, 2.5), class = 'Intercept'),
+           prior(normal(0, 0.1),       class = 'b'))
+```
+
+### Full Model: Frequency and GPT-2 Surprisal
+
+This model replicates Equation 4 of the paper, replacing `log_predic` with `gpt2_surprisal`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim \log(\text{Frequency}) + \text{GPT-2 Surprisal} + \text{Duration} \\
+& + \log(\text{Frequency})^2 + \text{GPT-2 Surprisal}^2 \\
+& + (1 + \log(\text{Frequency}) + \text{GPT-2 Surprisal} + \log(\text{Frequency})^2 \\
+& \quad + \text{GPT-2 Surprisal}^2 + \text{Duration} \mid\mid \text{Participant}) + (1 \mid\mid \text{Item})
+\end{aligned}
+$$
+
+```{r brms-full-gpt2, message=FALSE}
+brms_gpt2_quadratic_no_interaction = brm(
+  log_rt ~ log_freq + gpt2_surprisal + Duration +
+    I(gpt2_surprisal^2) + I(log_freq^2) +
+    (1 + log_freq + gpt2_surprisal + Duration +
+       I(gpt2_surprisal^2) + I(log_freq^2) || participant) +
+    (1 || Item),
+  data    = gam_data,
+  warmup  = 10000,
+  iter    = 20000,
+  cores   = 8,
+  chains  = 8,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors,
+  file    = '../Models/brms_gpt2_quadratic_no_interaction'
+)
+
+fixef(brms_gpt2_quadratic_no_interaction)
+```
+
+```{r brms-full-gpt2-posterior}
+percent_greater_zero = data.frame(fixef(brms_gpt2_quadratic_no_interaction, summary = FALSE)) %>%
+  pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
+  group_by(beta_coefficient) %>%
+  summarize(pct_gt_zero = (sum(estimate > 0) / n()) * 100)
+
+percent_greater_zero
+```
+
+```{r brms-full-gpt2-plot, message=FALSE, warning=FALSE, out.width='90%', fig.align='center'}
+brms_gpt2_plot = conditional_effects(brms_gpt2_quadratic_no_interaction)
+
+freq_plot_gpt2 = plot(brms_gpt2_plot, plot = FALSE)[[1]] +
+  ylab('Log Reaction Time') + xlab('Log Frequency') + theme_bw()
+
+surprisal_plot_gpt2 = plot(brms_gpt2_plot, plot = FALSE)[[2]] +
+  ylab('Log Reaction Time') + xlab('GPT-2 Surprisal of "up"') + theme_bw()
+
+ggarrange(freq_plot_gpt2, surprisal_plot_gpt2, nrow = 2, ncol = 1)
+```
+
+```{r brms-full-gpt2-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels = list.reverse(c('GPT-2 Surprisal', 'log-frequency', 'Intercept',
+                                   'GPT-2 Surprisal^2', 'log-frequency^2'))
+brms_gpt2_quadratic_no_interaction %>%
+  gather_draws(b_Intercept, b_log_freq, b_gpt2_surprisal,
+               b_Igpt2_surprisalE2, b_Ilog_freqE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels) +
+  theme_bw()
+```
+
+### GPT-2 Surprisal-Only Model
+
+This model replicates Equation 5 of the paper (the predictability-only quadratic), replacing `log_predic` with `gpt2_surprisal`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim \text{GPT-2 Surprisal} + \text{Duration} + \text{GPT-2 Surprisal}^2 \\
+& + (1 + \text{GPT-2 Surprisal} + \text{GPT-2 Surprisal}^2 + \text{Duration} \mid\mid \text{Participant}) + (1 \mid\mid \text{Item})
+\end{aligned}
+$$
+
+```{r brms-surprisal-only, message=FALSE}
+brms_gpt2_surprisal_quadratic = brm(
+  log_rt ~ gpt2_surprisal + Duration +
+    I(gpt2_surprisal^2) +
+    (1 + gpt2_surprisal + Duration + I(gpt2_surprisal^2) || participant) +
+    (1 || Item),
+  data    = gam_data,
+  warmup  = 10000,
+  iter    = 20000,
+  cores   = 8,
+  chains  = 8,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors,
+  file    = '../Models/brms_gpt2_surprisal_quadratic'
+)
+
+fixef(brms_gpt2_surprisal_quadratic)
+```
+
+```{r brms-surprisal-only-posterior}
+post_samples_surprisal = as.data.frame(fixef(brms_gpt2_surprisal_quadratic, summary = FALSE)) %>%
+  select(gpt2_surprisal, Igpt2_surprisalE2)
+
+cat("% samples gpt2_surprisal^2 > 0:",
+    round(sum(post_samples_surprisal$Igpt2_surprisalE2 > 0) /
+            nrow(post_samples_surprisal) * 100, 1), "\n")
+
+cat("% samples gpt2_surprisal > 0:",
+    round(sum(post_samples_surprisal$gpt2_surprisal > 0) /
+            nrow(post_samples_surprisal) * 100, 1), "\n")
+```
+
+```{r brms-surprisal-only-plot, message=FALSE, warning=FALSE, out.width='60%', fig.align='center'}
+brms_surprisal_only_plot = conditional_effects(brms_gpt2_surprisal_quadratic)
+
+plot(brms_surprisal_only_plot, plot = FALSE)[[1]] +
+  ylab('Log Reaction Time') +
+  xlab('GPT-2 Surprisal of "up"') +
+  theme_bw()
+```
+
+```{r brms-surprisal-only-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels_surp = list.reverse(c('GPT-2 Surprisal', 'Intercept', 'GPT-2 Surprisal^2'))
+brms_gpt2_surprisal_quadratic %>%
+  gather_draws(b_Intercept, b_gpt2_surprisal, b_Igpt2_surprisalE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels_surp) +
+  theme_bw()
+```
+
+# Robustness Check: Correlated Random Effects with LKJ Priors
+
+A reviewer noted that removing random-effect correlations (via `||`) for computational tractability is suboptimal and that LKJ priors on the correlation parameters would be preferable. The following models replicate the three Bayesian quadratic regression models from the paper with two changes: (1) random effects are allowed to correlate (using `|` instead of `||`), and (2) an LKJ(2) prior is placed on the correlation matrix. LKJ(2) is a weakly regularizing prior that places slightly more mass on near-identity matrices than the uniform LKJ(1), which helps with convergence while remaining diffuse.
+
+All other model specifications (fixed effects, remaining priors, iterations) are identical to the original models.
+
+```{r lkj-priors}
+options(contrasts = c("contr.sum", "contr.sum"))
+priors_lkj = c(prior(student_t(3, 0, 2.5), class = 'sd'),
+               prior(student_t(3, 0, 2.5), class = 'sigma'),
+               prior(student_t(3, 0, 2.5), class = 'Intercept'),
+               prior(normal(0, 0.1),       class = 'b'),
+               prior(lkj(2),               class = 'cor'))
+
+# Load gam_data with original log_predic (without surprisal filter)
+gam_data_orig = read_csv('../Data/gam_data.csv') %>%
+  mutate(participant = as.factor(participant),
+         Item        = as.factor(Item),
+         Type        = as.factor(Type),
+         PhrasalVerb = as.factor(PhrasalVerb))
+```
+
+## Full Model: Frequency and Predictability with LKJ Priors
+
+```{r brms-lkj-full, message=FALSE}
+brms_quadratic_lkj = brm(
+  log_rt ~ log_freq + log_predic + Duration +
+    I(log_predic^2) + I(log_freq^2) +
+    (1 + log_freq + log_predic + Duration + I(log_predic^2) + I(log_freq^2) | participant) +
+    (1 | Item),
+  data    = gam_data_orig,
+  warmup  = 15000,
+  iter    = 30000,
+  cores   = 4,
+  chains  = 4,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors_lkj,
+  file    = '../Models/brms_quadratic_lkj'
+)
+
+fixef(brms_quadratic_lkj)
+```
+
+```{r brms-lkj-full-posterior}
+percent_greater_zero_lkj = data.frame(fixef(brms_quadratic_lkj, summary = FALSE)) %>%
+  pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
+  group_by(beta_coefficient) %>%
+  summarize(pct_gt_zero = (sum(estimate > 0) / n()) * 100)
+
+percent_greater_zero_lkj
+```
+
+```{r brms-lkj-full-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels_lkj = list.reverse(c('log-predictability', 'log-frequency', 'Intercept',
+                                       'log-predictability^2', 'log-frequency^2'))
+brms_quadratic_lkj %>%
+  gather_draws(b_Intercept, b_log_freq, b_log_predic, b_Ilog_predicE2, b_Ilog_freqE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels_lkj) +
+  theme_bw()
+```
+
+## Frequency-Only Model with LKJ Priors
+
+```{r brms-lkj-freq, message=FALSE}
+brms_freq_quadratic_lkj = brm(
+  log_rt ~ log_freq + Duration +
+    I(log_freq^2) +
+    (1 + log_freq + Duration + I(log_freq^2) | participant) +
+    (1 | Item),
+  data    = gam_data_orig,
+  warmup  = 8000,
+  iter    = 16000,
+  cores   = 4,
+  chains  = 4,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors_lkj,
+  file    = '../Models/brms_freq_quadratic_lkj'
+)
+
+fixef(brms_freq_quadratic_lkj)
+
+post_samples_freq_lkj = as.data.frame(fixef(brms_freq_quadratic_lkj, summary = FALSE)) %>%
+  select(log_freq, Ilog_freqE2)
+
+cat("% samples log_freq^2 > 0:",
+    round(sum(post_samples_freq_lkj$Ilog_freqE2 > 0) / nrow(post_samples_freq_lkj) * 100, 1), "\n")
+cat("% samples log_freq > 0:",
+    round(sum(post_samples_freq_lkj$log_freq > 0) / nrow(post_samples_freq_lkj) * 100, 1), "\n")
+```
+
+## Predictability-Only Model with LKJ Priors
+
+```{r brms-lkj-predic, message=FALSE}
+brms_predic_quadratic_lkj = brm(
+  log_rt ~ log_predic + Duration +
+    I(log_predic^2) +
+    (1 + log_predic + Duration + I(log_predic^2) | participant) +
+    (1 | Item),
+  data    = gam_data_orig,
+  warmup  = 5000,
+  iter    = 10000,
+  cores   = 8,
+  chains  = 8,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors_lkj,
+  file    = '../Models/brms_predic_quadratic_lkj'
+)
+
+fixef(brms_predic_quadratic_lkj)
+
+post_samples_predic_lkj = as.data.frame(fixef(brms_predic_quadratic_lkj, summary = FALSE)) %>%
+  select(log_predic, Ilog_predicE2)
+
+cat("% samples log_predic^2 > 0:",
+    round(sum(post_samples_predic_lkj$Ilog_predicE2 > 0) / nrow(post_samples_predic_lkj) * 100, 1), "\n")
+cat("% samples log_predic > 0:",
+    round(sum(post_samples_predic_lkj$log_predic > 0) / nrow(post_samples_predic_lkj) * 100, 1), "\n")
+```
+
+---
+
+# Local Context Analyses: Log Conditional Probability and PMI
+
+These analyses replicate the predictability analyses from the main paper, replacing the log-odds-ratio predictability measure with log conditional probability $\log P(\textit{up} \mid V)$ and pointwise mutual information (PMI). Both measures quantify the strength of the local bigram association between the verb and *up* in the corpus, independent of sentential context.
+
+## Relationship Between Measures
+
+The `Predictability` column in the dataset is the bigram odds ratio $\text{Odds}(up \mid V) = P(up \mid V) / (1 - P(up \mid V))$. The log conditional probability is obtained via the logistic transform of the log-odds:
+
+$$\log P(up \mid V) = \log\!\left(\frac{\text{Odds}}{1 + \text{Odds}}\right)$$
+
+PMI is defined as:
+
+$$\text{PMI}(V,\, up) = \log \frac{P(V,\, up)}{P(V)\,P(up)} = \log P(up \mid V) - \log P(up)$$
+
+Because $\log P(up)$ is a corpus-level constant (frequency of *up* = 594,602,106; corpus size = 1,064,909,866,902), PMI and $\log P(up \mid V)$ are perfectly collinear and produce identical regression results (same slopes, different intercept). Models below use $\log P(up \mid V)$; PMI values are reported for descriptive completeness.
+
+## Data Preparation
+
+```{r local-data-prep, message=FALSE}
+# log P(up|V) derived from existing log-odds column via the logistic transform
+gam_data_local = gam_data_orig %>%
+  mutate(log_cond_prob = log(plogis(log_predic)))
+
+# PMI = log P(up|V) - log P(up); log P(up) is a constant from the corpus
+log_p_up = log(594602106 / 1064909866902)
+gam_data_local = gam_data_local %>%
+  mutate(log_pmi = log_cond_prob - log_p_up)
+
+cat("log P(up) =", round(log_p_up, 4), "\n")
+cat("PMI offset from log P(up|V):", round(-log_p_up, 4), "\n")
+cat("log_cond_prob range: [",
+    round(min(gam_data_local$log_cond_prob, na.rm = TRUE), 3), ",",
+    round(max(gam_data_local$log_cond_prob, na.rm = TRUE), 3), "]\n")
+cat("log_pmi range: [",
+    round(min(gam_data_local$log_pmi, na.rm = TRUE), 3), ",",
+    round(max(gam_data_local$log_pmi, na.rm = TRUE), 3), "]\n")
+cat("Pearson r(log_cond_prob, log_predic):",
+    round(cor(gam_data_local$log_cond_prob, gam_data_local$log_predic,
+              use = "complete.obs"), 4), "\n")
+cat("Pearson r(log_cond_prob, log_freq):",
+    round(cor(gam_data_local$log_cond_prob, gam_data_local$log_freq,
+              use = "complete.obs"), 4), "\n")
+```
+
+## GAM Models
+
+### Model 1: Interaction Between Log Conditional Probability and Frequency
+
+This model replicates the model from Equation 1 of the paper, replacing `log_predic` with `log_cond_prob`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim te(\log P(up \mid V),\, \text{Frequency}) + \text{Duration} + s(\text{participant}, bs = \text{`}re\text{'}) \\
+& + s(\text{Item}, bs = \text{`}re\text{'}) + s(\text{trial}, bs = \text{`}re\text{'}) \\
+& + s(\log P(up \mid V),\, \text{Frequency},\, \text{trial},\, \text{participant}, bs = \text{`}re\text{'})
+\end{aligned}
+$$
+
+```{r mod-gam1-cond-prob, message=FALSE}
+mod_gam1_cond_prob = bam(log_rt ~
+                           te(log_cond_prob, log_freq) + Duration +
+                           s(trial, bs = 're') +
+                           s(participant, bs = 're') +
+                           s(Item, bs = 're') +
+                           s(log_cond_prob, log_freq, trial, participant, bs = 're'),
+                         data = gam_data_local)
+
+summary(mod_gam1_cond_prob)
+saveRDS(mod_gam1_cond_prob, '../Models/mod_gam1_cond_prob.rds')
+```
+
+```{r mod-gam1-cond-prob-plot, message=FALSE, warning=FALSE}
+cond_seq  = seq(min(gam_data_local$log_cond_prob), max(gam_data_local$log_cond_prob), length.out = 50)
+freq_seq2 = seq(min(gam_data_local$log_freq),       max(gam_data_local$log_freq),       length.out = 50)
+
+pred_grid_cp = expand.grid(log_cond_prob = cond_seq, log_freq = freq_seq2) %>%
+  mutate(Duration    = 0,
+         trial       = gam_data_local$trial[1],
+         participant = gam_data_local$participant[1],
+         Item        = gam_data_local$Item[1])
+
+preds_cp = predict(mod_gam1_cond_prob, newdata = pred_grid_cp,
+                   exclude = c('s(trial)', 's(participant)', 's(Item)',
+                               's(log_cond_prob,log_freq,trial,participant)'))
+
+z_mat_cp = matrix(preds_cp, nrow = length(cond_seq), ncol = length(freq_seq2))
+
+plot_ly(x = cond_seq, y = freq_seq2, z = z_mat_cp,
+        type = 'surface', colorscale = 'Viridis') %>%
+  layout(scene = list(
+    xaxis = list(title = 'Log P(up|V)'),
+    yaxis = list(title = 'Log Frequency'),
+    zaxis = list(title = 'Predicted Log RT')
+  ))
+```
+
+```{r mod-gam1-cond-prob-slices, message=FALSE, warning=FALSE}
+re_excl_cp1 = c('s(trial)', 's(participant)', 's(Item)',
+                's(log_cond_prob,log_freq,trial,participant)')
+
+slice_cp = tibble(
+  log_cond_prob = seq(min(gam_data_local$log_cond_prob), max(gam_data_local$log_cond_prob), length.out = 200),
+  log_freq      = mean(gam_data_local$log_freq),
+  Duration      = 0,
+  trial         = gam_data_local$trial[1],
+  participant   = gam_data_local$participant[1],
+  Item          = gam_data_local$Item[1]
+)
+preds_cp_s = predict(mod_gam1_cond_prob, newdata = slice_cp, se.fit = TRUE, exclude = re_excl_cp1)
+slice_cp = slice_cp %>% mutate(fit = preds_cp_s$fit, se = preds_cp_s$se.fit)
+
+slice_freq_cp = tibble(
+  log_freq      = seq(min(gam_data_local$log_freq), max(gam_data_local$log_freq), length.out = 200),
+  log_cond_prob = mean(gam_data_local$log_cond_prob),
+  Duration      = 0,
+  trial         = gam_data_local$trial[1],
+  participant   = gam_data_local$participant[1],
+  Item          = gam_data_local$Item[1]
+)
+preds_cp_f = predict(mod_gam1_cond_prob, newdata = slice_freq_cp, se.fit = TRUE, exclude = re_excl_cp1)
+slice_freq_cp = slice_freq_cp %>% mutate(fit = preds_cp_f$fit, se = preds_cp_f$se.fit)
+
+p_cp_cond = ggplot(slice_cp, aes(x = log_cond_prob, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+  geom_line() +
+  xlab('Log P(up|V)\n(frequency at mean)') + ylab('Predicted Log RT') +
+  theme_bw()
+
+p_cp_freq = ggplot(slice_freq_cp, aes(x = log_freq, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+  geom_line() +
+  xlab('Log Frequency\n(log P(up|V) at mean)') + ylab('Predicted Log RT') +
+  theme_bw()
+
+ggarrange(p_cp_cond, p_cp_freq, nrow = 1)
+```
+
+### Model 2: Phrasal vs. Non-Phrasal Verbs
+
+This model replicates the model from Equation 2 of the paper, replacing `log_predic` with `log_cond_prob`.
+
+```{r mod-gam-phrasal-cond-prob, message=FALSE}
+mod_gam_phrasal_cond_prob = bam(log_rt ~
+                                  PhrasalVerb +
+                                  te(log_cond_prob, log_freq, by = PhrasalVerb) + Duration +
+                                  s(trial, bs = 're') +
+                                  s(participant, bs = 're') +
+                                  s(Item, bs = 're') +
+                                  s(log_cond_prob, log_freq, trial, participant, bs = 're'),
+                                data = gam_data_local)
+
+summary(mod_gam_phrasal_cond_prob)
+saveRDS(mod_gam_phrasal_cond_prob, '../Models/mod_gam_phrasal_cond_prob.rds')
+```
+
+```{r mod-gam-phrasal-cond-prob-plot, message=FALSE, warning=FALSE}
+pred_grid_cp_nonphrasal = pred_grid_cp %>%
+  mutate(PhrasalVerb = factor('nonphrasal', levels = levels(gam_data_local$PhrasalVerb)))
+pred_grid_cp_phrasal = pred_grid_cp %>%
+  mutate(PhrasalVerb = factor('phrasal', levels = levels(gam_data_local$PhrasalVerb)))
+
+re_excl_cp2 = c('s(trial)', 's(participant)', 's(Item)',
+                's(log_cond_prob,log_freq,trial,participant)')
+
+preds_cp_nonphrasal = predict(mod_gam_phrasal_cond_prob,
+                              newdata = pred_grid_cp_nonphrasal, exclude = re_excl_cp2)
+preds_cp_phrasal    = predict(mod_gam_phrasal_cond_prob,
+                              newdata = pred_grid_cp_phrasal,    exclude = re_excl_cp2)
+
+z_cp_nonphrasal = matrix(preds_cp_nonphrasal, nrow = length(cond_seq), ncol = length(freq_seq2))
+z_cp_phrasal    = matrix(preds_cp_phrasal,    nrow = length(cond_seq), ncol = length(freq_seq2))
+
+scene_cp = list(xaxis = list(title = 'Log P(up|V)'),
+                yaxis = list(title = 'Log Frequency'),
+                zaxis = list(title = 'Predicted Log RT'))
+
+plot_ly(x = cond_seq, y = freq_seq2, z = z_cp_nonphrasal,
+        type = 'surface', colorscale = 'Viridis', showscale = FALSE) %>%
+  layout(title = 'Non-phrasal verbs', scene = scene_cp)
+
+plot_ly(x = cond_seq, y = freq_seq2, z = z_cp_phrasal,
+        type = 'surface', colorscale = 'Viridis', showscale = FALSE) %>%
+  layout(title = 'Phrasal verbs', scene = scene_cp)
+```
+
+```{r mod-gam-phrasal-cond-prob-slices, message=FALSE, warning=FALSE}
+conditions_cp = c('nonphrasal', 'phrasal')
+
+slice_plots_cp = lapply(conditions_cp, function(cond) {
+  base = tibble(Duration    = 0,
+                trial       = gam_data_local$trial[1],
+                participant = gam_data_local$participant[1],
+                Item        = gam_data_local$Item[1],
+                PhrasalVerb = factor(cond, levels = levels(gam_data_local$PhrasalVerb)))
+
+  s_data = base %>%
+    slice(rep(1, 200)) %>%
+    mutate(log_cond_prob = seq(min(gam_data_local$log_cond_prob),
+                               max(gam_data_local$log_cond_prob), length.out = 200),
+           log_freq      = mean(gam_data_local$log_freq))
+  ps = predict(mod_gam_phrasal_cond_prob, newdata = s_data, se.fit = TRUE, exclude = re_excl_cp2)
+  s_data = s_data %>% mutate(fit = ps$fit, se = ps$se.fit)
+
+  f_data = base %>%
+    slice(rep(1, 200)) %>%
+    mutate(log_freq      = seq(min(gam_data_local$log_freq),
+                               max(gam_data_local$log_freq), length.out = 200),
+           log_cond_prob = mean(gam_data_local$log_cond_prob))
+  pf = predict(mod_gam_phrasal_cond_prob, newdata = f_data, se.fit = TRUE, exclude = re_excl_cp2)
+  f_data = f_data %>% mutate(fit = pf$fit, se = pf$se.fit)
+
+  ps_plot = ggplot(s_data, aes(x = log_cond_prob, y = fit)) +
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+    geom_line() +
+    xlab('Log P(up|V)\n(frequency at mean)') + ylab('Predicted Log RT') +
+    ggtitle(paste0(tools::toTitleCase(cond), ' verbs')) +
+    theme_bw()
+
+  pf_plot = ggplot(f_data, aes(x = log_freq, y = fit)) +
+    geom_ribbon(aes(ymin = fit - se, ymax = fit + se), alpha = 0.3) +
+    geom_line() +
+    xlab('Log Frequency\n(log P(up|V) at mean)') + ylab('Predicted Log RT') +
+    ggtitle(paste0(tools::toTitleCase(cond), ' verbs')) +
+    theme_bw()
+
+  list(cond = ps_plot, freq = pf_plot)
+})
+
+ggarrange(slice_plots_cp[[1]]$cond, slice_plots_cp[[1]]$freq,
+          slice_plots_cp[[2]]$cond, slice_plots_cp[[2]]$freq,
+          nrow = 2, ncol = 2)
+```
+
+### Model 3: Main Effects and Interaction (ti() terms)
+
+This model replicates the model from Equation 3 of the paper, replacing `log_predic` with `log_cond_prob`.
+
+```{r mod-bam-inter-cond-prob, message=FALSE}
+mod_bam_inter_cond_prob = bam(log_rt ~
+                                ti(log_freq) + ti(log_cond_prob) + ti(log_cond_prob, log_freq) +
+                                Duration +
+                                s(participant, bs = 're') +
+                                s(Item, bs = 're') +
+                                s(log_cond_prob, log_freq, participant, bs = 're'),
+                              method = 'REML',
+                              data = gam_data_local)
+
+summary(mod_bam_inter_cond_prob)
+saveRDS(mod_bam_inter_cond_prob, '../Models/mod_bam_inter_cond_prob.rds')
+```
+
+```{r mod-bam-inter-cond-prob-plot, message=FALSE, warning=FALSE}
+nd_base_cp = tibble(Duration = 0, log_freq = 0, log_cond_prob = 0, participant = 0, Item = 0)
+
+nd_cond = nd_base_cp %>%
+  slice(rep(1, 1000)) %>%
+  mutate(log_cond_prob = seq(min(gam_data_local$log_cond_prob),
+                             max(gam_data_local$log_cond_prob), length.out = 1000))
+nd_cond = predict(mod_bam_inter_cond_prob, newdata = nd_cond,
+                  se = TRUE, terms = 'ti(log_cond_prob)') %>%
+  as_tibble() %>% cbind(nd_cond)
+
+nd_freq_cp = nd_base_cp %>%
+  slice(rep(1, 1000)) %>%
+  mutate(log_freq = seq(min(gam_data_local$log_freq), max(gam_data_local$log_freq), length.out = 1000))
+nd_freq_cp = predict(mod_bam_inter_cond_prob, newdata = nd_freq_cp,
+                     se = TRUE, terms = 'ti(log_freq)') %>%
+  as_tibble() %>% cbind(nd_freq_cp)
+
+p3_cond = ggplot(nd_cond, aes(x = log_cond_prob, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se.fit, ymax = fit + se.fit), alpha = 0.3) +
+  geom_line() +
+  xlab('Log P(up|V)') + ylab('Predicted Effect on Recognition Time') +
+  theme_bw()
+
+p3_freq_cp = ggplot(nd_freq_cp, aes(x = log_freq, y = fit)) +
+  geom_ribbon(aes(ymin = fit - se.fit, ymax = fit + se.fit), alpha = 0.3) +
+  geom_line() +
+  xlab('Log Frequency') + ylab('Predicted Effect on Recognition Time') +
+  theme_bw()
+
+ggarrange(p3_cond, p3_freq_cp, nrow = 1)
+```
+
+## Bayesian Quadratic Models
+
+Priors are identical to those used in the main paper.
+
+### Full Model: Frequency and Log Conditional Probability
+
+This model replicates Equation 4 of the paper, replacing `log_predic` with `log_cond_prob`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim \log(\text{Frequency}) + \log P(up \mid V) + \text{Duration} \\
+& + \log(\text{Frequency})^2 + \log P(up \mid V)^2 \\
+& + (1 + \log(\text{Frequency}) + \log P(up \mid V) + \log(\text{Frequency})^2 \\
+& \quad + \log P(up \mid V)^2 + \text{Duration} \mid\mid \text{Participant}) + (1 \mid\mid \text{Item})
+\end{aligned}
+$$
+
+```{r brms-full-cond-prob, message=FALSE}
+brms_cond_prob_quadratic = brm(
+  log_rt ~ log_freq + log_cond_prob + Duration +
+    I(log_cond_prob^2) + I(log_freq^2) +
+    (1 + log_freq + log_cond_prob + Duration +
+       I(log_cond_prob^2) + I(log_freq^2) || participant) +
+    (1 || Item),
+  data    = gam_data_local,
+  warmup  = 10000,
+  iter    = 20000,
+  cores   = 8,
+  chains  = 8,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors,
+  file    = '../Models/brms_cond_prob_quadratic'
+)
+
+fixef(brms_cond_prob_quadratic)
+```
+
+```{r brms-full-cond-prob-posterior}
+percent_greater_zero_cp = data.frame(fixef(brms_cond_prob_quadratic, summary = FALSE)) %>%
+  pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
+  group_by(beta_coefficient) %>%
+  summarize(pct_gt_zero = (sum(estimate > 0) / n()) * 100)
+
+percent_greater_zero_cp
+```
+
+```{r brms-full-cond-prob-plot, message=FALSE, warning=FALSE, out.width='90%', fig.align='center'}
+brms_cp_plot = conditional_effects(brms_cond_prob_quadratic)
+
+freq_plot_cp = plot(brms_cp_plot, plot = FALSE)[[1]] +
+  ylab('Log Reaction Time') + xlab('Log Frequency') + theme_bw()
+
+cond_prob_plot = plot(brms_cp_plot, plot = FALSE)[[2]] +
+  ylab('Log Reaction Time') + xlab('Log P(up|V)') + theme_bw()
+
+ggarrange(freq_plot_cp, cond_prob_plot, nrow = 2, ncol = 1)
+```
+
+```{r brms-full-cond-prob-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels_cp = list.reverse(c('log P(up|V)', 'log-frequency', 'Intercept',
+                                     'log P(up|V)^2', 'log-frequency^2'))
+brms_cond_prob_quadratic %>%
+  gather_draws(b_Intercept, b_log_freq, b_log_cond_prob,
+               b_Ilog_cond_probE2, b_Ilog_freqE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels_cp) +
+  theme_bw()
+```
+
+### Log Conditional Probability-Only Model
+
+This model replicates Equation 5 of the paper (the predictability-only quadratic), replacing `log_predic` with `log_cond_prob`.
+
+$$
+\begin{aligned}
+\log(RT) & \sim \log P(up \mid V) + \text{Duration} + \log P(up \mid V)^2 \\
+& + (1 + \log P(up \mid V) + \log P(up \mid V)^2 + \text{Duration} \mid\mid \text{Participant}) + (1 \mid\mid \text{Item})
+\end{aligned}
+$$
+
+```{r brms-cond-prob-only, message=FALSE}
+brms_cond_prob_only_quadratic = brm(
+  log_rt ~ log_cond_prob + Duration +
+    I(log_cond_prob^2) +
+    (1 + log_cond_prob + Duration + I(log_cond_prob^2) || participant) +
+    (1 || Item),
+  data    = gam_data_local,
+  warmup  = 10000,
+  iter    = 20000,
+  cores   = 8,
+  chains  = 8,
+  init    = 0,
+  control = list(adapt_delta = 0.99),
+  prior   = priors,
+  file    = '../Models/brms_cond_prob_only_quadratic'
+)
+
+fixef(brms_cond_prob_only_quadratic)
+```
+
+```{r brms-cond-prob-only-posterior}
+post_samples_cp_only = as.data.frame(fixef(brms_cond_prob_only_quadratic, summary = FALSE)) %>%
+  select(log_cond_prob, Ilog_cond_probE2)
+
+cat("% samples log_cond_prob^2 > 0:",
+    round(sum(post_samples_cp_only$Ilog_cond_probE2 > 0) /
+            nrow(post_samples_cp_only) * 100, 1), "\n")
+cat("% samples log_cond_prob > 0:",
+    round(sum(post_samples_cp_only$log_cond_prob > 0) /
+            nrow(post_samples_cp_only) * 100, 1), "\n")
+```
+
+```{r brms-cond-prob-only-plot, message=FALSE, warning=FALSE, out.width='60%', fig.align='center'}
+brms_cp_only_plot = conditional_effects(brms_cond_prob_only_quadratic)
+
+plot(brms_cp_only_plot, plot = FALSE)[[1]] +
+  ylab('Log Reaction Time') +
+  xlab('Log P(up|V)') +
+  theme_bw()
+```
+
+```{r brms-cond-prob-only-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels_cp_only = list.reverse(c('log P(up|V)', 'Intercept', 'log P(up|V)^2'))
+brms_cond_prob_only_quadratic %>%
+  gather_draws(b_Intercept, b_log_cond_prob, b_Ilog_cond_probE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels_cp_only) +
+  theme_bw()
+```
