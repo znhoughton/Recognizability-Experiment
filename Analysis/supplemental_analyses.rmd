@@ -64,7 +64,7 @@ $$
 \end{aligned}
 $$
 
-```{r mod-gam1-gpt2, message=FALSE}
+```{r mod-gam1-gpt2, message=FALSE, eval=FALSE}
 mod_gam1_gpt2 = bam(log_rt ~
                       te(gpt2_surprisal, log_freq) + Duration +
                       s(trial, bs = 're') +
@@ -77,7 +77,7 @@ summary(mod_gam1_gpt2)
 saveRDS(mod_gam1_gpt2, '../Models/mod_gam1_gpt2.rds')
 ```
 
-```{r mod-gam1-gpt2-plot, message=FALSE, warning=FALSE}
+```{r mod-gam1-gpt2-plot, message=FALSE, warning=FALSE, eval=FALSE}
 surp_seq  = seq(min(gam_data$gpt2_surprisal), max(gam_data$gpt2_surprisal), length.out = 50)
 freq_seq  = seq(min(gam_data$log_freq),        max(gam_data$log_freq),        length.out = 50)
 
@@ -102,7 +102,7 @@ plot_ly(x = surp_seq, y = freq_seq, z = z_mat,
   ))
 ```
 
-```{r mod-gam1-gpt2-slices, message=FALSE, warning=FALSE}
+```{r mod-gam1-gpt2-slices, message=FALSE, warning=FALSE, eval=FALSE}
 re_exclude_gam1 = c('s(trial)', 's(participant)', 's(Item)',
                     's(gpt2_surprisal,log_freq,trial,participant)')
 
@@ -157,7 +157,7 @@ $$
 \end{aligned}
 $$
 
-```{r mod-gam-phrasal-gpt2, message=FALSE}
+```{r mod-gam-phrasal-gpt2, message=FALSE, eval=FALSE}
 mod_gam_phrasal_nonphrasal_gpt2 = bam(log_rt ~
                                         PhrasalVerb +
                                         te(gpt2_surprisal, log_freq, by = PhrasalVerb) + Duration +
@@ -171,7 +171,7 @@ summary(mod_gam_phrasal_nonphrasal_gpt2)
 saveRDS(mod_gam_phrasal_nonphrasal_gpt2, '../Models/mod_gam_phrasal_nonphrasal_gpt2.rds')
 ```
 
-```{r mod-gam-phrasal-gpt2-plot, message=FALSE, warning=FALSE}
+```{r mod-gam-phrasal-gpt2-plot, message=FALSE, warning=FALSE, eval=FALSE}
 pred_grid_nonphrasal = pred_grid %>%
   mutate(PhrasalVerb = factor('nonphrasal', levels = levels(gam_data$PhrasalVerb)))
 
@@ -205,7 +205,7 @@ p_nonphrasal
 p_phrasal
 ```
 
-```{r mod-gam-phrasal-gpt2-slices, message=FALSE, warning=FALSE}
+```{r mod-gam-phrasal-gpt2-slices, message=FALSE, warning=FALSE, eval=FALSE}
 conditions = c('nonphrasal', 'phrasal')
 
 slice_plots = lapply(conditions, function(cond) {
@@ -266,7 +266,7 @@ $$
 \end{aligned}
 $$
 
-```{r mod-bam-inter-gpt2, message=FALSE}
+```{r mod-bam-inter-gpt2, message=FALSE, eval=FALSE}
 mod_bam_inter_gpt2 = bam(log_rt ~
                            ti(log_freq) + ti(gpt2_surprisal) + ti(gpt2_surprisal, log_freq) +
                            Duration +
@@ -280,7 +280,7 @@ summary(mod_bam_inter_gpt2)
 saveRDS(mod_bam_inter_gpt2, '../Models/mod_bam_inter_gpt2.rds')
 ```
 
-```{r mod-bam-inter-gpt2-plot, message=FALSE, warning=FALSE}
+```{r mod-bam-inter-gpt2-plot, message=FALSE, warning=FALSE, eval=FALSE}
 nd_base = tibble(Duration = 0, log_freq = 0, gpt2_surprisal = 0, participant = 0, Item = 0)
 
 nd_surp = nd_base %>%
@@ -343,34 +343,7 @@ gam_data_local = gam_data_orig %>%
 
 plan(multisession, workers = 7)
 
-# --- GPT-2 models ---
-future_gpt2_full = future({
-  library(brms)
-  options(mc.cores = 4)
-  brm(
-    log_rt ~ log_freq + gpt2_surprisal + Duration +
-      I(gpt2_surprisal^2) + I(log_freq^2) +
-      (1 + log_freq + gpt2_surprisal + Duration +
-         I(gpt2_surprisal^2) + I(log_freq^2) || participant) +
-      (1 || Item),
-    data = gam_data, warmup = 10000, iter = 20000, cores = 4, chains = 4,
-    seed = 964, init = 0, control = list(adapt_delta = 0.99),
-    prior = priors, file = '../Models/brms_gpt2_quadratic_no_interaction'
-  )
-})
-
-future_gpt2_only = future({
-  library(brms)
-  options(mc.cores = 4)
-  brm(
-    log_rt ~ gpt2_surprisal + Duration + I(gpt2_surprisal^2) +
-      (1 + gpt2_surprisal + Duration + I(gpt2_surprisal^2) || participant) +
-      (1 || Item),
-    data = gam_data, warmup = 10000, iter = 20000, cores = 4, chains = 4,
-    seed = 964, init = 0, control = list(adapt_delta = 0.99),
-    prior = priors, file = '../Models/brms_gpt2_surprisal_quadratic'
-  )
-})
+# GPT-2 model futures omitted — those sections are eval=FALSE
 
 # --- LKJ robustness models ---
 future_lkj_full = future({
@@ -483,13 +456,13 @@ $$
 \end{aligned}
 $$
 
-```{r brms-full-gpt2, message=FALSE}
+```{r brms-full-gpt2, message=FALSE, eval=FALSE}
 brms_gpt2_quadratic_no_interaction = value(future_gpt2_full)
 
 fixef(brms_gpt2_quadratic_no_interaction)
 ```
 
-```{r brms-full-gpt2-posterior}
+```{r brms-full-gpt2-posterior, eval=FALSE}
 percent_greater_zero = data.frame(fixef(brms_gpt2_quadratic_no_interaction, summary = FALSE)) %>%
   pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
   group_by(beta_coefficient) %>%
@@ -498,7 +471,7 @@ percent_greater_zero = data.frame(fixef(brms_gpt2_quadratic_no_interaction, summ
 percent_greater_zero
 ```
 
-```{r brms-full-gpt2-plot, message=FALSE, warning=FALSE, out.width='90%', fig.align='center'}
+```{r brms-full-gpt2-plot, message=FALSE, warning=FALSE, out.width='90%', fig.align='center', eval=FALSE}
 brms_gpt2_plot = conditional_effects(brms_gpt2_quadratic_no_interaction)
 
 freq_plot_gpt2 = plot(brms_gpt2_plot, plot = FALSE)[[1]] +
@@ -510,7 +483,7 @@ surprisal_plot_gpt2 = plot(brms_gpt2_plot, plot = FALSE)[[2]] +
 ggarrange(freq_plot_gpt2, surprisal_plot_gpt2, nrow = 2, ncol = 1)
 ```
 
-```{r brms-full-gpt2-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+```{r brms-full-gpt2-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center', eval=FALSE}
 beta_coef_labels = list.reverse(c('GPT-2 Surprisal', 'log-frequency', 'Intercept',
                                    'GPT-2 Surprisal^2', 'log-frequency^2'))
 brms_gpt2_quadratic_no_interaction %>%
@@ -538,13 +511,13 @@ $$
 \end{aligned}
 $$
 
-```{r brms-surprisal-only, message=FALSE}
+```{r brms-surprisal-only, message=FALSE, eval=FALSE}
 brms_gpt2_surprisal_quadratic = value(future_gpt2_only)
 
 fixef(brms_gpt2_surprisal_quadratic)
 ```
 
-```{r brms-surprisal-only-posterior}
+```{r brms-surprisal-only-posterior, eval=FALSE}
 post_samples_surprisal = as.data.frame(fixef(brms_gpt2_surprisal_quadratic, summary = FALSE)) %>%
   select(gpt2_surprisal, Igpt2_surprisalE2)
 
@@ -557,7 +530,7 @@ cat("% samples gpt2_surprisal > 0:",
             nrow(post_samples_surprisal) * 100, 1), "\n")
 ```
 
-```{r brms-surprisal-only-plot, message=FALSE, warning=FALSE, out.width='60%', fig.align='center'}
+```{r brms-surprisal-only-plot, message=FALSE, warning=FALSE, out.width='60%', fig.align='center', eval=FALSE}
 brms_surprisal_only_plot = conditional_effects(brms_gpt2_surprisal_quadratic)
 
 plot(brms_surprisal_only_plot, plot = FALSE)[[1]] +
@@ -566,7 +539,7 @@ plot(brms_surprisal_only_plot, plot = FALSE)[[1]] +
   theme_bw()
 ```
 
-```{r brms-surprisal-only-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+```{r brms-surprisal-only-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center', eval=FALSE}
 beta_coef_labels_surp = list.reverse(c('GPT-2 Surprisal', 'Intercept', 'GPT-2 Surprisal^2'))
 brms_gpt2_surprisal_quadratic %>%
   gather_draws(b_Intercept, b_gpt2_surprisal, b_Igpt2_surprisalE2) %>%
