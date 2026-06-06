@@ -15,6 +15,7 @@ library(tidybayes)
 library(ggdist)
 library(rlist)
 library(plotly)
+library(future)
 ```
 
 ## Overview
@@ -140,6 +141,8 @@ p1_freq = ggplot(slice_freq, aes(x = log_freq, y = fit)) +
   theme_bw()
 
 ggarrange(p1_surp, p1_freq, nrow = 1)
+
+rm(mod_gam1_gpt2, slice_surp, slice_freq, preds_s, preds_f, p1_surp, p1_freq); gc()
 ```
 
 ### Model 2: Phrasal vs. Non-Phrasal Verbs
@@ -246,6 +249,9 @@ slice_plots = lapply(conditions, function(cond) {
 ggarrange(slice_plots[[1]]$surp, slice_plots[[1]]$freq,
           slice_plots[[2]]$surp, slice_plots[[2]]$freq,
           nrow = 2, ncol = 2)
+
+rm(mod_gam_phrasal_nonphrasal_gpt2, pred_grid, pred_grid_nonphrasal, pred_grid_phrasal,
+   slice_plots, preds_nonphrasal, preds_phrasal, z_nonphrasal, z_phrasal); gc()
 ```
 
 ### Model 3: Main Effects and Interaction (ti() terms)
@@ -302,18 +308,166 @@ p3_freq = ggplot(nd_freq, aes(x = log_freq, y = fit)) +
   theme_bw()
 
 ggarrange(p3_surp, p3_freq, nrow = 1)
+
+rm(mod_bam_inter_gpt2, nd_base, nd_surp, nd_freq, p3_surp, p3_freq); gc()
 ```
 
 ## Bayesian Quadratic Models
 
-Priors are identical to those used in the main paper.
+All Bayesian models in this document are launched simultaneously in parallel using the `future` package (8 workers, 4 chains each). Models are cached to disk via the `file =` argument and loaded on subsequent knits without re-running.
 
-```{r priors}
+```{r brms-launch, message=FALSE, include=FALSE}
 options(contrasts = c("contr.sum", "contr.sum"))
+
 priors = c(prior(student_t(3, 0, 2.5), class = 'sd'),
            prior(student_t(3, 0, 2.5), class = 'sigma'),
            prior(student_t(3, 0, 2.5), class = 'Intercept'),
            prior(normal(0, 0.1),       class = 'b'))
+
+priors_lkj = c(prior(student_t(3, 0, 2.5), class = 'sd'),
+               prior(student_t(3, 0, 2.5), class = 'sigma'),
+               prior(student_t(3, 0, 2.5), class = 'Intercept'),
+               prior(normal(0, 0.1),       class = 'b'),
+               prior(lkj(2),               class = 'cor'))
+
+gam_data_orig = read_csv('../Data/gam_data.csv') %>%
+  mutate(participant = as.factor(participant),
+         Item        = as.factor(Item),
+         Type        = as.factor(Type),
+         PhrasalVerb = as.factor(PhrasalVerb))
+
+log_p_up       = log(594602106 / 1064909866902)
+gam_data_local = gam_data_orig %>%
+  mutate(log_cond_prob = log(plogis(log_predic)),
+         log_pmi       = log_cond_prob - log_p_up)
+
+plan(multisession, workers = 7)
+
+# --- GPT-2 models ---
+future_gpt2_full = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_freq + gpt2_surprisal + Duration +
+      I(gpt2_surprisal^2) + I(log_freq^2) +
+      (1 + log_freq + gpt2_surprisal + Duration +
+         I(gpt2_surprisal^2) + I(log_freq^2) || participant) +
+      (1 || Item),
+    data = gam_data, warmup = 10000, iter = 20000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors, file = '../Models/brms_gpt2_quadratic_no_interaction'
+  )
+})
+
+future_gpt2_only = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ gpt2_surprisal + Duration + I(gpt2_surprisal^2) +
+      (1 + gpt2_surprisal + Duration + I(gpt2_surprisal^2) || participant) +
+      (1 || Item),
+    data = gam_data, warmup = 10000, iter = 20000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors, file = '../Models/brms_gpt2_surprisal_quadratic'
+  )
+})
+
+# --- LKJ robustness models ---
+future_lkj_full = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_freq + log_predic + Duration + I(log_predic^2) + I(log_freq^2) +
+      (1 + log_freq + log_predic + Duration + I(log_predic^2) + I(log_freq^2) | participant) +
+      (1 | Item),
+    data = gam_data_orig, warmup = 15000, iter = 30000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors_lkj, file = '../Models/brms_quadratic_lkj'
+  )
+})
+
+future_lkj_freq = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_freq + Duration + I(log_freq^2) +
+      (1 + log_freq + Duration + I(log_freq^2) | participant) +
+      (1 | Item),
+    data = gam_data_orig, warmup = 8000, iter = 16000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors_lkj, file = '../Models/brms_freq_quadratic_lkj'
+  )
+})
+
+future_lkj_predic = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_predic + Duration + I(log_predic^2) +
+      (1 + log_predic + Duration + I(log_predic^2) | participant) +
+      (1 | Item),
+    data = gam_data_orig, warmup = 5000, iter = 10000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors_lkj, file = '../Models/brms_predic_quadratic_lkj'
+  )
+})
+
+# --- Log conditional probability models ---
+future_cp_full = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_freq + log_cond_prob + Duration +
+      I(log_cond_prob^2) + I(log_freq^2) +
+      (1 + log_freq + log_cond_prob + Duration +
+         I(log_cond_prob^2) + I(log_freq^2) || participant) +
+      (1 || Item),
+    data = gam_data_local, warmup = 10000, iter = 20000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors, file = '../Models/brms_cond_prob_quadratic'
+  )
+})
+
+future_cp_only = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_cond_prob + Duration + I(log_cond_prob^2) +
+      (1 + log_cond_prob + Duration + I(log_cond_prob^2) || participant) +
+      (1 || Item),
+    data = gam_data_local, warmup = 10000, iter = 20000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors, file = '../Models/brms_cond_prob_only_quadratic'
+  )
+})
+
+future_cp_lkj_full = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_freq + log_cond_prob + Duration +
+      I(log_cond_prob^2) + I(log_freq^2) +
+      (1 + log_freq + log_cond_prob + Duration +
+         I(log_cond_prob^2) + I(log_freq^2) | participant) +
+      (1 | Item),
+    data = gam_data_local, warmup = 15000, iter = 30000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors_lkj, file = '../Models/brms_cond_prob_quadratic_lkj'
+  )
+})
+
+future_cp_lkj_only = future({
+  library(brms)
+  options(mc.cores = 4)
+  brm(
+    log_rt ~ log_cond_prob + Duration + I(log_cond_prob^2) +
+      (1 + log_cond_prob + Duration + I(log_cond_prob^2) | participant) +
+      (1 | Item),
+    data = gam_data_local, warmup = 10000, iter = 20000, cores = 4, chains = 4,
+    seed = 964, init = 0, control = list(adapt_delta = 0.99),
+    prior = priors_lkj, file = '../Models/brms_cond_prob_only_quadratic_lkj'
+  )
+})
 ```
 
 ### Full Model: Frequency and GPT-2 Surprisal
@@ -330,22 +484,7 @@ $$
 $$
 
 ```{r brms-full-gpt2, message=FALSE}
-brms_gpt2_quadratic_no_interaction = brm(
-  log_rt ~ log_freq + gpt2_surprisal + Duration +
-    I(gpt2_surprisal^2) + I(log_freq^2) +
-    (1 + log_freq + gpt2_surprisal + Duration +
-       I(gpt2_surprisal^2) + I(log_freq^2) || participant) +
-    (1 || Item),
-  data    = gam_data,
-  warmup  = 10000,
-  iter    = 20000,
-  cores   = 8,
-  chains  = 8,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors,
-  file    = '../Models/brms_gpt2_quadratic_no_interaction'
-)
+brms_gpt2_quadratic_no_interaction = value(future_gpt2_full)
 
 fixef(brms_gpt2_quadratic_no_interaction)
 ```
@@ -383,6 +522,9 @@ brms_gpt2_quadratic_no_interaction %>%
   ylab('Beta Coefficient') +
   scale_y_discrete(labels = beta_coef_labels) +
   theme_bw()
+
+rm(brms_gpt2_quadratic_no_interaction, brms_gpt2_plot,
+   freq_plot_gpt2, surprisal_plot_gpt2, percent_greater_zero); gc()
 ```
 
 ### GPT-2 Surprisal-Only Model
@@ -397,21 +539,7 @@ $$
 $$
 
 ```{r brms-surprisal-only, message=FALSE}
-brms_gpt2_surprisal_quadratic = brm(
-  log_rt ~ gpt2_surprisal + Duration +
-    I(gpt2_surprisal^2) +
-    (1 + gpt2_surprisal + Duration + I(gpt2_surprisal^2) || participant) +
-    (1 || Item),
-  data    = gam_data,
-  warmup  = 10000,
-  iter    = 20000,
-  cores   = 8,
-  chains  = 8,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors,
-  file    = '../Models/brms_gpt2_surprisal_quadratic'
-)
+brms_gpt2_surprisal_quadratic = value(future_gpt2_only)
 
 fixef(brms_gpt2_surprisal_quadratic)
 ```
@@ -448,6 +576,9 @@ brms_gpt2_surprisal_quadratic %>%
   ylab('Beta Coefficient') +
   scale_y_discrete(labels = beta_coef_labels_surp) +
   theme_bw()
+
+rm(brms_gpt2_surprisal_quadratic, brms_surprisal_only_plot,
+   post_samples_surprisal, gam_data); gc()
 ```
 
 # Robustness Check: Correlated Random Effects with LKJ Priors
@@ -457,39 +588,14 @@ A reviewer noted that removing random-effect correlations (via `||`) for computa
 All other model specifications (fixed effects, remaining priors, iterations) are identical to the original models.
 
 ```{r lkj-priors}
+# priors_lkj and gam_data_orig are defined in the brms-launch chunk above
 options(contrasts = c("contr.sum", "contr.sum"))
-priors_lkj = c(prior(student_t(3, 0, 2.5), class = 'sd'),
-               prior(student_t(3, 0, 2.5), class = 'sigma'),
-               prior(student_t(3, 0, 2.5), class = 'Intercept'),
-               prior(normal(0, 0.1),       class = 'b'),
-               prior(lkj(2),               class = 'cor'))
-
-# Load gam_data with original log_predic (without surprisal filter)
-gam_data_orig = read_csv('../Data/gam_data.csv') %>%
-  mutate(participant = as.factor(participant),
-         Item        = as.factor(Item),
-         Type        = as.factor(Type),
-         PhrasalVerb = as.factor(PhrasalVerb))
 ```
 
 ## Full Model: Frequency and Predictability with LKJ Priors
 
 ```{r brms-lkj-full, message=FALSE}
-brms_quadratic_lkj = brm(
-  log_rt ~ log_freq + log_predic + Duration +
-    I(log_predic^2) + I(log_freq^2) +
-    (1 + log_freq + log_predic + Duration + I(log_predic^2) + I(log_freq^2) | participant) +
-    (1 | Item),
-  data    = gam_data_orig,
-  warmup  = 15000,
-  iter    = 30000,
-  cores   = 4,
-  chains  = 4,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors_lkj,
-  file    = '../Models/brms_quadratic_lkj'
-)
+brms_quadratic_lkj = value(future_lkj_full)
 
 fixef(brms_quadratic_lkj)
 ```
@@ -514,26 +620,14 @@ brms_quadratic_lkj %>%
   ylab('Beta Coefficient') +
   scale_y_discrete(labels = beta_coef_labels_lkj) +
   theme_bw()
+
+rm(brms_quadratic_lkj, percent_greater_zero_lkj); gc()
 ```
 
 ## Frequency-Only Model with LKJ Priors
 
 ```{r brms-lkj-freq, message=FALSE}
-brms_freq_quadratic_lkj = brm(
-  log_rt ~ log_freq + Duration +
-    I(log_freq^2) +
-    (1 + log_freq + Duration + I(log_freq^2) | participant) +
-    (1 | Item),
-  data    = gam_data_orig,
-  warmup  = 8000,
-  iter    = 16000,
-  cores   = 4,
-  chains  = 4,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors_lkj,
-  file    = '../Models/brms_freq_quadratic_lkj'
-)
+brms_freq_quadratic_lkj = value(future_lkj_freq)
 
 fixef(brms_freq_quadratic_lkj)
 
@@ -544,26 +638,14 @@ cat("% samples log_freq^2 > 0:",
     round(sum(post_samples_freq_lkj$Ilog_freqE2 > 0) / nrow(post_samples_freq_lkj) * 100, 1), "\n")
 cat("% samples log_freq > 0:",
     round(sum(post_samples_freq_lkj$log_freq > 0) / nrow(post_samples_freq_lkj) * 100, 1), "\n")
+
+rm(brms_freq_quadratic_lkj, post_samples_freq_lkj); gc()
 ```
 
 ## Predictability-Only Model with LKJ Priors
 
 ```{r brms-lkj-predic, message=FALSE}
-brms_predic_quadratic_lkj = brm(
-  log_rt ~ log_predic + Duration +
-    I(log_predic^2) +
-    (1 + log_predic + Duration + I(log_predic^2) | participant) +
-    (1 | Item),
-  data    = gam_data_orig,
-  warmup  = 5000,
-  iter    = 10000,
-  cores   = 8,
-  chains  = 8,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors_lkj,
-  file    = '../Models/brms_predic_quadratic_lkj'
-)
+brms_predic_quadratic_lkj = value(future_lkj_predic)
 
 fixef(brms_predic_quadratic_lkj)
 
@@ -574,6 +656,8 @@ cat("% samples log_predic^2 > 0:",
     round(sum(post_samples_predic_lkj$Ilog_predicE2 > 0) / nrow(post_samples_predic_lkj) * 100, 1), "\n")
 cat("% samples log_predic > 0:",
     round(sum(post_samples_predic_lkj$log_predic > 0) / nrow(post_samples_predic_lkj) * 100, 1), "\n")
+
+rm(brms_predic_quadratic_lkj, post_samples_predic_lkj); gc()
 ```
 
 ---
@@ -597,15 +681,7 @@ Because $\log P(up)$ is a corpus-level constant (frequency of *up* = 594,602,106
 ## Data Preparation
 
 ```{r local-data-prep, message=FALSE}
-# log P(up|V) derived from existing log-odds column via the logistic transform
-gam_data_local = gam_data_orig %>%
-  mutate(log_cond_prob = log(plogis(log_predic)))
-
-# PMI = log P(up|V) - log P(up); log P(up) is a constant from the corpus
-log_p_up = log(594602106 / 1064909866902)
-gam_data_local = gam_data_local %>%
-  mutate(log_pmi = log_cond_prob - log_p_up)
-
+# gam_data_local (with log_cond_prob and log_pmi) is built in the brms-launch chunk above
 cat("log P(up) =", round(log_p_up, 4), "\n")
 cat("PMI offset from log P(up|V):", round(-log_p_up, 4), "\n")
 cat("log_cond_prob range: [",
@@ -713,6 +789,8 @@ p_cp_freq = ggplot(slice_freq_cp, aes(x = log_freq, y = fit)) +
   theme_bw()
 
 ggarrange(p_cp_cond, p_cp_freq, nrow = 1)
+
+rm(mod_gam1_cond_prob, slice_cp, slice_freq_cp, preds_cp_s, preds_cp_f, p_cp_cond, p_cp_freq); gc()
 ```
 
 ### Model 2: Phrasal vs. Non-Phrasal Verbs
@@ -809,6 +887,9 @@ slice_plots_cp = lapply(conditions_cp, function(cond) {
 ggarrange(slice_plots_cp[[1]]$cond, slice_plots_cp[[1]]$freq,
           slice_plots_cp[[2]]$cond, slice_plots_cp[[2]]$freq,
           nrow = 2, ncol = 2)
+
+rm(mod_gam_phrasal_cond_prob, pred_grid_cp, pred_grid_cp_nonphrasal, pred_grid_cp_phrasal,
+   slice_plots_cp, preds_cp_nonphrasal, preds_cp_phrasal, z_cp_nonphrasal, z_cp_phrasal); gc()
 ```
 
 ### Model 3: Main Effects and Interaction (ti() terms)
@@ -860,6 +941,8 @@ p3_freq_cp = ggplot(nd_freq_cp, aes(x = log_freq, y = fit)) +
   theme_bw()
 
 ggarrange(p3_cond, p3_freq_cp, nrow = 1)
+
+rm(mod_bam_inter_cond_prob, nd_base_cp, nd_cond, nd_freq_cp, p3_cond, p3_freq_cp); gc()
 ```
 
 ## Bayesian Quadratic Models
@@ -880,22 +963,7 @@ $$
 $$
 
 ```{r brms-full-cond-prob, message=FALSE}
-brms_cond_prob_quadratic = brm(
-  log_rt ~ log_freq + log_cond_prob + Duration +
-    I(log_cond_prob^2) + I(log_freq^2) +
-    (1 + log_freq + log_cond_prob + Duration +
-       I(log_cond_prob^2) + I(log_freq^2) || participant) +
-    (1 || Item),
-  data    = gam_data_local,
-  warmup  = 10000,
-  iter    = 20000,
-  cores   = 8,
-  chains  = 8,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors,
-  file    = '../Models/brms_cond_prob_quadratic'
-)
+brms_cond_prob_quadratic = value(future_cp_full)
 
 fixef(brms_cond_prob_quadratic)
 ```
@@ -933,6 +1001,9 @@ brms_cond_prob_quadratic %>%
   ylab('Beta Coefficient') +
   scale_y_discrete(labels = beta_coef_labels_cp) +
   theme_bw()
+
+rm(brms_cond_prob_quadratic, brms_cp_plot, percent_greater_zero_cp,
+   freq_plot_cp, cond_prob_plot); gc()
 ```
 
 ### Log Conditional Probability-Only Model
@@ -947,21 +1018,7 @@ $$
 $$
 
 ```{r brms-cond-prob-only, message=FALSE}
-brms_cond_prob_only_quadratic = brm(
-  log_rt ~ log_cond_prob + Duration +
-    I(log_cond_prob^2) +
-    (1 + log_cond_prob + Duration + I(log_cond_prob^2) || participant) +
-    (1 || Item),
-  data    = gam_data_local,
-  warmup  = 10000,
-  iter    = 20000,
-  cores   = 8,
-  chains  = 8,
-  init    = 0,
-  control = list(adapt_delta = 0.99),
-  prior   = priors,
-  file    = '../Models/brms_cond_prob_only_quadratic'
-)
+brms_cond_prob_only_quadratic = value(future_cp_only)
 
 fixef(brms_cond_prob_only_quadratic)
 ```
@@ -997,4 +1054,78 @@ brms_cond_prob_only_quadratic %>%
   ylab('Beta Coefficient') +
   scale_y_discrete(labels = beta_coef_labels_cp_only) +
   theme_bw()
+
+rm(brms_cond_prob_only_quadratic, brms_cp_only_plot, post_samples_cp_only); gc()
+```
+
+## Robustness Check: Correlated Random Effects with LKJ Priors
+
+These models replicate the two log conditional probability Bayesian models above with correlated random effects and an LKJ(2) prior on the correlation matrix, mirroring the robustness check for the original paper's models.
+
+### Full Model: Frequency and Log Conditional Probability with LKJ Priors
+
+```{r brms-cp-lkj-full, message=FALSE}
+brms_cond_prob_quadratic_lkj = value(future_cp_lkj_full)
+
+fixef(brms_cond_prob_quadratic_lkj)
+```
+
+```{r brms-cp-lkj-full-posterior}
+percent_greater_zero_cp_lkj = data.frame(fixef(brms_cond_prob_quadratic_lkj, summary = FALSE)) %>%
+  pivot_longer(cols = everything(), names_to = 'beta_coefficient', values_to = 'estimate') %>%
+  group_by(beta_coefficient) %>%
+  summarize(pct_gt_zero = (sum(estimate > 0) / n()) * 100)
+
+percent_greater_zero_cp_lkj
+```
+
+```{r brms-cp-lkj-full-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels_cp_lkj = list.reverse(c('log P(up|V)', 'log-frequency', 'Intercept',
+                                          'log P(up|V)^2', 'log-frequency^2'))
+brms_cond_prob_quadratic_lkj %>%
+  gather_draws(b_Intercept, b_log_freq, b_log_cond_prob,
+               b_Ilog_cond_probE2, b_Ilog_freqE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels_cp_lkj) +
+  theme_bw()
+
+rm(brms_cond_prob_quadratic_lkj, percent_greater_zero_cp_lkj); gc()
+```
+
+### Log Conditional Probability-Only Model with LKJ Priors
+
+```{r brms-cp-lkj-only, message=FALSE}
+brms_cond_prob_only_quadratic_lkj = value(future_cp_lkj_only)
+
+fixef(brms_cond_prob_only_quadratic_lkj)
+```
+
+```{r brms-cp-lkj-only-posterior}
+post_samples_cp_lkj_only = as.data.frame(fixef(brms_cond_prob_only_quadratic_lkj, summary = FALSE)) %>%
+  select(log_cond_prob, Ilog_cond_probE2)
+
+cat("% samples log_cond_prob^2 > 0:",
+    round(sum(post_samples_cp_lkj_only$Ilog_cond_probE2 > 0) /
+            nrow(post_samples_cp_lkj_only) * 100, 1), "\n")
+cat("% samples log_cond_prob > 0:",
+    round(sum(post_samples_cp_lkj_only$log_cond_prob > 0) /
+            nrow(post_samples_cp_lkj_only) * 100, 1), "\n")
+```
+
+```{r brms-cp-lkj-only-posterior-plot, message=FALSE, warning=FALSE, out.width='80%', fig.align='center'}
+beta_coef_labels_cp_lkj_only = list.reverse(c('log P(up|V)', 'Intercept', 'log P(up|V)^2'))
+brms_cond_prob_only_quadratic_lkj %>%
+  gather_draws(b_Intercept, b_log_cond_prob, b_Ilog_cond_probE2) %>%
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye() +
+  xlab('Posterior Distribution') +
+  ylab('Beta Coefficient') +
+  scale_y_discrete(labels = beta_coef_labels_cp_lkj_only) +
+  theme_bw()
+
+rm(brms_cond_prob_only_quadratic_lkj, post_samples_cp_lkj_only,
+   gam_data_local, gam_data_orig); gc()
 ```
