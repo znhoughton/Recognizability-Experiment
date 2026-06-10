@@ -1,2 +1,0 @@
-*.rds filter=lfs diff=lfs merge=lfs -text
-Models/*.rds filter=lfs diff=lfs merge=lfs -text

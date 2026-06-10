@@ -1,8 +1,4 @@
 *
 !.gitignore
 !README.MD
-!*.rds
-# Exceed GitHub LFS 2 GB file limit — must be regenerated locally
-brms_gpt2_quadratic_no_interaction.rds
-brms_quadratic_english_no_interaction.rds
-brms_quadratic_cloze_english_no_interaction.rds
+# .rds files are not tracked — regenerate locally as needed
