@@ -12,4 +12,3 @@ Data and scripts for the paper titled "Predictability drives holistic storage of
 
 **Stimuli/** — Raw audio files for the experimental stimuli.
 
-**Glossa Writeup/** — Quarto source for the manuscript and response to reviewers, as submitted to *Glossa Psycholinguistics*.
