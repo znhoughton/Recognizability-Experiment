@@ -1,10 +1,15 @@
 # Recognizability-Experiment
 
-Data and scripts for the paper titled "The effects of frequency and predictability on the recognition of *up* in English verb+up collocations".
+Data and scripts for the paper titled "Predictability drives holistic storage of English verb+*up* collocations: evidence from a recognition task".
 
-Analysis scripts can be found in the Analysis folder. The models generated in this folder will be stored in the Models folder (the models are too large to store there, but they can be generated from the analysis script).
+## Repository Structure
 
-The processed data can be found in the Data folder as well as the list of sentences and frequency/predictability/cloze predictability calculations.
+**Analysis/** — R and Python scripts for all analyses reported in the main text and appendices, including GAMMs, Bayesian quadratic regression models, and accuracy analyses by frequency and predictability.
 
-The raw sound files for the stimuli can be found in the Stimuli folder.
+**Data/** — Processed experimental data, stimulus lists, and derived measures (frequency, predictability, GPT-2 surprisal, cloze probabilities).
 
+**Models/** — Fitted Bayesian model objects. These files are too large to store in the repository but can be regenerated from the scripts in the Analysis folder.
+
+**Stimuli/** — Raw audio files for the experimental stimuli.
+
+**Glossa Writeup/** — Quarto source for the manuscript and response to reviewers, as submitted to *Glossa Psycholinguistics*.
