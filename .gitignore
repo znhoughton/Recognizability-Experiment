@@ -9,3 +9,6 @@ Write-up
 *.pptx
 *.Rproj
 *.rds
+Analysis/redundant_up_coding.csv
+Analysis/gam_data.csv
+Analysis/supplemental_analyses.html

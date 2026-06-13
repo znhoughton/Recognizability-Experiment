@@ -1,6 +1,6 @@
 # Recognizability-Experiment
 
-Data and scripts for the paper titled "Predictability drives holistic storage of English verb+*up* collocations: evidence from a recognition task".
+Data and scripts for the paper titled "Predictability drives holistic storage of English verb+*up* collocations: Evidence from a recognition task".
 
 ## Repository Structure
 
